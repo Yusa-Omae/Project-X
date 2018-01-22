@@ -122,7 +122,7 @@ void CameraUpdate(){
 			CAMERA.VAngle = DX_PI_F / 2.0f - 0.1f;
 		}
 		//êÖïΩäpìxåvéZ
-		CAMERA.HAngle -= CAMERA_ANGLE_SPEED*MOUSE.Move_X;
+		CAMERA.HAngle += CAMERA_ANGLE_SPEED*MOUSE.Move_X;
 		if(CAMERA.HAngle < 0.0f){
 			CAMERA.HAngle += DX_PI_F*2.0f;
 		}else if(CAMERA.HAngle >= DX_PI_F*2.0f){
