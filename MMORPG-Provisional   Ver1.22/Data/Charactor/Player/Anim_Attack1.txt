@@ -1,0 +1,33 @@
+int EventNum = 8
+string Event0_TypeName = Sound
+float Event0_Time = 0.500
+string Event0_SoundPath = Player\equip
+
+string Event1_TypeName = Sound
+float Event1_Time = 3.500
+string Event1_SoundPath = Weapon\Sabel\swish_S
+
+string Event2_TypeName = AttackStart
+float Event2_Time = 4.000
+int Event2_AttackNo = 0
+int Event2_AttackPosIndex = 0
+
+string Event3_TypeName = PhysicsSound
+float Event3_Time = 5.000
+string Event3_PhysicsSoundType = footstep
+
+string Event4_TypeName = Sound
+float Event4_Time = 5.500
+string Event4_SoundPath = Player\VO_J_attack
+
+string Event5_TypeName = AttackEnd
+float Event5_Time = 7.000
+int Event5_AttackNo = 0
+
+string Event6_TypeName = AnimCancel
+float Event6_Time = 8.500
+
+string Event7_TypeName = PhysicsSound
+float Event7_Time = 28.000
+string Event7_PhysicsSoundType = footstep
+

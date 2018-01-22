@@ -1,0 +1,60 @@
+string Name                    = ƒSƒuƒŠƒ“
+string Type                    = Enemy
+int    Health                  = 100
+string MainModelPath           = Goblin.mv1
+string RootFrameName           = root
+
+string EquipWeapon             = Axe
+string EquipWeapon_AttachFrame = hansocketR
+
+float  DamageHitWidth          = 50.0
+float  DamageHitHeight         = 80.0
+vector DamageHitCenterPosition = 0.0 90.0 0.0
+
+vector HealthGaugePosition     = 0.0 200.0 0.0
+
+string AttackPosInfo0_StartFrameName   = hansocketR
+string AttackPosInfo0_FormType         = Poly
+float  AttackPosInfo0_SphereSize       = 15.0
+vector AttackPosInfo0_EndLocalPosition = 0.0 100.0 0.0
+color  AttackPosInfo0_EffectColor      = 255 128 128 255
+
+float  ProgramMoveSpeed     = 600.0
+float  ShadowSize           = 50.0
+
+float  CharaHitWidth                = 60.0
+float  CharaHitHeight               = 60.0
+vector CharaHitCenterPosition       = 0.0 90.0 0.0
+float  StageHitBottomWidth          = 10.0
+float  StageHitBottomHeight         = 40.0
+vector StageHitBottomCenterPosition = 0.0 30.0 0.0
+float  StageHitTopWidth             = 60.0
+float  StageHitTopHeight            = 10.0
+vector StageHitTopCenterPosition    = 0.0 105.0 0.0
+
+float  Enemy_Attack0_AttackDistance      = 200.0
+float  Enemy_Attack0_AttackAngleRange    = 1.5
+int    Enemy_Attack0_AttackPower         = 10
+bool   Enemy_Attack0_IsAttackMoveWalk    = false
+bool   Enemy_Attack0_IsAttackAngleChange = true
+
+float  Enemy_SeeAngleRange              = 120.0
+float  Enemy_AngleChangeSpeed           = 12.0
+float  Enemy_NoticeDistance_See         = 2000.0
+float  Enemy_NoticeDistance             = 300.0
+float  Enemy_NoticeDistance_AttackMode  = 1000.0
+float  Enemy_NoticeTime_See             = 1.5
+float  Enemy_NoticeTime_Distance        = 0.5
+float  Enemy_SeeAttackMoveStartWait_Max = 2.0
+float  Enemy_SeeAttackMoveStartWait_Min = 1.0
+float  Enemy_AttackRepeatWait_Max       = 3.0
+float  Enemy_AttackRepeatWait_Min       = 1.0
+float  Enemy_DamageAfterMoveWait_Max    = 1.0
+float  Enemy_DamageAfterMoveWait_Min    = 0.5
+float  Enemy_IdleMoveStartWait_Max      = 7.0
+float  Enemy_IdleMoveStartWait_Min      = 3.0
+float  Enemy_IdleMoveTime_Max           = 5.0
+float  Enemy_IdleMoveTime_Min           = 3.0
+float  Enemy_IdleAngleMoveBeginWait     = 1.0
+float  Enemy_IdleAngleMoveAfterWait     = 1.0
+bool   Enemy_ProgramMove                = false

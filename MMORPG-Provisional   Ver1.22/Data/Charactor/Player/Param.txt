@@ -1,0 +1,35 @@
+string Name                      = ‚o‚b
+string Type                      = Player
+int    Health                    = 100
+string MainModelPath             = PC.mv1
+string RootFrameName             = root
+
+string EquipWeapon               = Sabel
+string EquipWeapon_AttachFrame   = wp
+
+string SubModel000_Path          = Saya.mv1
+string SubModel000_AttachFrame   = sayabone
+
+float  DamageHitWidth            = 50.0
+float  DamageHitHeight           = 80.0
+vector DamageHitCenterPosition   = 0.0 90.0 0.0
+
+string AttackPosInfo0_StartFrameName   = wp
+string AttackPosInfo0_FormType         = Poly
+float  AttackPosInfo0_SphereSize       = 1.0
+vector AttackPosInfo0_EndLocalPosition = 0.0 -100.0 0.0
+color  AttackPosInfo0_EffectColor      = 255 255 255 255
+
+float  ProgramMoveSpeed     = 600.0
+float  ShadowSize           = 50.0
+
+float  CharaHitWidth                = 60.0
+float  CharaHitHeight               = 60.0
+vector CharaHitCenterPosition       = 0.0 90.0 0.0
+float  StageHitBottomWidth          = 10.0
+float  StageHitBottomHeight         = 20.0
+vector StageHitBottomCenterPosition = 0.0 20.0 0.0
+float  StageHitTopWidth             = 60.0
+float  StageHitTopHeight            = 10.0
+vector StageHitTopCenterPosition    = 0.0 105.0 0.0
+

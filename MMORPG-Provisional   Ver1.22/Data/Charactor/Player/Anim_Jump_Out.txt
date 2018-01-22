@@ -1,0 +1,9 @@
+int EventNum = 2
+string Event0_TypeName = PhysicsSound
+float Event0_Time = 0.000
+string Event0_PhysicsSoundType = footstep
+
+string Event1_TypeName = Sound
+float Event1_Time = 4.000
+string Event1_SoundPath = Player\equip
+

@@ -1,0 +1,9 @@
+int EventNum = 2
+string Event0_TypeName = PhysicsSound
+float Event0_Time = 0.500
+string Event0_PhysicsSoundType = footstep
+
+string Event1_TypeName = PhysicsSound
+float Event1_Time = 8.500
+string Event1_PhysicsSoundType = footstep
+

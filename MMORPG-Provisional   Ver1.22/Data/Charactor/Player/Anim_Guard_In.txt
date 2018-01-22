@@ -1,0 +1,9 @@
+int EventNum = 2
+string Event0_TypeName = Sound
+float Event0_Time = 0.000
+string Event0_SoundPath = Player\guard_In
+
+string Event1_TypeName = Sound
+float Event1_Time = 1.500
+string Event1_SoundPath = Player\guard_On
+
