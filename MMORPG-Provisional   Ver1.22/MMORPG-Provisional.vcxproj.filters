@@ -138,6 +138,9 @@
     <ClCompile Include="Code\AppData\SaveData\SaveData.cpp">
       <Filter>ソース ファイル\Code\AppData\SaveData</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Test\TestString.cpp">
+      <Filter>ソース ファイル\Code\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="Code\AppData\SaveData\SaveData.h">
       <Filter>ヘッダー ファイル\Code\AppData\SaveData</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Test\TestString.h">
+      <Filter>ヘッダー ファイル\Code\Test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

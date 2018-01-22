@@ -7,6 +7,7 @@
 
 #ifdef __MY_DEBUG__
 #include "Code/Test/TestMenu.h"
+#include "Code//Test/TestString.h"
 #endif	//__MY_DEBUG__
 
 
@@ -42,6 +43,9 @@ void SceneMgr_Initialize(int Scene)
 	case eScene_TestMemu:
 		TestMenu_Initialize();
 		break;
+	case eScene_TestString:
+		TestString_Initialize();
+		break;
 #endif	//__MY_DEBUG__
 
 	}
@@ -70,6 +74,9 @@ void SceneMgr_Fainalize(int Scene)
 #ifdef __MY_DEBUG__
 	case eScene_TestMemu:
 		TestMenu_Finalize();
+		break;
+	case eScene_TestString:
+		TestString_Finalize();
 		break;
 #endif	//__MY_DEBUG__
 	}
@@ -125,6 +132,9 @@ void SceneMgr_update()
 	case eScene_TestMemu:
 		TestMenu_Update();
 		break;
+	case eScene_TestString:
+		TestString_Update();
+		break;
 #endif	//__MY_DEBUG__
 	}
 
@@ -149,6 +159,9 @@ void SceneMgr_draw()
 #ifdef __MY_DEBUG__
 	case eScene_TestMemu:
 		TestMenu_Draw();
+		break;
+	case eScene_TestString:
+		TestString_Draw();
 		break;
 #endif	//__MY_DEBUG__
 	}

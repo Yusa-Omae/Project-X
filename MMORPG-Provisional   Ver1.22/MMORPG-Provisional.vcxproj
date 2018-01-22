@@ -94,6 +94,7 @@
     <ClCompile Include="Code\Common\String\FontMgr\FontMgr.cpp" />
     <ClCompile Include="Code\Common\String\StringBase.cpp" />
     <ClCompile Include="Code\Test\TestMenu.cpp" />
+    <ClCompile Include="Code\Test\TestString.cpp" />
     <ClCompile Include="Gamemain.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="main.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="Code\Common\String\FontMgr\FontMgr.h" />
     <ClInclude Include="Code\Common\String\StringBase.h" />
     <ClInclude Include="Code\Test\TestMenu.h" />
+    <ClInclude Include="Code\Test\TestString.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Gamemain.h" />
     <ClInclude Include="Key.h" />

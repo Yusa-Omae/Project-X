@@ -36,6 +36,7 @@ static SCENE_TABLE_t s_SceneTbl[] = {
 	{ eScene_Gamemain,	"ゲームメイン"		},
 	{ eScene_Menu,		"メニュー"			},
 	{ eScene_Result,	"リザルト"			},
+	{ eScene_TestString,	"テスト文字列(フォント設定)" },
 
 };
 

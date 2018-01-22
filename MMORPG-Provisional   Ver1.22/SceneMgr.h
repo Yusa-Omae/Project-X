@@ -13,12 +13,11 @@ typedef enum {
 #ifdef __MY_DEBUG__
 
 	eScene_TestMemu,
+	eScene_TestString,
 
 #endif
 
-//
-
-	eScene_Num,
+// --------------------
 
 }eScene;
 
