@@ -23,8 +23,6 @@ float Sin;
 //cos計算用変数
 float Cos;
 
-
-
 //カメラの初期設定
 void Camera_Initialize(){
 	//カメラの位置設定
@@ -61,8 +59,13 @@ void CameraUpdate(){
 	MOUSE.Input = GetMouseInput();
 	//現在のマウス座標の取得
 	GetMousePoint(&MOUSE.X, &MOUSE.Y);
+
+#if false //とりあえずエラーになるのでコメントアウト by.Syara
 	//ウィンドウ表示位置の取得
 	GetWindowRect(s_SYSTEM_INFO.WinHndl, s_SYSTEM_INFO.WinAxis);
+
+	if (s_SYSTEM_INFO.WinAxis == NULL) return;
+
 	//マウス座標制限 //前フレームからの移動量算出した後ならがくつきが少ないかと思ったけどそうでもなかった。（座標強制変更後）(アプリ起動画面によって座標変更しなければならない。いい手はないものか。)
 	if(MOUSE.Rest_Flg == true){
 		if(MOUSE.X >= s_SYSTEM_INFO.WinAxis->right){
@@ -87,6 +90,7 @@ void CameraUpdate(){
 		SetMousePoint(MOUSE.X,MOUSE.Y);					//マウス座標のセット
 		MOUSE.Rest_Flg = true;							//マウス座標強制移動フラグをオフにする。
 	}
+#endif	//false 
 
 	//マウスの移動量を算出
 	MOUSE.Move_X = MOUSE.X - MOUSE.Back_X;

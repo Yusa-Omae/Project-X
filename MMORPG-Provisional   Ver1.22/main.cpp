@@ -8,13 +8,16 @@
 //メイン画面
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
+
     SetGraphMode( INIT_AREA_X2,INIT_AREA_Y2 , 32) ;//ウィンドウサイズ設定
     DxLib_Init(), SetDrawScreen( DX_SCREEN_BACK );//初期化と裏画面設定
 
 	SystemInitialize();
 	SceneInitialize();
 
-//	ChangeWindowMode(TRUE);			//ウィンドウモードにするとタイトル画面の描画がうまくいかないバグ。
+#ifdef __MY_DEBUG__
+	ChangeWindowMode(TRUE);			//ウィンドウモードにするとタイトル画面の描画がうまくいかないバグ。
+#endif
 
 	while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 
