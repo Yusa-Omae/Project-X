@@ -52,7 +52,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__MY_DEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>./プロジェクトに追加すべきファイル_VC用</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -86,6 +86,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chara.cpp" />
     <ClCompile Include="Chara_Enemy.cpp" />
+    <ClCompile Include="Code\Test\TestMenu.cpp" />
     <ClCompile Include="Gamemain.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="main.cpp" />
@@ -101,6 +102,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chara.h" />
     <ClInclude Include="Chara_Enemy.h" />
+    <ClInclude Include="Code\Test\TestMenu.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Gamemain.h" />
     <ClInclude Include="Key.h" />

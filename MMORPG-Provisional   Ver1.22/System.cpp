@@ -51,13 +51,7 @@ void SystemInitialize(){
 
 void SystemMain(){
 
-
-
-
-
 }
-
-
 
 void Set_Exit_Game(){
 

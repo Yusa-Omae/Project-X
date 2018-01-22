@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\Code">
+      <UniqueIdentifier>{e55d7817-d2c9-40fe-b786-480fa9dee800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code">
+      <UniqueIdentifier>{2a477699-3ef1-4458-9a35-80a15f41dff0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Test">
+      <UniqueIdentifier>{d4dbedde-c368-4773-ac37-f9deaa044274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\Test">
+      <UniqueIdentifier>{b1905969-69e8-4644-9aae-21fc91d03189}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\Scene">
+      <UniqueIdentifier>{a707b368-1650-499b-bef5-f685f4d13ed9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Scene">
+      <UniqueIdentifier>{1342be08-8929-480d-99b6-c2cc0a7e7f1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,6 +72,9 @@
     <ClCompile Include="UI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Test\TestMenu.cpp">
+      <Filter>ソース ファイル\Code\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -94,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Test\TestMenu.h">
+      <Filter>ヘッダー ファイル\Code\Test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

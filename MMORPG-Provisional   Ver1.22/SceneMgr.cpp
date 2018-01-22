@@ -5,10 +5,18 @@
 #include"UI.h"
 #include"System.h"
 
+#ifdef __MY_DEBUG__
+#include "Code/Test/TestMenu.h"
+#endif	//__MY_DEBUG__
+
 
 //シーン変更の中枢
 
+#ifdef __MY_DEBUG__
+eScene NowScene = eScene_TestMemu;
+#else
 eScene NowScene = eScene_Title;
+#endif	//__MY_DEBUG__
 eScene NextScene = eScene_none;
 
 //シーンごとの初期化をここで行っている
@@ -29,6 +37,13 @@ void SceneMgr_Initialize(int Scene)
 		break;
 	case eScene_Result:
 		break;
+
+#ifdef __MY_DEBUG__
+	case eScene_TestMemu:
+		TestMenu_Initialize();
+		break;
+#endif	//__MY_DEBUG__
+
 	}
 
 
@@ -52,6 +67,11 @@ void SceneMgr_Fainalize(int Scene)
 		break;
 	case eScene_Result:
 		break;
+#ifdef __MY_DEBUG__
+	case eScene_TestMemu:
+		TestMenu_Finalize();
+		break;
+#endif	//__MY_DEBUG__
 	}
 
 
@@ -101,6 +121,11 @@ void SceneMgr_update()
 		break;
 	case eScene_Result:
 		break;
+#ifdef __MY_DEBUG__
+	case eScene_TestMemu:
+		TestMenu_Update();
+		break;
+#endif	//__MY_DEBUG__
 	}
 
 
@@ -121,6 +146,11 @@ void SceneMgr_draw()
 	case eScene_Title:
 		TitleDraw();
 		break;
+#ifdef __MY_DEBUG__
+	case eScene_TestMemu:
+		TestMenu_Draw();
+		break;
+#endif	//__MY_DEBUG__
 	}
 
 }

@@ -213,6 +213,15 @@ void Titleupdate()
 	if(Mark_Count <= 0) Mark_Count = 360;
 
 
+
+	//デバッグ時はXキーでテストメニューへ移行する
+#ifdef __MY_DEBUG__
+	if (key(KEY_INPUT_X) == 1) {
+		SceneMgr_ChangeScene(eScene_TestMemu);
+	}
+#endif	//__MY_DEBUG__
+
+
 }
 //描画
 void TitleDraw()
