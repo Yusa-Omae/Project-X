@@ -31,6 +31,36 @@
     <Filter Include="ヘッダー ファイル\Code\Scene">
       <UniqueIdentifier>{1342be08-8929-480d-99b6-c2cc0a7e7f1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Code\Common">
+      <UniqueIdentifier>{8b1e5fda-8b93-4b8b-9262-1a1714ba3186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Common">
+      <UniqueIdentifier>{f4609d81-297e-468f-a697-8cfe817952a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Common\FileIO">
+      <UniqueIdentifier>{2b0d457c-ecfb-48f3-a7ba-09ad4bea96ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\Common\FileIO">
+      <UniqueIdentifier>{8eb3b174-f564-4355-b1e8-a6d6c0fc04fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Common\String">
+      <UniqueIdentifier>{0bb63315-2cf9-4c0c-ae29-f062104e27c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Common\String\FontMgr">
+      <UniqueIdentifier>{9528a501-484e-4aa7-a18a-bbf942685fe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\Common\String">
+      <UniqueIdentifier>{d1f5055a-03ea-4c3e-a85a-09a28fd625b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\Common\String\FontMgr">
+      <UniqueIdentifier>{a3ed3e09-4376-494d-a351-7b999c18cd2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\Common\Keyboard">
+      <UniqueIdentifier>{397c7dd3-39c5-4faf-99f9-e2cfe5d9dd13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Common\Keyboard">
+      <UniqueIdentifier>{6b54e06c-d7a9-4e44-8bf4-ca39f6c72e03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -75,6 +105,24 @@
     <ClCompile Include="Code\Test\TestMenu.cpp">
       <Filter>ソース ファイル\Code\Test</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Common\FileIO\FileIO.cpp">
+      <Filter>ソース ファイル\Code\Common\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Common\FileIO\ReadBynary.cpp">
+      <Filter>ソース ファイル\Code\Common\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Common\FileIO\WriteBynary.cpp">
+      <Filter>ソース ファイル\Code\Common\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Common\String\StringBase.cpp">
+      <Filter>ソース ファイル\Code\Common\String</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Common\String\FontMgr\FontMgr.cpp">
+      <Filter>ソース ファイル\Code\Common\String\FontMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Common\Keyboard\Keyboard.cpp">
+      <Filter>ソース ファイル\Code\Common\Keyboard</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -118,6 +166,24 @@
     </ClInclude>
     <ClInclude Include="Code\Test\TestMenu.h">
       <Filter>ヘッダー ファイル\Code\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Common\FileIO\FileIO.h">
+      <Filter>ヘッダー ファイル\Code\Common\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Common\FileIO\ReadBynary.h">
+      <Filter>ヘッダー ファイル\Code\Common\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Common\FileIO\WriteBynary.h">
+      <Filter>ヘッダー ファイル\Code\Common\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Common\String\FontMgr\FontMgr.h">
+      <Filter>ヘッダー ファイル\Code\Common\String\FontMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Common\String\StringBase.h">
+      <Filter>ヘッダー ファイル\Code\Common\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Common\Keyboard\Keyboard.h">
+      <Filter>ヘッダー ファイル\Code\Common\Keyboard</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

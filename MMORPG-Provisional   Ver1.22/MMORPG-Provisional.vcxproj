@@ -86,6 +86,12 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chara.cpp" />
     <ClCompile Include="Chara_Enemy.cpp" />
+    <ClCompile Include="Code\Common\FileIO\FileIO.cpp" />
+    <ClCompile Include="Code\Common\FileIO\ReadBynary.cpp" />
+    <ClCompile Include="Code\Common\FileIO\WriteBynary.cpp" />
+    <ClCompile Include="Code\Common\Keyboard\Keyboard.cpp" />
+    <ClCompile Include="Code\Common\String\FontMgr\FontMgr.cpp" />
+    <ClCompile Include="Code\Common\String\StringBase.cpp" />
     <ClCompile Include="Code\Test\TestMenu.cpp" />
     <ClCompile Include="Gamemain.cpp" />
     <ClCompile Include="Key.cpp" />
@@ -102,6 +108,12 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chara.h" />
     <ClInclude Include="Chara_Enemy.h" />
+    <ClInclude Include="Code\Common\FileIO\FileIO.h" />
+    <ClInclude Include="Code\Common\FileIO\ReadBynary.h" />
+    <ClInclude Include="Code\Common\FileIO\WriteBynary.h" />
+    <ClInclude Include="Code\Common\Keyboard\Keyboard.h" />
+    <ClInclude Include="Code\Common\String\FontMgr\FontMgr.h" />
+    <ClInclude Include="Code\Common\String\StringBase.h" />
     <ClInclude Include="Code\Test\TestMenu.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Gamemain.h" />
