@@ -47,6 +47,10 @@ void Camera_Initialize(){
 	//マウスの強制移動フラグをオフに
 	MOUSE.Rest_Flg = true;
 
+	//マウスカーソルの位置を画面中央に設定
+	SetMousePoint(INIT_AREA_X2/2, INIT_AREA_Y2/2);
+
+
 }
 
 //カメラ系加藤先生or木下先生に聞く--------------------------------------------
@@ -59,6 +63,10 @@ void CameraUpdate(){
 	MOUSE.Input = GetMouseInput();
 	//現在のマウス座標の取得
 	GetMousePoint(&MOUSE.X, &MOUSE.Y);
+
+	MOUSE.X -= INIT_AREA_X2 / 2;
+	MOUSE.Y -= INIT_AREA_Y2 / 2;
+
 
 #if false //とりあえずエラーになるのでコメントアウト by.Syara
 	//ウィンドウ表示位置の取得
@@ -104,7 +112,7 @@ void CameraUpdate(){
 
 
 	//右クリックが押されていたらカメラの向きを変更
-	if(MOUSE.Input & MOUSE_INPUT_RIGHT){
+	//if(MOUSE.Input & MOUSE_INPUT_RIGHT){
 		//垂直角度計算
 		CAMERA.VAngle += CAMERA_ANGLE_SPEED*MOUSE.Move_Y;
 		if(CAMERA.VAngle < -(DX_PI_F / 2.0f - 0.1f)){
@@ -120,7 +128,7 @@ void CameraUpdate(){
 		}else if(CAMERA.HAngle >= DX_PI_F*2.0f){
 			CAMERA.HAngle -= DX_PI_F*2.0f;
 		}
-	}
+	//}
 
 
 	//ゲーム開始時-1.0まで自動で(カメラの制限を設けたい。)

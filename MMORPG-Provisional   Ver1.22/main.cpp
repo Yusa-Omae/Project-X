@@ -10,19 +10,21 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 {
 
     SetGraphMode( INIT_AREA_X2,INIT_AREA_Y2 , 32) ;//ウィンドウサイズ設定
+#ifdef __MY_DEBUG__
+	ChangeWindowMode(TRUE);			//ウィンドウモードにするとタイトル画面の描画がうまくいかないバグ。
+#endif
     DxLib_Init(), SetDrawScreen( DX_SCREEN_BACK );//初期化と裏画面設定
 
 	SystemInitialize();
 	SceneInitialize();
 
-#ifdef __MY_DEBUG__
-	ChangeWindowMode(TRUE);			//ウィンドウモードにするとタイトル画面の描画がうまくいかないバグ。
-#endif
+
 
 	while( ScreenFlip()==0 && ProcessMessage()==0 && ClearDrawScreen()==0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 
-	    SceneMgr_update();  //更新
 		gpUpdateKey();
+
+	    SceneMgr_update();  //更新
 		SceneMgr_draw();    //描画
 
 		//ゲームの終了
