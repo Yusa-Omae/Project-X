@@ -61,6 +61,18 @@
     <Filter Include="ヘッダー ファイル\Code\Common\Keyboard">
       <UniqueIdentifier>{6b54e06c-d7a9-4e44-8bf4-ca39f6c72e03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Code\AppData">
+      <UniqueIdentifier>{7f059448-7f8a-4fac-8f30-bad7e863972f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\AppData\SaveData">
+      <UniqueIdentifier>{dad51b17-74db-4c61-8889-db01cf1c2837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\AppData">
+      <UniqueIdentifier>{6f1204d3-fa1c-411a-99f8-58dd1fb4c60a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\AppData\SaveData">
+      <UniqueIdentifier>{c94f2b4a-1b9a-4061-9ed8-e7eab3334270}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -123,6 +135,9 @@
     <ClCompile Include="Code\Common\Keyboard\Keyboard.cpp">
       <Filter>ソース ファイル\Code\Common\Keyboard</Filter>
     </ClCompile>
+    <ClCompile Include="Code\AppData\SaveData\SaveData.cpp">
+      <Filter>ソース ファイル\Code\AppData\SaveData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -184,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="Code\Common\Keyboard\Keyboard.h">
       <Filter>ヘッダー ファイル\Code\Common\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AppData\SaveData\SaveData.h">
+      <Filter>ヘッダー ファイル\Code\AppData\SaveData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
