@@ -27,7 +27,7 @@ enum{
 	anim_Neutral,
 	anim_Run,
 	anim_Attack,
-
+	
 
 	anim_Max,
 };

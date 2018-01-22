@@ -17,6 +17,21 @@ float Play_Anim_time;
 bool Anim_Flg[10];
 int Root_flm;
 
+/*
+	アニメーションを設定する
+	int modelHandle			:モデルハンドル
+	int *attachModleHandle	:アタッチモデルハンドル
+	int ChangeAnimHandle	:切り替えるアニメハンドル
+	int animIdex = 0		:アニメーション番号 何も入力がなければ0が設定される
+	return	アニメーションの総時間
+*/
+static int Change_AttachAnim(int modelHandle,int *attachModleHandle,int ChangeAnimHandle,int animIdex = 0) {
+
+	MV1DetachAnim(modelHandle, *attachModleHandle);
+	*attachModleHandle = MV1AttachAnim(modelHandle, animIdex, ChangeAnimHandle);
+	return MV1GetAttachAnimTotalTime(modelHandle, *attachModleHandle);
+}
+
 //初期化
 void Chara_Initialize(){
 
@@ -29,6 +44,7 @@ void Chara_Initialize(){
 	//プレイヤーアニメーション
 	Model_Anim[model_Player][anim_Neutral] = MV1LoadModel("Data/Charactor/Player/Anim_Neutral.mv1");
 	Model_Anim[model_Player][anim_Run] = MV1LoadModel("Data/Charactor/Player/Anim_Run.mv1");
+	Model_Anim[model_Player][anim_Attack] = MV1LoadModel("Data/Charactor/Player/Anim_Attack1.mv1");
 	//エネミーアニメーション
 	Model_Anim[model_Goblin][anim_Neutral] = MV1LoadModel("Data/Charactor/Goblin/Anim_Neutral.mv1");
 	Model_Anim[model_Goblin][anim_Run] = MV1LoadModel("Data/Charactor/Goblin/Anim_Run.mv1");
@@ -50,18 +66,28 @@ void Chara_Update(){
 	if(CHARA_MGR[model_Player].Move == true){
 		if(Anim_Flg[anim_Run] == true){
 			Anim_Flg[anim_Run] = false;
+			Total_Anim_time = Change_AttachAnim(Model_Kind[model_Player], &Attach_Model, Model_Anim[model_Player][anim_Neutral]);
+#if false
 			MV1DetachAnim(Model_Kind[model_Player],Attach_Model);
 			Attach_Model = MV1AttachAnim(Model_Kind[model_Player],0,Model_Anim[model_Player][anim_Neutral]);
 			Total_Anim_time = MV1GetAttachAnimTotalTime(Model_Kind[model_Player],Attach_Model);
+#endif
 		}
 	}else{
 		if(Anim_Flg[anim_Run] == false){
 			Anim_Flg[anim_Run] = true;
+			Total_Anim_time = Change_AttachAnim(Model_Kind[model_Player], &Attach_Model, Model_Anim[model_Player][anim_Run]);
+
+#if false	//関数を作成したのでコメントアウト By.Syara
 			MV1DetachAnim(Model_Kind[model_Player],Attach_Model);
 			Attach_Model = MV1AttachAnim(Model_Kind[model_Player],0,Model_Anim[model_Player][anim_Run]);
 			Total_Anim_time = MV1GetAttachAnimTotalTime(Model_Kind[model_Player],Attach_Model);
+#endif
 		}
 	}
+	
+	
+
 	//モデルのフレームを検索
 	Root_flm = MV1SearchFrame(Model_Kind[model_Player],"root");
 	MV1SetFrameUserLocalMatrix(Model_Kind[model_Player],Root_flm,MGetIdent());
