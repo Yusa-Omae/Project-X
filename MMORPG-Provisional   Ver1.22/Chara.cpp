@@ -103,6 +103,8 @@ void Chara_Draw(){
 	//ƒLƒƒƒ‰‚Ì•`‰æ
 	MV1DrawModel(Model_Kind[model_Player]);
 
+	MV1DrawModel(Model_Kind[model_Goblin]);
+
 }
 
 void Chara_Fainalize(){

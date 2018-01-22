@@ -10,6 +10,7 @@
 #include"Chara.h"
 #include"Camera.h"
 
+#define MOVE_SPEED (2.5f)
 
 _PLAYER *PLAYER;
 
@@ -37,21 +38,21 @@ void Player_Info_Initialize(){
 void PlayerUpdate(){
 
 	if(key(KEY_INPUT_W)){
-		PLAYER->pos.x += sin(1.57f*Get_Chara_Direction(model_Player))*-0.1f;
-		PLAYER->pos.z += cos(1.57f*Get_Chara_Direction(model_Player))*-0.1f;
+		PLAYER->pos.x += sin(1.57f*Get_Chara_Direction(model_Player))*-MOVE_SPEED;
+		PLAYER->pos.z += cos(1.57f*Get_Chara_Direction(model_Player))*-MOVE_SPEED;
 		Set_Chara_Direction(model_Player,direction_Up);
 		Set_Move_flg(model_Player, FALSE);
 	}else if(key(KEY_INPUT_S)){
-		PLAYER->pos.x += sin(1.57f*Get_Chara_Direction(model_Player))*0.1f;
-		PLAYER->pos.z += cos(1.57f*Get_Chara_Direction(model_Player))*0.1f;
+		PLAYER->pos.x += sin(1.57f*Get_Chara_Direction(model_Player))*MOVE_SPEED;
+		PLAYER->pos.z += cos(1.57f*Get_Chara_Direction(model_Player))*MOVE_SPEED;
 		Set_Chara_Direction(model_Player,direction_Down);
 		Set_Move_flg(model_Player, FALSE);
 	}else if(key(KEY_INPUT_A)){
-		PLAYER->pos.x += sin(1.57f*Get_Chara_Direction(model_Player))*0.1f;
+		PLAYER->pos.x += sin(1.57f*Get_Chara_Direction(model_Player))*MOVE_SPEED;
 		Set_Chara_Direction(model_Player,direction_Left);
 		Set_Move_flg(model_Player, FALSE);
 	}else if(key(KEY_INPUT_D)){
-		PLAYER->pos.x += sin(1.57f*Get_Chara_Direction(model_Player))*0.1f;
+		PLAYER->pos.x += sin(1.57f*Get_Chara_Direction(model_Player))*MOVE_SPEED;
 		Set_Chara_Direction(model_Player,direction_Right);
 		Set_Move_flg(model_Player, FALSE);
 	}else{
