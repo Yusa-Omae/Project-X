@@ -2,7 +2,7 @@
 // 
 // 		‚c‚wƒ‰ƒCƒuƒ‰ƒŠ		Windowsê—pŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾—pƒwƒbƒ_ƒtƒ@ƒCƒ‹
 // 
-// 				Ver 3.16f
+// 				Ver 3.19 
 // 
 // -------------------------------------------------------------------------------
 
@@ -28,14 +28,16 @@ extern	int				GetResourceInfo(		const TCHAR *ResourceName , const TCHAR *Resourc
 extern	const TCHAR*	GetResourceIDString(	int ResourceID ) ;																						// ƒŠƒ\[ƒX‚h‚c’l‚©‚çƒŠƒ\[ƒX–¼‚ğæ“¾‚·‚é
 
 // ƒEƒCƒ“ƒhƒEŠÖŒWî•ñæ“¾ŠÖ”
-extern	int			GetWindowCRect(					RECT *RectBuf ) ;										// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚ğæ“¾‚·‚é
+extern	int			GetWindowCRect(					RECT *RectBuf ) ;										// GetWindowClientRect ‚Ì‹Œ–¼Ì
+extern	int			GetWindowClientRect(			RECT *RectBuf ) ;										// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚ğæ“¾‚·‚é
+extern	int			GetWindowFrameRect(				RECT *RectBuf ) ;										// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì˜g‚Ì•”•ª‚àŠÜ‚ß‚½‘S‘Ì‚Ì—Ìˆæ‚ğæ“¾‚·‚é
 extern	int			GetWindowActiveFlag(			void ) ;												// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ªƒAƒNƒeƒBƒu‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:ƒAƒNƒeƒBƒu  FALSE:”ñƒAƒNƒeƒBƒu )
 extern	int			GetWindowMinSizeFlag(			void ) ;												// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ªÅ¬‰»‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:Å¬‰»‚³‚ê‚Ä‚¢‚é  FALSE:Å¬‰»‚³‚ê‚Ä‚¢‚È‚¢ )
 extern	int			GetWindowMaxSizeFlag(			void ) ;												// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ªÅ‘å‰»‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:Å‘å‰»‚³‚ê‚Ä‚¢‚é  FALSE:Å‘å‰»‚³‚ê‚Ä‚¢‚È‚¢ )
 extern	int			GetActiveFlag(					void ) ;												// GetWindowActiveFlag ‚Ì•Ê–¼ŠÖ”
 extern	HWND		GetMainWindowHandle(			void ) ;												// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹‚ğæ“¾‚·‚é
 extern	int			GetWindowModeFlag(				void ) ;												// ƒEƒCƒ“ƒhƒEƒ‚[ƒh‚Å‹N“®‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:ƒEƒCƒ“ƒhƒEƒ‚[ƒh  FALSE:ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒ‚[ƒh )
-extern	int			GetDefaultState(				int *SizeX , int *SizeY , int *ColorBitDepth, int *RefreshRate = NULL , int *LeftTopX = NULL , int *LeftTopY = NULL ) ;		// ‹N“®‚ÌƒfƒXƒNƒgƒbƒv‚Ì‰æ–Êî•ñ‚ğæ“¾‚·‚é( SizeX:ƒfƒXƒNƒgƒbƒv‚Ì‰¡‰ğ‘œ“x‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  SizeY:c‰ğ‘œ“x‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  ColorBitDepth:‰æ–ÊƒJƒ‰[ƒrƒbƒg”‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  RefreshRate:ƒfƒXƒNƒgƒbƒv‚ÌƒŠƒtƒŒƒbƒVƒ…ƒŒ[ƒg‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  LeftTopX:ƒfƒXƒNƒgƒbƒv‚Ì¶ã‚wÀ•W‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  LeftTopY:ƒfƒXƒNƒgƒbƒv‚Ì¶ã‚xÀ•W‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^ )
+extern	int			GetDefaultState(				int *SizeX, int *SizeY, int *ColorBitDepth, int *RefreshRate = NULL , int *LeftTopX = NULL , int *LeftTopY = NULL , int *PixelSizeX = NULL , int *PixelSizeY = NULL ) ;		// ‹N“®‚ÌƒfƒXƒNƒgƒbƒv‚Ì‰æ–Êî•ñ‚ğæ“¾‚·‚é( SizeX:ƒfƒXƒNƒgƒbƒv‚Ì‰¡‰ğ‘œ“x‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  SizeY:c‰ğ‘œ“x‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  ColorBitDepth:‰æ–ÊƒJƒ‰[ƒrƒbƒg”‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  RefreshRate:ƒfƒXƒNƒgƒbƒv‚ÌƒŠƒtƒŒƒbƒVƒ…ƒŒ[ƒg‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  LeftTopX:ƒfƒXƒNƒgƒbƒv‚Ì¶ã‚wÀ•W‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  LeftTopY:ƒfƒXƒNƒgƒbƒv‚Ì¶ã‚xÀ•W‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  PixelSizeX:OS‚ÌŠg‘å—¦İ’è‚Ì‰e‹¿‚ğó‚¯‚È‚¢ƒfƒXƒNƒgƒbƒv‚Ì‰¡‰ğ‘œ“x‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  PixelSizeY:OS‚ÌŠg‘å—¦İ’è‚Ì‰e‹¿‚ğó‚¯‚È‚¢ƒfƒXƒNƒgƒbƒv‚Ìc‰ğ‘œ“x‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^ )
 extern	int			GetNoActiveState(				int ResetFlag = TRUE ) ;								// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ª”ñƒAƒNƒeƒBƒu‚É‚È‚èAˆ—‚ªˆê’â~‚µ‚Ä‚¢‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é(ˆø” ResetFlag=TRUE:ó‘Ô‚ğƒŠƒZƒbƒg FALSE:ó‘Ô‚ğƒŠƒZƒbƒg‚µ‚È‚¢    –ß‚è’l: 0=ˆê’â~‚Í‚µ‚Ä‚¢‚È‚¢  1=ˆê’â~‚µ‚Ä‚¢‚½ )
 extern	int			GetMouseDispFlag(				void ) ;												// ƒ}ƒEƒXƒ|ƒCƒ“ƒ^‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©‚Ìİ’è‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:•\¦‚·‚é  FALSE:•\¦‚µ‚È‚¢ )
 extern	int			GetAlwaysRunFlag(				void ) ;												// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ª”ñƒAƒNƒeƒBƒu‚É‚È‚Á‚Ä‚àˆ—‚ğÀs‚µ‘±‚¯‚é‚©‚Ç‚¤‚©‚Ìİ’è‚ğæ“¾‚·‚é( TRUE:Às‚·‚é  FALSE:’â~‚·‚é )
@@ -50,6 +52,7 @@ extern	int			GetUseWindowRgnFlag(			void ) ;												// ƒŠ[ƒWƒ‡ƒ“‚ğg‚Á‚Ä‚¢‚
 extern	int			GetWindowSizeChangeEnableFlag(	int *FitScreen = NULL ) ;								// ƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ğ•ÏX‚Å‚«‚éİ’è‚É‚È‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:•ÏX‚Å‚«‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚é  FALSE:•ÏX‚Å‚«‚È‚¢‚æ‚¤‚É‚È‚Á‚Ä‚¢‚é )
 extern	double		GetWindowSizeExtendRate(		double *ExRateX = NULL , double *ExRateY = NULL ) ;		// •`‰æ‰æ–Ê‚ÌƒTƒCƒY‚É‘Î‚·‚éƒEƒCƒ“ƒhƒEƒTƒCƒY‚Ì”ä—¦‚ğæ“¾‚·‚é( –ß‚è’l‚Í ExRateX ‚É‘ã“ü‚³‚ê‚é’l‚Æ“¯‚¶‚Å‚· )
 extern	int			GetWindowSize(					int *Width, int *Height ) ;								// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚ÌƒTƒCƒY‚ğæ“¾‚·‚é
+extern	int			GetWindowEdgeWidth(				int *LeftWidth, int *RightWidth, int *TopWidth, int *BottomWidth ) ;	// ƒEƒCƒ“ƒhƒE‚Ìã‰º¶‰E‚Ì‰‚Ì•‚ğæ“¾‚·‚é
 extern	int			GetWindowPosition(				int *x, int *y ) ;										// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒfƒXƒNƒgƒbƒvã‚Ì¶ã’[À•W‚ğæ“¾‚·‚é( ˜g‚àŠÜ‚ß‚é )
 extern	int			GetWindowUserCloseFlag(			int StateResetFlag = FALSE ) ;							// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì•Â‚¶‚éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
 extern	int			GetNotDrawFlag(					void ) ;												// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Ì•`‰æ‹@”\‚ğg‚¤‚©‚Ç‚¤‚©‚Ìİ’è‚ğæ“¾‚·‚é
@@ -66,13 +69,12 @@ extern	int			SetActiveStateChangeCallBackFunction(	int (* CallBackFunction )( in
 extern	int			SetWindowText(							const TCHAR *WindowText ) ;															// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒEƒCƒ“ƒhƒEƒeƒLƒXƒg‚ğ•ÏX‚·‚é
 extern	int			SetMainWindowText(						const TCHAR *WindowText ) ;															// SetWindowText ‚Ì•Ê–¼ŠÖ”
 extern	int			SetMainWindowClassName(					const TCHAR *ClassName ) ;															// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒX–¼‚ğİ’è‚·‚é( DxLib_Init ‚Ì‘O‚Å‚Ì‚İg—p‰Â”\ )
-extern	int			SetAlwaysRunFlag(						int Flag ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ª”ñƒAƒNƒeƒBƒuó‘Ô‚Å‚àˆ—‚ğÀs‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:Às‚·‚é  FALSE:’â~‚·‚é( ƒfƒtƒHƒ‹ƒg ) )
 extern	int			SetWindowIconID(						int ID ) ;																			// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Åg—p‚·‚éƒAƒCƒRƒ“‚Ì‚h‚c‚ğƒZƒbƒg‚·‚é
 extern	int			SetWindowIconHandle(					HICON Icon ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Åg—p‚·‚éƒAƒCƒRƒ“‚Ìƒnƒ“ƒhƒ‹‚ğƒZƒbƒg‚·‚é
 extern	int			SetUseASyncChangeWindowModeFunction(	int Flag , void (* CallBackFunction )( void * ) , void *Data ) ;					// Å‘å‰»ƒ{ƒ^ƒ“‚âALT+ENTERƒL[‚É‚æ‚é”ñ“¯Šú‚ÈƒEƒCƒ“ƒhƒEƒ‚[ƒh‚Ì•ÏX‚Ì‹@”\‚Ìİ’è‚ğs‚¤( Flag:”ñ“¯ŠúƒEƒCƒ“ƒhƒEƒ‚[ƒh•ÏX‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO( TRUE:—LŒø‚É‚·‚é  FALSE:–³Œø‚É‚·‚é( ƒfƒtƒHƒ‹ƒg ) )   CallBackFunction:”ñ“¯ŠúƒEƒCƒ“ƒhƒEƒ‚[ƒh•ÏX‚ªs‚í‚ê‚½ê‡‚ÉŒÄ‚Î‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”‚ÌƒAƒhƒŒƒX   Data:CallBackFunction ‚Ìˆø”‚É“n‚³‚ê‚é void Œ^‚Ìƒ|ƒCƒ“ƒ^ )
 extern	int			SetShutdownCallbackFunction(			void (* CallbackFunction )( void * ), void *Data, const TCHAR *Message ) ;			// ƒVƒƒƒbƒgƒ_ƒEƒ“‚É‚æ‚éƒ\ƒtƒg‚Ì‹­§I—¹‚ÌÛ‚ÉŒÄ‚Î‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğ“o˜^‚·‚é( Message ‚ÍƒR[ƒ‹ƒoƒbƒNŠÖ”‚ÌI—¹‚ğ‘Ò‚ÂŠÔ•\¦‚³‚ê‚éƒƒbƒZ[ƒW )
 extern	int			SetWindowStyleMode(						int Mode ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒXƒ^ƒCƒ‹‚ğ•ÏX‚·‚é
-extern	int			SetWindowZOrder(						int ZType /* = DX_WIN_ZTYPE_TOP “™ */ ) ;											// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì‰œs‚«ˆÊ’u‚ğ•ÏX‚·‚é
+extern	int			SetWindowZOrder(						int ZType /* = DX_WIN_ZTYPE_TOP “™ */ , int WindowActivateFlag = TRUE ) ;			// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì‰œs‚«ˆÊ’u‚ğ•ÏX‚·‚é
 extern	int			SetWindowSizeChangeEnableFlag(			int Flag, int FitScreen = TRUE ) ;													// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì’[‚ğ’Í‚ñ‚ÅƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ğ•ÏX‚Å‚«‚é‚æ‚¤‚É‚·‚é‚©‚Ç‚¤‚©‚Ìİ’è‚ğs‚¤( Flag:•ÏX‚ğ‰Â”\‚É‚·‚é‚©‚Ç‚¤‚©( TRUE:‰Â”\‚É‚·‚é  FALSE:•s‰Â”\‚É‚·‚é( ƒfƒtƒHƒ‹ƒg ) )  FitScreen:ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚É‰æ–Ê‚ğƒtƒBƒbƒg‚³‚¹‚é(Šg‘å‚³‚¹‚é)‚©‚Ç‚¤‚©  TRUE:ƒtƒBƒbƒg‚³‚¹‚é  FALSE:ƒtƒBƒbƒg‚³‚¹‚È‚¢ )
 extern	int			SetWindowSizeExtendRate(				double ExRateX, double ExRateY = -1.0 ) ;											// •`‰æ‰æ–Ê‚ÌƒTƒCƒY‚É‘Î‚·‚éƒƒCƒ“ƒEƒCƒ“ƒhƒEƒTƒCƒY‚Ì”ä—¦‚ğİ’è‚·‚é( ExRateY ‚ªƒ}ƒCƒiƒX‚Ìê‡‚Í ExRateX ‚Ì’l‚ª ExRateY ‚É‚àg—p‚³‚ê‚Ü‚· )
 extern	int			SetWindowSize(							int Width, int Height ) ;															// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚ÌƒTƒCƒY‚ğİ’è‚·‚é
@@ -216,12 +218,12 @@ extern	int			ConvertVirtualKeyToKeyCode(				int VirtualKey ) ;														//  
 #ifndef DX_NOTUSE_DRAWFUNCTION
 
 // ‰æ‘œ‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚éŠÖ”
-extern	int			LoadGraphToResource(			int ResourceID ) ;																													// ‰æ‘œƒŠƒ\[ƒX‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
-extern	int			LoadDivGraphToResource(			int ResourceID, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleBuf ) ;										// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
-extern	int			LoadDivGraphFToResource(		int ResourceID, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleBuf ) ;										// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( floatŒ^ )
-extern	int			LoadGraphToResource(			const TCHAR *ResourceName, const TCHAR *ResourceType ) ;																			// ‰æ‘œƒŠƒ\[ƒX‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
-extern	int			LoadDivGraphToResource(			const TCHAR *ResourceName, const TCHAR *ResourceType, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleBuf ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
-extern	int			LoadDivGraphFToResource(		const TCHAR *ResourceName, const TCHAR *ResourceType, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleBuf ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( floatŒ^ )
+extern	int			LoadGraphToResource(			int ResourceID ) ;																														// ‰æ‘œƒŠƒ\[ƒX‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphToResource(			int ResourceID, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray ) ;											// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphFToResource(		int ResourceID, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray ) ;											// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( floatŒ^ )
+extern	int			LoadGraphToResource(			const TCHAR *ResourceName, const TCHAR *ResourceType ) ;																				// ‰æ‘œƒŠƒ\[ƒX‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphToResource(			const TCHAR *ResourceName, const TCHAR *ResourceType, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphFToResource(		const TCHAR *ResourceName, const TCHAR *ResourceType, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( floatŒ^ )
 
 // ‰æ‘œî•ñŠÖŒWŠÖ”
 extern	const void*	GetGraphID3D11Texture2D(		int GrHandle ) ;												// ƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ª‚Â ID3D11Texture2D ‚ğæ“¾‚·‚é( Direct3D11 ‚ğg—p‚µ‚Ä‚¢‚éê‡‚Ì‚İ—LŒø )( –ß‚è’l‚ğ ID3D11Texture2D * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‚­‚¾‚³‚¢ )
@@ -230,7 +232,7 @@ extern	const void*	GetGraphID3D11RenderTargetView(	int GrHandle ) ;												/
 // ‰æ–ÊŠÖŒWŠÖ”
 extern	int			BltBackScreenToWindow(			HWND Window, int ClientX, int ClientY ) ;										// — ‰æ–Ê‚Ì“à—e‚ğw’è‚ÌƒEƒCƒ“ƒhƒE‚É“]‘—‚·‚é
 extern	int			BltRectBackScreenToWindow(		HWND Window, RECT BackScreenRect, RECT WindowClientRect ) ;						// — ‰æ–Ê‚Ìw’è‚Ì—Ìˆæ‚ğƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚Ìw’è‚Ì—Ìˆæ‚É“]‘—‚·‚é
-extern	int			SetScreenFlipTargetWindow(		HWND TargetWindow ) ;															// ScreenFlip ‚Å‰æ‘œ‚ğ“]‘—‚·‚éæ‚ÌƒEƒCƒ“ƒhƒE‚ğİ’è‚·‚é( NULL ‚ğw’è‚·‚é‚Æİ’è‰ğœ )
+extern	int			SetScreenFlipTargetWindow(		HWND TargetWindow, double ScaleX = 1.0 , double ScaleY = 1.0 ) ;				// ScreenFlip ‚Å‰æ‘œ‚ğ“]‘—‚·‚éæ‚ÌƒEƒCƒ“ƒhƒE‚ğİ’è‚·‚é( NULL ‚ğw’è‚·‚é‚Æİ’è‰ğœ )
 extern	int			GetDesktopScreenGraph(			int x1, int y1, int x2, int y2, int GrHandle, int DestX = 0 , int DestY = 0 ) ;	// ƒfƒXƒNƒgƒbƒv‰æ–Ê‚©‚çw’è—Ìˆæ‚Ì‰æ‘œî•ñ‚ğƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚É“]‘—‚·‚é
 
 // ‚»‚Ì‘¼İ’èŠÖŒWŠÖ”
@@ -240,6 +242,7 @@ extern	int			SetAeroDisableFlag(								int Flag ) ;									// Vista,7 ‚Ì Windo
 extern	int			SetUseDirect3D9Ex(								int Flag ) ;									// VistaˆÈ~‚ÌŠÂ‹«‚Å Direct3D9Ex ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é( ƒfƒtƒHƒ‹ƒg )  FALSE:g—p‚µ‚È‚¢ )( DxLib_Init ‚Ì‘O‚ÉŒÄ‚Ô•K—v‚ª‚ ‚è‚Ü‚· )
 extern	int			SetUseDirect3D11(								int Flag ) ;									// Direct3D11 ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢ )
 extern	int			SetUseDirect3D11MinFeatureLevel(				int Level /* DX_DIRECT3D_11_FEATURE_LEVEL_10_0 ‚È‚Ç */ ) ;		// Direct3D11 ‚Åg—p‚·‚éÅ’á‹@”\ƒŒƒxƒ‹‚ğw’è‚·‚éŠÖ”‚Å‚·A®ADX_DIRECT3D_11_FEATURE_LEVEL_11_0 ‚æ‚è’á‚¢‹@”\ƒŒƒxƒ‹‚Å‚Ì³í‚È“®ì‚Í•ÛØ‚µ‚Ü‚¹‚ñ( ƒfƒtƒHƒ‹ƒg‚Í DX_DIRECT3D_11_FEATURE_LEVEL_11_0 )
+extern	int			SetUseDirect3D11WARPDriver(						int Flag ) ;									// D3D_DRIVER_TYPE_WARP ƒ^ƒCƒv‚Ì Direct3D 11 ƒhƒ‰ƒCƒo‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢( ƒfƒtƒHƒ‹ƒg ) )
 extern	int			SetUseDirect3DVersion(							int Version /* DX_DIRECT3D_9 ‚È‚Ç */ ) ;		// g—p‚·‚é Direct3D ‚Ìƒo[ƒWƒ‡ƒ“‚ğİ’è‚·‚éADxLib_Init ŒÄ‚Ño‚µ‚Ì‘O‚Å‚Ì‚İg—p‰Â”\@
 extern	int			GetUseDirect3DVersion(							void ) ;										// g—p‚µ‚Ä‚¢‚é Direct3D ‚Ìƒo[ƒWƒ‡ƒ“‚ğæ“¾‚·‚é( DX_DIRECT3D_9 ‚È‚Ç )
 extern	int			GetUseDirect3D11FeatureLevel(					void ) ;										// g—p‚µ‚Ä‚¢‚é Direct3D11 ‚Ì FeatureLevel ( DX_DIRECT3D_11_FEATURE_LEVEL_9_1 “™ )‚ğæ“¾‚·‚é( –ß‚è’l@-1FƒGƒ‰[@-1ˆÈŠOFFeature Level )

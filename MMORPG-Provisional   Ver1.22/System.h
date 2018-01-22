@@ -22,7 +22,7 @@ const int Color_ValTbl[eCol_Max] = {
 };
 
 //システム系統の構造体
-struct _SYSTEM_INFO{
+struct _SYSTEM_INFO_t{	//_SYSTEM_INFOは既存のライブラリで使用されていたので名前を変更しました by.Syara
 
 	//ゲームを終了するかどうか
 	bool Exit_Game;

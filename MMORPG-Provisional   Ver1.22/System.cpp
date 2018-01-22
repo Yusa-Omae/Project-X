@@ -1,3 +1,4 @@
+#include<math.h>
 #include"DxLib.h"
 #include"key.h"
 #include"SceneMgr.h"
@@ -5,12 +6,12 @@
 #include"Gamemain.h"
 #include"Title.h"
 #include"Define.h"
-#include"math.h"
+
 
 bool Debug_flg;
 
-
-_SYSTEM_INFO SYSTEM_INFO;
+//SYSTEM_INFOは既存のライブラリ内で宣言されていたので名前を変えました by.Syara
+static _SYSTEM_INFO_t s_SYSTEM_INFO;
 
 
 void Set_Debug_Mode(){
@@ -41,9 +42,9 @@ void SystemInitialize(){
 	//}
 
 	//ゲーム終了フラグのオフ
-	SYSTEM_INFO.Exit_Game = true;
+	s_SYSTEM_INFO.Exit_Game = true;
 	//ウィンドウハンドルの取得
-	SYSTEM_INFO.WinHndl = GetMainWindowHandle();
+	s_SYSTEM_INFO.WinHndl = GetMainWindowHandle();
 
 
 }
@@ -60,11 +61,11 @@ void SystemMain(){
 
 void Set_Exit_Game(){
 
-	SYSTEM_INFO.Exit_Game = false;
+	s_SYSTEM_INFO.Exit_Game = false;
 }
 
 bool Get_Exit_Game(){
-	return SYSTEM_INFO.Exit_Game;
+	return s_SYSTEM_INFO.Exit_Game;
 }
 
 ////フェードインアウト関数	true:FadeIN		false:FadeOut
@@ -88,13 +89,6 @@ bool Get_Exit_Game(){
 
 HWND GetConsoleHwnd(){
 
-
-
-
-
-
-
-
-	return ;
+	return NULL;
 
 }

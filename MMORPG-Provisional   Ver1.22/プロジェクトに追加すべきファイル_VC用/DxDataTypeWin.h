@@ -2,7 +2,7 @@
 // 
 // 		ＤＸライブラリ		Windows用データタイプ定義ヘッダファイル
 // 
-// 				Ver 3.16f
+// 				Ver 3.19 
 // 
 // -------------------------------------------------------------------------------
 
@@ -12,11 +12,11 @@
 // インクルード ------------------------------------------------------------------
 #include "DxCompileConfig.h"
 
-#if !defined(CINTERFACE) && defined(__c2__) &&  __clang_major__ == 3 && __clang_minor__ == 8
+#if defined(__c2__) &&  __clang_major__ == 3 && __clang_minor__ == 8
 //To avoid compile error
 //C:\Program Files (x86)\Windows Kits\8.1\Include\um\combaseapi.h(229,21): error : unknown type name 'IUnknown'
 //          static_cast<IUnknown*>(*pp);    // make sure everyone derives from IUnknown
-#define CINTERFACE
+struct IUnknown;
 #endif
 #include <windows.h>
 
@@ -76,42 +76,58 @@
 						#if _MSC_VER >= 1900
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2015_x64_d.lib"			)		//  描画部分の抜き出し
+									#pragma comment( lib, "DxDrawFunc_vs2015_x64_d.lib"						)		//  描画部分の抜き出し
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2015_x64_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLibW_vs2015_x64_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#pragma comment( lib, "DxLibW_vs2015_x64_d.lib"						)		//  ＤＸライブラリ使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLibW_vs2015_x64_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLibW_vs2015_x64_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#else
-										#pragma comment( lib, "DxLib_vs2015_x64_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLib_vs2015_x64_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#pragma comment( lib, "DxLib_vs2015_x64_d.lib"						)		//  ＤＸライブラリ使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLib_vs2015_x64_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLib_vs2015_x64_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#endif
 								#else // _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2015_x64.lib"			)		//  描画部分の抜き出し
+									#pragma comment( lib, "DxDrawFunc_vs2015_x64.lib"						)		//  描画部分の抜き出し
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2015_x64.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLibW_vs2015_x64.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#pragma comment( lib, "DxLibW_vs2015_x64.lib"						)		//  ＤＸライブラリ使用指定
+										#pragma comment( lib, "DxUseCLibW_vs2015_x64.lib"					)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
 									#else
-										#pragma comment( lib, "DxLib_vs2015_x64.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLib_vs2015_x64.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#pragma comment( lib, "DxLib_vs2015_x64.lib"						)		//  ＤＸライブラリ使用指定
+										#pragma comment( lib, "DxUseCLib_vs2015_x64.lib"					)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
 									#endif
 								#endif // _DEBUG
 							#else // _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2015_x86_d.lib"			)		//  描画部分の抜き出し
+									#pragma comment( lib, "DxDrawFunc_vs2015_x86_d.lib"						)		//  描画部分の抜き出し
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2015_x86_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLibW_vs2015_x86_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#pragma comment( lib, "DxLibW_vs2015_x86_d.lib"						)		//  ＤＸライブラリ使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLibW_vs2015_x86_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLibW_vs2015_x86_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#else
-										#pragma comment( lib, "DxLib_vs2015_x86_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLib_vs2015_x86_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#pragma comment( lib, "DxLib_vs2015_x86_d.lib"						)		//  ＤＸライブラリ使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLib_vs2015_x86_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLib_vs2015_x86_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#endif
 								#else // _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2015_x86.lib"			)		//  描画部分の抜き出し
+									#pragma comment( lib, "DxDrawFunc_vs2015_x86.lib"						)		//  描画部分の抜き出し
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2015_x86.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLibW_vs2015_x86.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#pragma comment( lib, "DxLibW_vs2015_x86.lib"						)		//  ＤＸライブラリ使用指定
+										#pragma comment( lib, "DxUseCLibW_vs2015_x86.lib"					)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
 									#else
-										#pragma comment( lib, "DxLib_vs2015_x86.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLib_vs2015_x86.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#pragma comment( lib, "DxLib_vs2015_x86.lib"						)		//  ＤＸライブラリ使用指定
+										#pragma comment( lib, "DxUseCLib_vs2015_x86.lib"					)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
 									#endif
 								#endif // _DEBUG
 							#endif // _WIN64
@@ -121,10 +137,18 @@
 									#pragma comment( lib, "DxDrawFunc_vs2012_x64_d.lib"			)		//  描画部分の抜き出し
 									#ifdef UNICODE
 										#pragma comment( lib, "DxLibW_vs2012_x64_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLibW_vs2013_x64_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLibW_vs2013_x64_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLibW_vs2013_x64_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#else
 										#pragma comment( lib, "DxLib_vs2012_x64_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLib_vs2013_x64_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLib_vs2013_x64_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLib_vs2013_x64_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#endif
 								#else // _DEBUG
 									#pragma comment( lib, "DxDrawFunc_vs2012_x64.lib"			)		//  描画部分の抜き出し
@@ -141,10 +165,18 @@
 									#pragma comment( lib, "DxDrawFunc_vs2012_x86_d.lib"			)		//  描画部分の抜き出し
 									#ifdef UNICODE
 										#pragma comment( lib, "DxLibW_vs2012_x86_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLibW_vs2013_x86_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLibW_vs2013_x86_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLibW_vs2013_x86_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#else
 										#pragma comment( lib, "DxLib_vs2012_x86_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLib_vs2013_x86_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLib_vs2013_x86_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLib_vs2013_x86_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#endif
 								#else // _DEBUG
 									#pragma comment( lib, "DxDrawFunc_vs2012_x86.lib"			)		//  描画部分の抜き出し
@@ -163,10 +195,18 @@
 									#pragma comment( lib, "DxDrawFunc_vs2012_x64_d.lib"			)		//  描画部分の抜き出し
 									#ifdef UNICODE
 										#pragma comment( lib, "DxLibW_vs2012_x64_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLibW_vs2012_x64_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLibW_vs2012_x64_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLibW_vs2012_x64_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#else
 										#pragma comment( lib, "DxLib_vs2012_x64_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLib_vs2012_x64_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLib_vs2012_x64_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLib_vs2012_x64_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#endif
 								#else // _DEBUG
 									#pragma comment( lib, "DxDrawFunc_vs2012_x64.lib"			)		//  描画部分の抜き出し
@@ -183,10 +223,18 @@
 									#pragma comment( lib, "DxDrawFunc_vs2012_x86_d.lib"			)		//  描画部分の抜き出し
 									#ifdef UNICODE
 										#pragma comment( lib, "DxLibW_vs2012_x86_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLibW_vs2012_x86_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLibW_vs2012_x86_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLibW_vs2012_x86_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#else
 										#pragma comment( lib, "DxLib_vs2012_x86_d.lib"			)		//  ＤＸライブラリ使用指定
-										#pragma comment( lib, "DxUseCLib_vs2012_x86_d.lib"		)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+											#pragma comment( lib, "DxUseCLib_vs2012_x86_ItrDbgLv0_d.lib"	)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#else
+											#pragma comment( lib, "DxUseCLib_vs2012_x86_d.lib"				)		//  標準Ｃライブラリを使用する部分の lib ファイルの使用指定
+										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#endif
 								#else // _DEBUG
 									#pragma comment( lib, "DxDrawFunc_vs2012_x86.lib"			)		//  描画部分の抜き出し
@@ -299,9 +347,15 @@
 						#if _MSC_VER >= 1900
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libbulletcollision_vs2015_x64_d.lib" )
-									#pragma comment( lib, "libbulletdynamics_vs2015_x64_d.lib" )
-									#pragma comment( lib, "libbulletmath_vs2015_x64_d.lib" )
+									#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+										#pragma comment( lib, "libbulletcollision_vs2015_x64_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2015_x64_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2015_x64_ItrDbgLv0_d.lib" )
+									#else
+										#pragma comment( lib, "libbulletcollision_vs2015_x64_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2015_x64_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2015_x64_d.lib" )
+									#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 								#else
 									#pragma comment( lib, "libbulletcollision_vs2015_x64.lib" )
 									#pragma comment( lib, "libbulletdynamics_vs2015_x64.lib" )
@@ -309,9 +363,15 @@
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libbulletcollision_vs2015_x86_d.lib" )
-									#pragma comment( lib, "libbulletdynamics_vs2015_x86_d.lib" )
-									#pragma comment( lib, "libbulletmath_vs2015_x86_d.lib" )
+									#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+										#pragma comment( lib, "libbulletcollision_vs2015_x86_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2015_x86_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2015_x86_ItrDbgLv0_d.lib" )
+									#else
+										#pragma comment( lib, "libbulletcollision_vs2015_x86_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2015_x86_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2015_x86_d.lib" )
+									#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 								#else
 									#pragma comment( lib, "libbulletcollision_vs2015_x86.lib" )
 									#pragma comment( lib, "libbulletdynamics_vs2015_x86.lib" )
@@ -321,9 +381,15 @@
 						#elif _MSC_VER >= 1800
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libbulletcollision_vs2013_x64_d.lib" )
-									#pragma comment( lib, "libbulletdynamics_vs2013_x64_d.lib" )
-									#pragma comment( lib, "libbulletmath_vs2013_x64_d.lib" )
+									#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+										#pragma comment( lib, "libbulletcollision_vs2013_x64_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2013_x64_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2013_x64_ItrDbgLv0_d.lib" )
+									#else
+										#pragma comment( lib, "libbulletcollision_vs2013_x64_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2013_x64_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2013_x64_d.lib" )
+									#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 								#else
 									#pragma comment( lib, "libbulletcollision_vs2013_x64.lib" )
 									#pragma comment( lib, "libbulletdynamics_vs2013_x64.lib" )
@@ -331,9 +397,15 @@
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libbulletcollision_vs2013_x86_d.lib" )
-									#pragma comment( lib, "libbulletdynamics_vs2013_x86_d.lib" )
-									#pragma comment( lib, "libbulletmath_vs2013_x86_d.lib" )
+									#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+										#pragma comment( lib, "libbulletcollision_vs2013_x86_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2013_x86_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2013_x86_ItrDbgLv0_d.lib" )
+									#else
+										#pragma comment( lib, "libbulletcollision_vs2013_x86_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2013_x86_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2013_x86_d.lib" )
+									#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 								#else
 									#pragma comment( lib, "libbulletcollision_vs2013_x86.lib" )
 									#pragma comment( lib, "libbulletdynamics_vs2013_x86.lib" )
@@ -343,9 +415,15 @@
 						#elif _MSC_VER >= 1700
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libbulletcollision_vs2012_x64_d.lib" )
-									#pragma comment( lib, "libbulletdynamics_vs2012_x64_d.lib" )
-									#pragma comment( lib, "libbulletmath_vs2012_x64_d.lib" )
+									#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+										#pragma comment( lib, "libbulletcollision_vs2012_x64_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2012_x64_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2012_x64_ItrDbgLv0_d.lib" )
+									#else
+										#pragma comment( lib, "libbulletcollision_vs2012_x64_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2012_x64_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2012_x64_d.lib" )
+									#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 								#else
 									#pragma comment( lib, "libbulletcollision_vs2012_x64.lib" )
 									#pragma comment( lib, "libbulletdynamics_vs2012_x64.lib" )
@@ -353,9 +431,15 @@
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libbulletcollision_vs2012_x86_d.lib" )
-									#pragma comment( lib, "libbulletdynamics_vs2012_x86_d.lib" )
-									#pragma comment( lib, "libbulletmath_vs2012_x86_d.lib" )
+									#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
+										#pragma comment( lib, "libbulletcollision_vs2012_x86_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2012_x86_ItrDbgLv0_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2012_x86_ItrDbgLv0_d.lib" )
+									#else
+										#pragma comment( lib, "libbulletcollision_vs2012_x86_d.lib" )
+										#pragma comment( lib, "libbulletdynamics_vs2012_x86_d.lib" )
+										#pragma comment( lib, "libbulletmath_vs2012_x86_d.lib" )
+									#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 								#else
 									#pragma comment( lib, "libbulletcollision_vs2012_x86.lib" )
 									#pragma comment( lib, "libbulletdynamics_vs2012_x86.lib" )
@@ -970,6 +1054,7 @@ namespace DxLib
 #define DX_READSOUNDFUNCTION_ACM					(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 0 ))		// ACM を使用した読み込み処理
 #define DX_READSOUNDFUNCTION_MP3					(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 1 ))		// ACM を使用した MP3 の読み込み処理
 #define DX_READSOUNDFUNCTION_DSMP3					(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 2 ))		// DirectShow を使用した MP3 の読み込み処理
+#define DX_READSOUNDFUNCTION_MF						(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 3 ))		// Media Foundation を使用した読み込み処理
 
 // Direct3D9 用テクスチャフォーマット
 #define DX_TEXTUREFORMAT_DIRECT3D9_R8G8B8				(1)
@@ -995,6 +1080,17 @@ namespace DxLib
 #define DX_TEXTUREFORMAT_DIRECT3D9_G32R32F				(21)
 #define DX_TEXTUREFORMAT_DIRECT3D9_A32B32G32R32F		(22)
 
+// エラーコード
+#define DX_ERRORCODE_WIN_DESKTOP_24BIT_COLOR				(0x01010001)				// デスクトップが２４ビットカラーモードだった
+#define DX_ERRORCODE_WIN_DOUBLE_START						(0x01010002)				// 二重起動
+#define DX_ERRORCODE_WIN_FAILED_CREATEWINDOW				(0x01010003)				// ウインドウの作成に失敗
+#define DX_ERRORCODE_WIN_FAILED_ASYNCLOAD_CREATE_THREAD		(0x01010004)				// 非同期読み込み処理を行うスレッドの立ち上げに失敗
+
+#define DX_ERRORCODE_WIN_FAILED_CREATE_DIRECTDRAW7			(0x01020001)				// DirectDraw7 の取得に失敗
+#define DX_ERRORCODE_WIN_FAILED_INITIALIZE_DIRECTDRAW7		(0x01020002)				// DirectDraw7 の初期化に失敗
+#define DX_ERRORCODE_WIN_NOT_COMPATIBLE_SCREEN_COLOR_MODE	(0x01020003)				// 非対応の画面カラーモードが指定された
+#define DX_ERRORCODE_WIN_FAILED_CHANGE_DISPLAY_SETTINGS		(0x01020004)				// Win32API の ChangeDisplaySettings を使用した画面モードの変更に失敗
+	
 // 構造体定義 --------------------------------------------------------------------
 
 // テーブル-----------------------------------------------------------------------

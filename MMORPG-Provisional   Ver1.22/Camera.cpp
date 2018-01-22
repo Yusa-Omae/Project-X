@@ -11,7 +11,8 @@
 
 _CAMERA CAMERA;
 _MOUSE MOUSE;
-_SYSTEM_INFO SYSTEM_INFO;
+//SYSTEM_INFOは既存のライブラリ内で宣言されていたので名前を変えました by.Syara
+static _SYSTEM_INFO_t s_SYSTEM_INFO;
 
 //ディフューズカラー設定用
 COLOR_F DifColor;
@@ -61,25 +62,25 @@ void CameraUpdate(){
 	//現在のマウス座標の取得
 	GetMousePoint(&MOUSE.X, &MOUSE.Y);
 	//ウィンドウ表示位置の取得
-	GetWindowRect(SYSTEM_INFO.WinHndl,SYSTEM_INFO.WinAxis);
+	GetWindowRect(s_SYSTEM_INFO.WinHndl, s_SYSTEM_INFO.WinAxis);
 	//マウス座標制限 //前フレームからの移動量算出した後ならがくつきが少ないかと思ったけどそうでもなかった。（座標強制変更後）(アプリ起動画面によって座標変更しなければならない。いい手はないものか。)
 	if(MOUSE.Rest_Flg == true){
-		if(MOUSE.X >= SYSTEM_INFO.WinAxis->right){
+		if(MOUSE.X >= s_SYSTEM_INFO.WinAxis->right){
 			MOUSE.Rest_Flg = false;						//マウス座標強制移動フラグをオンにする。
-			MOUSE.X = SYSTEM_INFO.WinAxis->left;		//強制移動
+			MOUSE.X = s_SYSTEM_INFO.WinAxis->left;		//強制移動
 			MOUSE.Back_X = MOUSE.X;						//1フレーム前座標の更新
-		}else if(MOUSE.X <= SYSTEM_INFO.WinAxis->left){
+		}else if(MOUSE.X <= s_SYSTEM_INFO.WinAxis->left){
 			MOUSE.Rest_Flg = false;
-			MOUSE.X = SYSTEM_INFO.WinAxis->right;
+			MOUSE.X = s_SYSTEM_INFO.WinAxis->right;
 			MOUSE.Back_X = MOUSE.X;
 		}
-		if(MOUSE.Y >= SYSTEM_INFO.WinAxis->bottom){
+		if(MOUSE.Y >= s_SYSTEM_INFO.WinAxis->bottom){
 			MOUSE.Rest_Flg = false;
-			MOUSE.Y = SYSTEM_INFO.WinAxis->top;
+			MOUSE.Y = s_SYSTEM_INFO.WinAxis->top;
 			MOUSE.Back_Y = MOUSE.Y;
-		}else if(MOUSE.Y <= SYSTEM_INFO.WinAxis->top){
+		}else if(MOUSE.Y <= s_SYSTEM_INFO.WinAxis->top){
 			MOUSE.Rest_Flg = false;
-			MOUSE.Y = SYSTEM_INFO.WinAxis->bottom;
+			MOUSE.Y = s_SYSTEM_INFO.WinAxis->bottom;
 			MOUSE.Back_Y = MOUSE.Y;
 		}
 	}else{
