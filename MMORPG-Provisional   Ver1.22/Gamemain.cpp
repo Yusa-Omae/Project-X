@@ -120,6 +120,8 @@ static void GameMain_Proc() {
 	//カメラの更新
 	CameraUpdate();
 
+	StageUpdata();
+
 	PlayerUpdate();
 	Chara_Update();
 }
@@ -184,6 +186,9 @@ void GameMainInitialize(){
 	Camera_Initialize();
 
 	Chara_Initialize();
+
+	//ステージ初期化
+	StageInitialize();
 
 	s_Work.nowGameState = eGameState_Initialize;
 
@@ -270,5 +275,6 @@ void GameMainFainalize(){
 
 	Player_Info_Fainalize();
 	Chara_Fainalize();
+	StageFainalize();
 
 }

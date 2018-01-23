@@ -14,7 +14,7 @@ s_Stage STAGE;
 void StageInitialize(){
 	
 	//ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
-	STAGE.handle = MV1LoadModel("Stage\\Stage00.mv1");
+	STAGE.handle = MV1LoadModel("Data\\Stage\\Stage00.mv1");
 
 	/*
 	for(int i = 0;i < 100;i++){

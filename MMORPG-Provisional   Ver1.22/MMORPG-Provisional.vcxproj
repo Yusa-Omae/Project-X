@@ -86,6 +86,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chara.cpp" />
     <ClCompile Include="Chara_Enemy.cpp" />
+    <ClCompile Include="Code\AppData\Item\ItemData.cpp" />
     <ClCompile Include="Code\AppData\SaveData\SaveData.cpp" />
     <ClCompile Include="Code\Common\FileIO\FileIO.cpp" />
     <ClCompile Include="Code\Common\FileIO\ReadBynary.cpp" />
@@ -93,6 +94,7 @@
     <ClCompile Include="Code\Common\Keyboard\Keyboard.cpp" />
     <ClCompile Include="Code\Common\String\FontMgr\FontMgr.cpp" />
     <ClCompile Include="Code\Common\String\StringBase.cpp" />
+    <ClCompile Include="Code\Scene\Shop\Shop.cpp" />
     <ClCompile Include="Code\Test\TestMenu.cpp" />
     <ClCompile Include="Code\Test\TestString.cpp" />
     <ClCompile Include="Gamemain.cpp" />
@@ -110,6 +112,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chara.h" />
     <ClInclude Include="Chara_Enemy.h" />
+    <ClInclude Include="Code\AppData\Item\ItemData.h" />
     <ClInclude Include="Code\AppData\SaveData\SaveData.h" />
     <ClInclude Include="Code\Common\FileIO\FileIO.h" />
     <ClInclude Include="Code\Common\FileIO\ReadBynary.h" />
@@ -117,6 +120,7 @@
     <ClInclude Include="Code\Common\Keyboard\Keyboard.h" />
     <ClInclude Include="Code\Common\String\FontMgr\FontMgr.h" />
     <ClInclude Include="Code\Common\String\StringBase.h" />
+    <ClInclude Include="Code\Scene\Shop\Shop.h" />
     <ClInclude Include="Code\Test\TestMenu.h" />
     <ClInclude Include="Code\Test\TestString.h" />
     <ClInclude Include="Define.h" />

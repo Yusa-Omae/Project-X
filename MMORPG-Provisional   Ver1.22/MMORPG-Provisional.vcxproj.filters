@@ -73,6 +73,18 @@
     <Filter Include="ソース ファイル\Code\AppData\SaveData">
       <UniqueIdentifier>{c94f2b4a-1b9a-4061-9ed8-e7eab3334270}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Scene\Shop">
+      <UniqueIdentifier>{759079ef-7ed6-4128-b723-722fa8ac9265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\Scene\Shop">
+      <UniqueIdentifier>{fa4f7507-acaf-4a46-abad-4ec7dec38419}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\AppData\Item">
+      <UniqueIdentifier>{dfa13a16-54cc-45c3-96d2-266f4b22d462}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\AppData\Item">
+      <UniqueIdentifier>{05622dc3-331c-4162-a2db-6b26c085dff0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -141,6 +153,12 @@
     <ClCompile Include="Code\Test\TestString.cpp">
       <Filter>ソース ファイル\Code\Test</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Scene\Shop\Shop.cpp">
+      <Filter>ソース ファイル\Code\Scene\Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AppData\Item\ItemData.cpp">
+      <Filter>ソース ファイル\Code\AppData\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -208,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="Code\Test\TestString.h">
       <Filter>ヘッダー ファイル\Code\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scene\Shop\Shop.h">
+      <Filter>ヘッダー ファイル\Code\Scene\Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AppData\Item\ItemData.h">
+      <Filter>ヘッダー ファイル\Code\AppData\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
