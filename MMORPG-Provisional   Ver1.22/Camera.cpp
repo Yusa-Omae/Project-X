@@ -214,7 +214,7 @@ VECTOR Get_Right_Direction(){
 
 //カメラクラスのデバッグ用
 void Debug_Camera(){
-
+#ifdef __MY_DEBUG__
 	DrawFormatString(10,20,Color_ValTbl[eCol_White],"マウスホイール量 = %f",MOUSE.Wheel_Rot);
 	DrawFormatString(10,40,Color_ValTbl[eCol_White],"マウスホイール(最初カウント値) = %f",MOUSE.Wheel_Move_Cnt);
 	DrawFormatString(10,60,Color_ValTbl[eCol_White],"カメラ座標 = ( %f , %f , %f)",CAMERA.Pos.x,CAMERA.Pos.y,CAMERA.Pos.z);
@@ -225,5 +225,6 @@ void Debug_Camera(){
 	DrawFormatString(10,160,Color_ValTbl[eCol_White],"マウス押下状態 %d 1:左クリック 2:右クリック マウス右クリック判定用 %d",MOUSE.Input,MOUSE_INPUT_RIGHT);
 	DrawFormatString(10,180,Color_ValTbl[eCol_White],"%f",CAMERA.Pos.y);
 	DrawFormatString(10,200,Color_ValTbl[eCol_White],"注視点までの距離 = %f,ホイール量 = %f",CAMERA.Distance,MOUSE.Wheel_Rot);//最短170　最長1000
+#endif	//__MY_DEBUG__
 }
 
