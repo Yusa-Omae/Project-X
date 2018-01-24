@@ -26,6 +26,10 @@ float Cos;
 
 //カメラの初期設定
 void Camera_Initialize(){
+
+	//Window内にマウスを固定する。
+	SetValidMousePointerWindowOutClientAreaMoveFlag(FALSE);
+
 	//カメラの位置設定
 	CAMERA.Pos = VAdd(Get_Player_Pos(),VGet(0.0,-500.0,-500.0));//機能してない
 	//カメラの上下向き設定
@@ -121,9 +125,6 @@ void CameraUpdate(){
 	//マウス座標保存
 	MOUSE.Back_X = MOUSE.X;
 	MOUSE.Back_Y = MOUSE.Y;
-
-	//Window内にマウスを固定する。
-	SetValidMousePointerWindowOutClientAreaMoveFlag(FALSE);
 
 
 	//右クリックが押されていたらカメラの向きを変更
