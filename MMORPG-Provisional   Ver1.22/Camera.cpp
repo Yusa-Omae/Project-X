@@ -8,6 +8,7 @@
 #include"Chara_Player.h"
 #include"System.h"
 #include"math.h"
+#include "Code/Common/Mouse/Mouse.h"
 
 _CAMERA CAMERA;
 _MOUSE MOUSE;
@@ -60,12 +61,26 @@ void CameraUpdate(){
 
 
 	//マウスの押下状態の取得
-	MOUSE.Input = GetMouseInput();
+	//MOUSE.Input = GetMouseInput();
 	//現在のマウス座標の取得
-	GetMousePoint(&MOUSE.X, &MOUSE.Y);
+	//GetMousePoint(&MOUSE.X, &MOUSE.Y);
+
+	Mouse_GetPositioin(&MOUSE.X, &MOUSE.Y);
 
 	MOUSE.X -= INIT_AREA_X2 / 2;
 	MOUSE.Y -= INIT_AREA_Y2 / 2;
+
+#ifdef __MY_DEBUG__
+	if (Mouse_Press(eMouseInputBotton_Left)) {
+		printfDx("左\n");
+	}
+	if (Mouse_Press(eMouseInputBotton_Rigth)) {
+		printfDx("右\n");
+	}
+	if (Mouse_Press(eMouseInputBotton_Wheel)) {
+		printfDx("ホイール\n");
+	}
+#endif
 
 
 #if false //とりあえずエラーになるのでコメントアウト by.Syara
@@ -122,7 +137,7 @@ void CameraUpdate(){
 			CAMERA.VAngle = DX_PI_F / 2.0f - 0.1f;
 		}
 		//水平角度計算
-		CAMERA.HAngle += CAMERA_ANGLE_SPEED*MOUSE.Move_X;
+		CAMERA.HAngle -= CAMERA_ANGLE_SPEED*MOUSE.Move_X;
 		if(CAMERA.HAngle < 0.0f){
 			CAMERA.HAngle += DX_PI_F*2.0f;
 		}else if(CAMERA.HAngle >= DX_PI_F*2.0f){
@@ -138,7 +153,8 @@ void CameraUpdate(){
 		MOUSE.Wheel_Rot = sin(DX_PI/2/WHEEL_CNT_INIT_NUM*MOUSE.Wheel_Move_Cnt)*WHEEL_CNT_INIT_NUM;
 	}else{
 		//マウスホイールの回転数を取得
-		MOUSE.Wheel_Rot = GetMouseWheelRotVol();
+		//MOUSE.Wheel_Rot = GetMouseWheelRotVol();
+		MOUSE.Wheel_Rot = Mouse_WheelValueF();
 	}
 	//マウスホイールが回転されたらカメラの位置を前後に移動する。
 	//負の値

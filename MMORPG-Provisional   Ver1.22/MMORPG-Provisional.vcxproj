@@ -92,6 +92,7 @@
     <ClCompile Include="Code\Common\FileIO\ReadBynary.cpp" />
     <ClCompile Include="Code\Common\FileIO\WriteBynary.cpp" />
     <ClCompile Include="Code\Common\Keyboard\Keyboard.cpp" />
+    <ClCompile Include="Code\Common\Mouse\Mouse.cpp" />
     <ClCompile Include="Code\Common\String\FontMgr\FontMgr.cpp" />
     <ClCompile Include="Code\Common\String\StringBase.cpp" />
     <ClCompile Include="Code\Scene\Shop\Shop.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="Code\Common\FileIO\ReadBynary.h" />
     <ClInclude Include="Code\Common\FileIO\WriteBynary.h" />
     <ClInclude Include="Code\Common\Keyboard\Keyboard.h" />
+    <ClInclude Include="Code\Common\Mouse\Mouse.h" />
     <ClInclude Include="Code\Common\String\FontMgr\FontMgr.h" />
     <ClInclude Include="Code\Common\String\StringBase.h" />
     <ClInclude Include="Code\Scene\Shop\Shop.h" />

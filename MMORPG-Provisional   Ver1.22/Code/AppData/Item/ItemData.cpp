@@ -15,14 +15,6 @@
 #include "DxLib.h"
 #include "ItemData.h"
 
-#define ITEM_DATA_MAX (10)
-
-
-
-typedef struct {
-	int select;
-}WORK_OBJ_t;
-
 
 static const ITEM_DATA_t s_cItemTbl[] = {
 	//ID　アイテム名				説明													//アイテム効果				効果量	持てる数
@@ -31,8 +23,6 @@ static const ITEM_DATA_t s_cItemTbl[] = {
 	{ 1,"クリティカルヒット率アップ","クリティカルヒットが起きる確率を0.15%増加します.",	eItemType_CriticalHit_Up,	1.15f,	30},
 };
 
-
-static WORK_OBJ_t s_Work = { 0 };
 
 /*
 	アイテムデータを返却

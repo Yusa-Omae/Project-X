@@ -85,6 +85,12 @@
     <Filter Include="ソース ファイル\Code\AppData\Item">
       <UniqueIdentifier>{05622dc3-331c-4162-a2db-6b26c085dff0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Code\Common\Mouse">
+      <UniqueIdentifier>{126da5a1-10c5-416c-b80e-d92f28940205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Common\Mouse">
+      <UniqueIdentifier>{6793c92c-9887-40b8-a3be-5cadb79f5683}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -159,6 +165,9 @@
     <ClCompile Include="Code\AppData\Item\ItemData.cpp">
       <Filter>ソース ファイル\Code\AppData\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Common\Mouse\Mouse.cpp">
+      <Filter>ソース ファイル\Code\Common\Mouse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -232,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="Code\AppData\Item\ItemData.h">
       <Filter>ヘッダー ファイル\Code\AppData\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Common\Mouse\Mouse.h">
+      <Filter>ヘッダー ファイル\Code\Common\Mouse</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

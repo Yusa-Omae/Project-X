@@ -1,5 +1,5 @@
 #include"DxLib.h"
-#include"key.h"
+#include"Code/Common/Keyboard/Keyboard.h"
 #include"SceneMgr.h"
 #include"System.h"
 #include"Gamemain.h"
@@ -11,6 +11,7 @@
 #include"Chara_Player.h"
 #include"Stage.h"
 #include"Chara.h"
+#include "Code\Scene\Shop\Shop.h"
 
 #include "Code/AppData/SaveData/SaveData.h"
 
@@ -124,6 +125,14 @@ static void GameMain_Proc() {
 
 	PlayerUpdate();
 	Chara_Update();
+
+#ifdef __MY_DEBUG__
+	//ショップに移動
+	if (Keyboard_Press(KEY_INPUT_Q) == true) {
+		GameMain_ChangeGameState(eGameState_Shop, eFadeType_CrossFade);
+	}
+#endif
+
 }
 
 /*
@@ -190,6 +199,8 @@ void GameMainInitialize(){
 	//ステージ初期化
 	StageInitialize();
 
+	Shop_Intialize();
+
 	s_Work.nowGameState = eGameState_Initialize;
 
 	if (SaveData_Exits(SAVE_DATA_FILENAME) == true) {
@@ -235,7 +246,7 @@ void GameMainupdate(){
 
 		break;
 	case eGameState_Shop:
-
+		Shop_Update();
 		break;
 	}
 
@@ -264,7 +275,7 @@ void GameMainDraw(){
 
 		break;
 	case eGameState_Shop:
-
+		Shop_Draw();
 		break;
 	}
 
@@ -276,5 +287,7 @@ void GameMainFainalize(){
 	Player_Info_Fainalize();
 	Chara_Fainalize();
 	StageFainalize();
+
+	Shop_Finalize();
 
 }
