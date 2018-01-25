@@ -23,9 +23,9 @@ int Root_flm;
 float RATETION_TBL[] = {
 
 	0.0f,		//direction_Down
-	270.0f,		//direction_Left
+	90.0f,		//direction_Left
 	180.0f,		//direction_Up
-	90.0f,		//direction_Right
+	270.0f,		//direction_Right
 
 };
 
@@ -109,8 +109,11 @@ void Chara_Update(){
 
 void Chara_Draw(){
 	
+	float angle = RATETION_TBL[CHARA_MGR[model_Player].Direction] / 180.0f * DX_PI_F;
+		angle += CHARA_MGR[model_Player].Angle;
+
 	//ƒLƒƒƒ‰‚Ì‰ñ“]
-	MV1SetRotationXYZ(Model_Kind[model_Player],VGet(0.0f,1.57f*CHARA_MGR[model_Player].Direction/*CHARA_MGR[model_Player].Direction*90.0f+GetRad_Direction()*/,0.0f));
+	MV1SetRotationXYZ(Model_Kind[model_Player],VGet(0.0f,angle/*CHARA_MGR[model_Player].Direction*90.0f+GetRad_Direction()*/,0.0f));
 	//ƒLƒƒƒ‰‚ÌˆÚ“®
 	MV1SetPosition(Model_Kind[model_Player],Get_Player_Pos());
 	//ƒLƒƒƒ‰‚Ì•`‰æ
@@ -137,10 +140,17 @@ int Get_Chara_Direction(int charanum){
 }
 
 /*
+	Šp“x‚ğİ’è‚·‚é
+*/
+void Set_Chara_Rotation(int charanum, float angle) {
+	CHARA_MGR[charanum].Angle = angle;
+}
+
+/*
 	Šp“x‚ğ•Ô‹p‚·‚é
 */
 float Get_Chara_Rotation(int charanum) {
-	return RATETION_TBL[CHARA_MGR[charanum].Direction];
+	return CHARA_MGR[charanum].Angle;
 }
 
 void Set_Anim_Flg(int anim_Kind,bool flg){

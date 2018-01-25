@@ -16,7 +16,7 @@
 _PLAYER *PLAYER;
 static struct _MOUSE MOUSE;
 
-static void Player_DirectionProc(float* vAngle,float* hAngle) {
+static void Player_DirectionProc(float* vAngle,float* hAngle,float* distance) {
 
 	//マウスの押下状態の取得
 	//MOUSE.Input = GetMouseInput();
@@ -24,6 +24,7 @@ static void Player_DirectionProc(float* vAngle,float* hAngle) {
 	//GetMousePoint(&MOUSE.X, &MOUSE.Y);
 
 	Mouse_GetPositioin(&MOUSE.X, &MOUSE.Y);
+	MOUSE.Wheel_Rot = Mouse_WheelValueF();
 
 	MOUSE.X -= INIT_AREA_X2 / 2;
 	MOUSE.Y -= INIT_AREA_Y2 / 2;
@@ -109,6 +110,7 @@ static void Player_DirectionProc(float* vAngle,float* hAngle) {
 	//}
 
 
+#if false
 	//ゲーム開始時-1.0まで自動で(カメラの制限を設けたい。)
 	if (MOUSE.Wheel_Move_Cnt > WHEEL_CNT_INIT_NUM) {
 		//スタート時からのカウント
@@ -118,24 +120,27 @@ static void Player_DirectionProc(float* vAngle,float* hAngle) {
 	else {
 		//マウスホイールの回転数を取得
 		//MOUSE.Wheel_Rot = GetMouseWheelRotVol();
-		MOUSE.Wheel_Rot = Mouse_WheelValueF();
+		
 	}
-#if false
+#endif
+
+	
+
 	//マウスホイールが回転されたらカメラの位置を前後に移動する。
 	//負の値
 	if (MOUSE.Wheel_Rot <= 0) {
 		//ホイール量（注視点距離制限）//Sin処理追加予定
-		if (CAMERA.Distance <= DISTANCE_MAX) {
-			CAMERA.Distance -= MOUSE.Wheel_Rot * WHEEL_SPEED;
+		if (*distance <= DISTANCE_MAX) {
+			*distance -= MOUSE.Wheel_Rot * WHEEL_SPEED;
 		}	//正の値
 	}
 	else if (MOUSE.Wheel_Rot >= 0) {
-		if (CAMERA.Distance >= DISTANCE_MIN) {
-			CAMERA.Distance -= MOUSE.Wheel_Rot * WHEEL_SPEED;
+		if (*distance >= DISTANCE_MIN) {
+			*distance -= MOUSE.Wheel_Rot * WHEEL_SPEED;
 		}
 
 	}
-#endif
+
 
 
 }
@@ -170,30 +175,32 @@ void PlayerUpdate(){
 	float isMove = true;
 	float vAngle = Camera_GetVAngle();
 	float hAngle = Camera_GetHAngle();
+	float distance = Camera_GetDistance();
+
 	VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);
 
 	VECTOR playerPos = PLAYER->pos;
 
-	if(key(KEY_INPUT_S)){
-		//PLAYER->pos.x += sin(1.57f*dir)*MOVE_SPEED;
-		//PLAYER->pos.z += cos(1.57f*dir)*MOVE_SPEED;
-		moveVec.z = MOVE_SPEED;
-		Set_Chara_Direction(model_Player,direction_Up);
-		Set_Move_flg(model_Player, FALSE);
-	}else if(key(KEY_INPUT_W)){
+	if(key(KEY_INPUT_W)){
 		//PLAYER->pos.x += sin(1.57f*dir)*MOVE_SPEED;
 		//PLAYER->pos.z += cos(1.57f*dir)*MOVE_SPEED;
 		moveVec.z = -MOVE_SPEED;
-		Set_Chara_Direction(model_Player,direction_Down);
+		Set_Chara_Direction(model_Player,direction_Up);
 		Set_Move_flg(model_Player, FALSE);
-	}else if(key(KEY_INPUT_D)){
+	}else if(key(KEY_INPUT_S)){
 		//PLAYER->pos.x += sin(1.57f*dir)*MOVE_SPEED;
-		moveVec.x = -MOVE_SPEED;
-		Set_Chara_Direction(model_Player,direction_Left);
+		//PLAYER->pos.z += cos(1.57f*dir)*MOVE_SPEED;
+		moveVec.z = MOVE_SPEED;
+		Set_Chara_Direction(model_Player,direction_Down);
 		Set_Move_flg(model_Player, FALSE);
 	}else if(key(KEY_INPUT_A)){
 		//PLAYER->pos.x += sin(1.57f*dir)*MOVE_SPEED;
 		moveVec.x = MOVE_SPEED;
+		Set_Chara_Direction(model_Player,direction_Left);
+		Set_Move_flg(model_Player, FALSE);
+	}else if(key(KEY_INPUT_D)){
+		//PLAYER->pos.x += sin(1.57f*dir)*MOVE_SPEED;
+		moveVec.x = -MOVE_SPEED;
 		Set_Chara_Direction(model_Player,direction_Right);
 		Set_Move_flg(model_Player, FALSE);
 	}else{
@@ -201,7 +208,7 @@ void PlayerUpdate(){
 		isMove = false;
 	}
 
-	Player_DirectionProc(&vAngle, &hAngle);
+	Player_DirectionProc(&vAngle, &hAngle,&distance);
 
 	if (isMove) {
 
@@ -220,13 +227,16 @@ void PlayerUpdate(){
 		playerPos = VAdd(playerPos, tmpVec);
 		
 
+
 	}
 
+	Set_Chara_Rotation(model_Player, hAngle);
 	PLAYER->pos = playerPos;
 
 	Camera_SetVAngle(vAngle);
 	Camera_SetHAngle(hAngle);
 	Camera_SetTargetPosition(PLAYER->pos);
+	Camera_SetDistance(distance);
 
 	//木下先生に聞こう
 	//PLAYER->New_Speed = VGet(0.0f,0.0f,0.0f);

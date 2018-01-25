@@ -35,8 +35,7 @@ struct _CAMERA {
 	VECTOR Right_Direction;
 	//ƒJƒƒ‰‚Ì‚‚³
 	float height;
-	//ƒJƒƒ‰‚Ì‰œs
-	float depth;
+
 
 };
 
@@ -69,7 +68,7 @@ void Camera_Initialize() {
 	SetCameraNearFar(CAMERA_NEAR_CLIP, CAMERA_FAR_CLIP);
 
 	s_Camera.height = 100.0f;
-	s_Camera.depth = 1000.0f;
+	s_Camera.Distance = 1000.0f;
 
 }
 
@@ -97,7 +96,7 @@ void CameraUpdate() {
 
 	tmpPos1.x = 0.0f;
 	tmpPos1.y = sinParam * s_Camera.height;
-	tmpPos1.z = cosParam * s_Camera.depth;
+	tmpPos1.z = cosParam * s_Camera.Distance;
 
 	float hAngle = s_Camera.HAngle;// / 180.0f * DX_PI_F;
 
@@ -146,6 +145,13 @@ void Camera_SetTAngle(float tAngle) {
 }
 
 /*
+•`‰æ‘ÎÛ‚Ü‚Å‚Ì‹——£‚ğİ’è‚·‚é
+*/
+void Camera_SetDistance(float distance) {
+	s_Camera.Distance = distance;
+}
+
+/*
 	Šp“x‚ğ•Ô‹p‚·‚é(X²•ûŒü)
 */
 float Camera_GetVAngle() {
@@ -164,6 +170,13 @@ float Camera_GetHAngle() {
 */
 float Camera_GetTAngle() {
 	return s_Camera.TAngle;
+}
+
+/*
+	ƒJƒƒ‰‚Ì•`‰æ‘ÎÛ‚Ü‚Å‚Ì‹——£‚ğ•Ô‹p‚·‚é
+*/
+float Camera_GetDistance() {
+	return s_Camera.Distance;
 }
 
 #if false
