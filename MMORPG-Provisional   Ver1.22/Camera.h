@@ -27,6 +27,11 @@ void Camera_SetHAngle(float hAngle);
 void Camera_SetTAngle(float tAngle);
 
 /*
+	描画対象までの距離を設定する
+*/
+void Camera_SetDistance(float distance);
+
+/*
 角度を返却する(X軸方向)
 */
 float Camera_GetVAngle();
@@ -39,6 +44,11 @@ float Camera_GetHAngle();
 角度を返却する(Z軸方向)
 */
 float Camera_GetTAngle();
+
+/*
+カメラの描画対象までの距離を返却する
+*/
+float Camera_GetDistance();
 
 // ------------ デバッグ機能 ----------
 void Debug_Camera();

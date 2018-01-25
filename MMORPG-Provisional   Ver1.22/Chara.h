@@ -10,10 +10,15 @@ int Get_Chara_Direction(int charanum);
 void Set_Anim_Flg(int anim_Kind,bool flg);
 void Set_Move_flg(int model_Kind, bool flg);
 bool Get_Move_flg(int model_Kind);
+
 /*
 Šp“x‚ğ•Ô‹p‚·‚é
 */
 float Get_Chara_Rotation(int charanum);
+/*
+Šp“x‚ğİ’è‚·‚é
+*/
+void Set_Chara_Rotation(int charanum, float angle);
 
 void Debag_Chara();
 
@@ -74,5 +79,7 @@ struct _CHARA_MGR{
 	int Direction;
 	//“®‚¢‚Ä‚¢‚é‚©
 	bool Move;
+	
+	float Angle;
 };
 
