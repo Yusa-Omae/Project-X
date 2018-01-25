@@ -9,21 +9,40 @@
 
 s_Stage STAGE;
 
+//データ読み込み用
+char path[256];
 
 //ステージクラスの初期化処理
 void StageInitialize(){
 	
-	//モデルの読み込み
-	STAGE.handle = MV1LoadModel("Data\\Stage\\Stage00.mv1");
+	
+	/*必要
+	○ステージの詳細読み込み
 
-	/*
-	for(int i = 0;i < 100;i++){
-
-		STAGE.obj[i] = MV1LoadModel("Stage\\Stage_Obj%03d.mv1",i);
-		STAGE.c_obj[i] = MV1LoadModel("Stage\\Stage_Obj%03d_c.mv1",i);
-
-	}
+	・イベント処理用のフラグ
+	・キャラクターの全削除関数
+	・プレイヤーキャラのステージ内どこに設定するかの情報
+	・
+	
 	*/
+
+	
+
+
+	//ステージで使うモデルの読み込み
+	STAGE.handle = MV1LoadModel("Data\\Stage\\Stage00.mv1");
+	STAGE.c_handle = MV1LoadModel("Data\\Stage\\Stage00_c.mv1");
+	STAGE.sky_handle = MV1LoadModel("Data\\Stage\\Stage00_sky.mv1");
+	
+	for(int i = 0;i < OBJECT_NUM;i++){
+
+		sprintf(path,"Stage\\Stage_Obj%03d.mv1",i);
+		STAGE.obj[i] = MV1LoadModel(path);
+
+		sprintf(path,"Stage\\Stage_Obj%03d_c.mv1",i);
+		STAGE.c_obj[i] = MV1LoadModel(path);
+	}
+	
 
 	//シャドウマップの作成
 	STAGE.smap = MakeShadowMap(1024, 1024);
@@ -53,25 +72,21 @@ void StageDraw(){
 	//シャドウマップに描きこみ
 	ShadowMap_DrawSetup(STAGE.smap);
 	MV1DrawModel(STAGE.handle);
-	/*
+
 	for(int i = 0;i < 100;i++){
-
-	MV1DrawModel(STAGE.obj[i]);
-
+	MV1DrawModel(STAGE.d_obj[i]);
 	}
-	*/
+
 	ShadowMap_DrawEnd();
 	SetUseShadowMap(0, STAGE.smap);
 
 	//モデル描画
 	MV1DrawModel(STAGE.handle);
-	/*
-	for(int i = 0;i < 100;i++){
 
-	MV1DrawModel(STAGE.obj[i]);
-
+	for (int i = 0; i < 100; i++) {
+		MV1DrawModel(STAGE.d_obj[i]);
 	}
-	*/
+
 	SetUseShadowMap(0,-1);
 
 }
