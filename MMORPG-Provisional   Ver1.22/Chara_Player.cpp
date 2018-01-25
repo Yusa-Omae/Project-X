@@ -86,6 +86,8 @@ static void Player_DirectionProc(float* vAngle,float* hAngle) {
 
 	//右クリックが押されていたらカメラの向きを変更
 	//if(MOUSE.Input & MOUSE_INPUT_RIGHT){
+	
+#if false
 	//垂直角度計算
 	*vAngle += CAMERA_ANGLE_SPEED * MOUSE.Move_Y;
 	if (*vAngle < -(DX_PI_F / 2.0f - 0.1f)) {
@@ -94,6 +96,8 @@ static void Player_DirectionProc(float* vAngle,float* hAngle) {
 	if (*vAngle > DX_PI_F / 2.0f - 0.1f) {
 		*vAngle = DX_PI_F / 2.0f - 0.1f;
 	}
+#endif
+
 	//水平角度計算
 	*hAngle -= CAMERA_ANGLE_SPEED * MOUSE.Move_X;
 	if (*hAngle < 0.0f) {
