@@ -168,6 +168,8 @@ void PlayerUpdate(){
 	float hAngle = Camera_GetHAngle();
 	VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);
 
+	VECTOR playerPos = PLAYER->pos;
+
 	if(key(KEY_INPUT_S)){
 		//PLAYER->pos.x += sin(1.57f*dir)*MOVE_SPEED;
 		//PLAYER->pos.z += cos(1.57f*dir)*MOVE_SPEED;
@@ -211,10 +213,12 @@ void PlayerUpdate(){
 		tmpVec.y = 0.0f;
 		tmpVec.z = moveVec.x * sinParam + moveVec.z * cosParam;
 
-		PLAYER->pos = VAdd(PLAYER->pos, tmpVec);
+		playerPos = VAdd(playerPos, tmpVec);
 		
 
 	}
+
+	PLAYER->pos = playerPos;
 
 	Camera_SetVAngle(vAngle);
 	Camera_SetHAngle(hAngle);
