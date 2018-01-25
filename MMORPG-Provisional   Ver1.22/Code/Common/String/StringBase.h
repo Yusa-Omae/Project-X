@@ -17,17 +17,33 @@
 
 class FontMgr;
 
+#include <list>
+
 class StringBase {
 
 public :
 
+	static const int STRING_LINE_MAX = 6;
 
 private:
 
 	FontMgr * mFontMgr;
 	unsigned int mColor;
 	char mString[1024];
+	
 	int mStringSize;
+
+	int mLine;
+	int mPos;
+	int mTotalPos;
+	int mNextLineLength;	//次の行にする文字数
+	int mStrNum;			//文字数
+
+	char mDrawString[STRING_LINE_MAX][1024];
+	bool mIsOnletter;	//一文字ずつ描画するか？
+	int mInputPos;
+
+	int mCounter;
 
 private:
 
@@ -43,6 +59,15 @@ public :
 
 	StringBase();
 	virtual ~StringBase();
+
+	/*
+		更新処理
+		bool isOnletter = false	:一文字ずつ表示させるか？
+									true:	一文字ずつ表示する	false:すべて描画
+		int length = 30			:一行に表示させる文字数(デフォルトは30文字)
+		int interval  = 20		:文字を描画する間隔
+	*/
+	void Update(bool isOnletter = false,int length = 30, int interval = 20);
 
 	/*
 		フォント名からフォントデータの作成
@@ -91,6 +116,9 @@ public :
 	*/
 	virtual int DrawString(int posX, int posY,bool isDisp = true);
 	virtual int DrawString(int posX, int posY, int alpha, bool isDisp = true);
+
+
+	
 
 };
 

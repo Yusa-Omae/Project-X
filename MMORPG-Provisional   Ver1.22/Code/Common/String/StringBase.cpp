@@ -16,10 +16,18 @@
 #include "StringBase.h"
 #include "FontMgr/FontMgr.h"
 
+#define STRING_LINE_MAX (6)
+
 StringBase::StringBase(){
 	mFontMgr = NULL;
 	mColor = GetColor(255, 255, 255);
 	memset(mString, 0, sizeof(char) * 1024);
+	mLine = 0;
+	mPos = 0;
+	mIsOnletter = false;
+	mCounter = 0;
+	mTotalPos = 0;
+	mStrNum = 0;
 }
 
 StringBase::~StringBase() {
@@ -28,6 +36,68 @@ StringBase::~StringBase() {
 		mFontMgr = NULL;
 	}
 
+}
+
+/*
+	更新処理
+	bool isOnletter = false	:一文字ずつ表示させるか？
+	true:	一文字ずつ表示する	false:すべて描画
+	int length = 30			:一行に表示させる文字数(デフォルトは30文字)
+	int interval  = 20		:文字を描画する間隔
+*/
+void StringBase::Update(bool isOnletter/* = false*/, int length/* = 30*/, int interval /* = 20*/) {
+
+	mIsOnletter = isOnletter;
+
+	//一文字ずつ表示させないなら処理を抜ける
+	if (mIsOnletter == false) return;
+
+	mCounter++;
+	if (mCounter % interval != 0) return;
+
+	mNextLineLength = length;
+	int pos = mPos + mLine * mNextLineLength;
+
+	if (mLine >= mNextLineLength) {
+		printfDx("これ以上改行することができません");
+		return;
+	}
+
+	if (mString[mTotalPos] != '\0') {
+
+		if (mStrNum >= mNextLineLength || mString[mTotalPos] == '\n') {
+			mDrawString[mLine][mInputPos] = '\0';
+			mPos = 0;
+			mInputPos = 0;
+			mStrNum = 0;
+			mLine++;
+			if (mString[mTotalPos] == '\n') {
+				mTotalPos++;
+			}
+			return;
+		}
+
+		int num = this->GetCharBytes(&mString[mTotalPos]);
+
+		if (num == 1) {
+			mDrawString[mLine][mInputPos] = mString[mTotalPos];
+			mInputPos++;
+			mPos++;
+			mTotalPos++;
+		}
+		else {
+			for (int i = 0; i < num; i++) {
+				mDrawString[mLine][mInputPos] = mString[mTotalPos];
+				mInputPos++;
+				mPos++;
+				mTotalPos++;
+			}
+		}
+
+		mStrNum ++;
+
+
+	}
 }
 
 /*
@@ -84,8 +154,18 @@ void StringBase::SetString(const char* string) {
 }
 
 void StringBase::SetString(const char* string, size_t size) {
-	memset(mString, 0, sizeof(char) * 1024);
-	strcpy_sDx(mString,size,string);
+
+	if (strcmpDx(mString, string) != 0) {
+		memset(mString, 0, sizeof(char) * 1024);
+		strcpy_sDx(mString, size, string);
+		mLine = 0;
+		mPos = 0;
+		memset(mDrawString, 0, sizeof(char) * STRING_LINE_MAX * 1024);
+		mInputPos = 0;
+		mCounter = 0;
+		mTotalPos = 0;
+		mStrNum = 0;
+	}
 }
 
 void StringBase::SetColor(unsigned int color) {
@@ -104,11 +184,30 @@ int StringBase::DrawString(int posX, int posY, bool isDisp/* = true*/) {
 
 	if (isDisp == false)	return length;
 
-	if (mFontMgr == NULL) {
-		DxLib::DrawString(posX, posY, mString, mColor);
+	//一文字ずつ出力が有効なら
+	if (mIsOnletter == true) {
+
+		
+
+		
+		for (int i = 0; i <= mLine; i++) {
+			if (mFontMgr == NULL) {
+				DxLib::DrawString(posX, posY + i * 20, mDrawString[i], mColor);
+			}
+			else {
+				mFontMgr->Draw(posX, posY + i * 20, mDrawString[i], mColor);
+			}
+		}
+
 	}
 	else {
-		mFontMgr->Draw(posX, posY, mString, mColor);
+
+		if (mFontMgr == NULL) {
+			DxLib::DrawString(posX, posY, mString, mColor);
+		}
+		else {
+			mFontMgr->Draw(posX, posY, mString, mColor);
+		}
 	}
 
 	return length;

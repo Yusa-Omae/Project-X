@@ -42,12 +42,14 @@ void TestString_Finalize() {
 void TestString_Update() {
 
 	//文字列に文字列を設定設定
-	s_pString->SetString("テスト文字列！(メイリオ)");
+	s_pString->SetString("テスト文字列！(メイリオ).\nてすと\nてすとてすとてすとてすとtesttststestertrtb\nwerw文字送りのテストをしています。");
 
 	//文字列2に文字列を設定設定
 	s_pString2->SetString("これはテスト文字列です.(明朝体)\nXキーで戻る");
 	//文字列2の色を赤色に設定
 	s_pString2->SetColor(GetColor(255, 0, 0));
+
+	s_pString->Update(true);
 
 	if (Keyboard_Press(KEY_INPUT_X)) {
 		SceneMgr_ChangeScene(eScene_TestMemu);
@@ -58,7 +60,7 @@ void TestString_Update() {
 void TestString_Draw() {
 
 	//文字列を描画
-	s_pString->DrawString(600, 100);
+	s_pString->DrawString(200, 100);
 
 	//文字列2を描画
 	s_pString2->DrawString(600, 120);
