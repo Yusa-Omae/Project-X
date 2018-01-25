@@ -17,7 +17,20 @@ float Play_Anim_time;
 bool Anim_Flg[10];
 int Root_flm;
 
+
+
+
+float RATETION_TBL[] = {
+
+	0.0f,		//direction_Down
+	270.0f,		//direction_Left
+	180.0f,		//direction_Up
+	90.0f,		//direction_Right
+
+};
+
 /*
+
 	アニメーションを設定する
 	int modelHandle			:モデルハンドル
 	int *attachModleHandle	:アタッチモデルハンドル
@@ -121,6 +134,13 @@ void Set_Chara_Direction(int charanum,int direction){
 
 int Get_Chara_Direction(int charanum){
 	return CHARA_MGR[charanum].Direction;
+}
+
+/*
+	角度を返却する
+*/
+float Get_Chara_Rotation(int charanum) {
+	return RATETION_TBL[CHARA_MGR[charanum].Direction];
 }
 
 void Set_Anim_Flg(int anim_Kind,bool flg){

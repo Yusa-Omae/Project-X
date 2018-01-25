@@ -6,10 +6,45 @@ void CameraSetUp();
 VECTOR Get_Right_Direction();
 
 
+/*
+カメラに描画対象にするオブジェクトの座標を設定
+*/
+void Camera_SetTargetPosition(VECTOR targetPos);
+
+/*
+角度を設定する(X軸方向)
+*/
+void Camera_SetVAngle(float vAngle);
+
+/*
+角度を設定する(Y軸方向)
+*/
+void Camera_SetHAngle(float hAngle);
+
+/*
+角度を設定する(Z軸方向)
+*/
+void Camera_SetTAngle(float tAngle);
+
+/*
+角度を返却する(X軸方向)
+*/
+float Camera_GetVAngle();
+/*
+角度を返却する(Y軸方向)
+*/
+float Camera_GetHAngle();
+
+/*
+角度を返却する(Z軸方向)
+*/
+float Camera_GetTAngle();
+
+// ------------ デバッグ機能 ----------
 void Debug_Camera();
 
 
-
+#if false
 struct _CAMERA{
 	//カメラの位置
 	VECTOR Pos;
@@ -35,6 +70,7 @@ struct _CAMERA{
 	VECTOR Right_Direction;
 
 };
+#endif
 
 struct _MOUSE{
 	//マウスの現在座標

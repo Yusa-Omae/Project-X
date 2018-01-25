@@ -1,19 +1,172 @@
 #include"Dxlib.h"
-#include"stdio.h"
-#include"SceneMgr.h"
-#include"Key.h"
 #include"Define.h"
-#include"Gamemain.h"
 #include"Camera.h"
-#include"Chara_Player.h"
 #include"System.h"
-#include"math.h"
-#include "Code/Common/Mouse/Mouse.h"
+#include<math.h>
 
-_CAMERA CAMERA;
+
+
+
+struct _CAMERA {
+
+	//カメラの位置
+	VECTOR Pos;
+	//カメラの注視点位置
+	VECTOR Target_Pos;
+	//注視点までの距離
+	float Distance;
+	//カメラの上下方向
+	VECTOR Vec_UP;
+	//カメラのズームイン・アウト 初期カメラ倍率固定
+	VECTOR Zoom_Base;
+	//カメラ倍率変更分 AS=(Add/Sub)
+	MATRIX Zoom_AS;
+	//水平角度
+	float HAngle;
+	//垂直角度
+	float VAngle;
+	//Z軸方向の角度
+	float TAngle;
+	//カメラ向き
+	VECTOR Direction;
+	//正面方向のベクトル
+	VECTOR Front_Direction;
+	//カメラ向き(右方向)
+	VECTOR Right_Direction;
+	//カメラの高さ
+	float height;
+	//カメラの奥行
+	float depth;
+
+};
+
+static _CAMERA s_Camera;
 _MOUSE MOUSE;
 //SYSTEM_INFOは既存のライブラリ内で宣言されていたので名前を変えました by.Syara
-static _SYSTEM_INFO_t s_SYSTEM_INFO;
+static _SYSTEM_INFO_t s_SYSTEM_INFO; 
+
+
+
+void Camera_Initialize() {
+
+
+	//カメラ水平角度の初期設定
+	s_Camera.HAngle = DX_PI_F;
+	//カメラ垂直角度の初期設定
+	s_Camera.VAngle = 0.05f;
+	//注視点までの距離初期設定
+	s_Camera.Distance = 270.0f;
+	
+	//ディレクトリライトの設定
+	ChangeLightTypeDir(VGet(0.57735026f, 0.57735026f, -0.57735026f));
+	//色彩設定
+	COLOR_F DifColor = GetColorF(1, 1, 1, 1.0);
+	COLOR_F AmbColor = GetColorF(1, 1, 1, 1.0);
+	SetLightDifColor(DifColor);
+	SetLightAmbColor(AmbColor);
+
+	//カメラのクリップ距離設定
+	SetCameraNearFar(CAMERA_NEAR_CLIP, CAMERA_FAR_CLIP);
+
+	s_Camera.height = 100.0f;
+	s_Camera.depth = 1000.0f;
+
+}
+
+
+/*
+	カメラの状態を更新する
+*/
+void CameraUpdate() {
+
+	float sinParam = 0.0f;
+	float cosParam = 0.0f;
+	VECTOR tmpPos1;				//一時保存用変数
+	VECTOR tmpPos2;				//
+	VECTOR cameraLockAtPos;		//カメラが見ている座標
+
+
+	cameraLockAtPos = s_Camera.Target_Pos;
+	cameraLockAtPos.y += 50.0f;
+
+	//水平方向の角度を計算
+	float vAngle = s_Camera.VAngle;// / 180.0f * DX_PI_F;
+
+	sinParam = sin(vAngle);
+	cosParam = cos(vAngle);
+
+	tmpPos1.x = 0.0f;
+	tmpPos1.y = sinParam * s_Camera.height;
+	tmpPos1.z = cosParam * s_Camera.depth;
+
+	float hAngle = s_Camera.HAngle;// / 180.0f * DX_PI_F;
+
+	sinParam = sin(hAngle);
+	cosParam = cos(hAngle);
+
+	tmpPos2.x = cosParam * tmpPos1.x - sinParam * tmpPos1.z;
+	tmpPos2.y = tmpPos1.y;
+	tmpPos2.z = sinParam * tmpPos1.x - cosParam * tmpPos1.z;
+
+	//カメラの座標を設定
+	s_Camera.Pos = VAdd(tmpPos2, cameraLockAtPos);
+
+	SetCameraPositionAndTarget_UpVecY(s_Camera.Pos, cameraLockAtPos);
+
+}
+
+void CameraSetUp() {}
+
+/*
+	カメラに描画対象にするオブジェクトの座標を設定
+*/
+void Camera_SetTargetPosition(VECTOR targetPos) {
+	s_Camera.Target_Pos = targetPos;
+}
+
+/*
+	角度を設定する(X軸方向)
+*/
+void Camera_SetVAngle(float vAngle) {
+	s_Camera.VAngle = vAngle;
+}
+
+/*
+角度を設定する(Y軸方向)
+*/
+void Camera_SetHAngle(float hAngle) {
+	s_Camera.HAngle = hAngle;
+}
+
+/*
+角度を設定する(Z軸方向)
+*/
+void Camera_SetTAngle(float tAngle) {
+	s_Camera.TAngle = tAngle;
+}
+
+/*
+	角度を返却する(X軸方向)
+*/
+float Camera_GetVAngle() {
+	return s_Camera.VAngle;
+}
+
+/*
+角度を返却する(Y軸方向)
+*/
+float Camera_GetHAngle() {
+	return s_Camera.HAngle;
+}
+
+/*
+角度を返却する(Z軸方向)
+*/
+float Camera_GetTAngle() {
+	return s_Camera.TAngle;
+}
+
+#if false
 
 //ディフューズカラー設定用
 COLOR_F DifColor;
@@ -213,19 +366,20 @@ VECTOR Get_Right_Direction(){
 	return CAMERA.Right_Direction;
 }
 
+#endif
+
 //カメラクラスのデバッグ用
 void Debug_Camera(){
 #ifdef __MY_DEBUG__
 	DrawFormatString(10,20,Color_ValTbl[eCol_White],"マウスホイール量 = %f",MOUSE.Wheel_Rot);
 	DrawFormatString(10,40,Color_ValTbl[eCol_White],"マウスホイール(最初カウント値) = %f",MOUSE.Wheel_Move_Cnt);
-	DrawFormatString(10,60,Color_ValTbl[eCol_White],"カメラ座標 = ( %f , %f , %f)",CAMERA.Pos.x,CAMERA.Pos.y,CAMERA.Pos.z);
-	DrawFormatString(10,80,Color_ValTbl[eCol_White],"カメラターゲット座標 = ( %f , %f , %f)",CAMERA.Target_Pos.x,CAMERA.Target_Pos.y,CAMERA.Target_Pos.z);
+	DrawFormatString(10,60,Color_ValTbl[eCol_White],"カメラ座標 = ( %f , %f , %f)",s_Camera.Pos.x, s_Camera.Pos.y, s_Camera.Pos.z);
+	DrawFormatString(10,80,Color_ValTbl[eCol_White],"カメラターゲット座標 = ( %f , %f , %f)", s_Camera.Target_Pos.x, s_Camera.Target_Pos.y, s_Camera.Target_Pos.z);
 	DrawFormatString(10,100,Color_ValTbl[eCol_White],"マウス現在座標 X,%d, Y,%d",MOUSE.X,MOUSE.Y);
 	DrawFormatString(10,120,Color_ValTbl[eCol_White],"マウス1フレーム前座標 X,%d, Y,%d",MOUSE.Back_X,MOUSE.Back_Y);
 	DrawFormatString(10,140,Color_ValTbl[eCol_White],"マウス1フレーム移動座標 X,%d, Y,%d",MOUSE.Move_X,MOUSE.Move_Y);
 	DrawFormatString(10,160,Color_ValTbl[eCol_White],"マウス押下状態 %d 1:左クリック 2:右クリック マウス右クリック判定用 %d",MOUSE.Input,MOUSE_INPUT_RIGHT);
-	DrawFormatString(10,180,Color_ValTbl[eCol_White],"%f",CAMERA.Pos.y);
-	DrawFormatString(10,200,Color_ValTbl[eCol_White],"注視点までの距離 = %f,ホイール量 = %f",CAMERA.Distance,MOUSE.Wheel_Rot);//最短170　最長1000
+	DrawFormatString(10,180,Color_ValTbl[eCol_White],"%f", s_Camera.Pos.y);
+	DrawFormatString(10,200,Color_ValTbl[eCol_White],"注視点までの距離 = %f,ホイール量 = %f", s_Camera.Distance,MOUSE.Wheel_Rot);//最短170　最長1000
 #endif	//__MY_DEBUG__
 }
-
