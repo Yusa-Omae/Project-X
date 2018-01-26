@@ -26,7 +26,7 @@ void StageInitialize(){
 	
 	*/
 
-	
+
 
 
 	//ステージで使うモデルの読み込み
@@ -42,13 +42,11 @@ void StageInitialize(){
 		sprintf(path,"Stage\\Stage_Obj%03d_c.mv1",i);
 		STAGE.c_obj[i] = MV1LoadModel(path);
 	}
-	
 
 	//シャドウマップの作成
 	STAGE.smap = MakeShadowMap(1024, 1024);
 	SetShadowMapLightDirection(STAGE.smap, VGet(1,-1,0));				//カメラのライトと合わせるときにライティングのベクトルをここにもいれるとOK
 	SetShadowMapDrawArea(STAGE.smap, SHADOWMAP_INIT1, SHADOWMAP_INIT2);
-
 
 	//位置設定
 	MV1SetPosition(STAGE.handle, STAGE_INIT);

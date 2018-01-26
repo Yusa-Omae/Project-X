@@ -33,9 +33,8 @@ typedef struct s_Stage {
 	int obj[OBJECT_NUM];
 	//あたり判定用オブジェクトデータ格納ハンドル
 	int c_obj[OBJECT_NUM];
-	//仮で100個の配列をつくっています。(ステージに配置する量による) 
 	//描画用オブジェクト配列
-	int d_obj[100];
+	int d_obj[OBJECT_DRAW_MAX_NUM];
 	//シャドウマップの作成用ハンドル
 	int smap;
 

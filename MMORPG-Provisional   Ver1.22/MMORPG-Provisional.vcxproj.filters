@@ -168,6 +168,9 @@
     <ClCompile Include="Code\Common\Mouse\Mouse.cpp">
       <Filter>ソース ファイル\Code\Common\Mouse</Filter>
     </ClCompile>
+    <ClCompile Include="TextParam.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="Code\Common\Mouse\Mouse.h">
       <Filter>ヘッダー ファイル\Code\Common\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="TextParam.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
