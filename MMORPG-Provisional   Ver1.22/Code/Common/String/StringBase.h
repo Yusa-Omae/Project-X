@@ -66,8 +66,12 @@ public :
 									true:	一文字ずつ表示する	false:すべて描画
 		int length = 30			:一行に表示させる文字数(デフォルトは30文字)
 		int interval  = 20		:文字を描画する間隔
+		return			-1		:エラー
+						0		:描画中
+						1		:描画終了
+						2		:表示インターバル中
 	*/
-	void Update(bool isOnletter = false,int length = 30, int interval = 20);
+	int Update(bool isOnletter = false,int length = 30, int interval = 20);
 
 	/*
 		フォント名からフォントデータの作成

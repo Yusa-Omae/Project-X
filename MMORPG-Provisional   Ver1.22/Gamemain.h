@@ -15,6 +15,7 @@ enum eGameState {
 	eGameState_None = -1,	//状態なし
 	eGameState_Initialize,	//初期化
 	eGameState_Fade,		//フェード
+	eGameState_Adventure,	//アドベンチャー
 	eGameState_Tutorial,	//チュートリアル
 	eGameState_MainGame,	//メインゲーム
 	eGameState_Pouse,		//ポーズ画面

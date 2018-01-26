@@ -11,7 +11,11 @@
 #include"Chara_Player.h"
 #include"Stage.h"
 #include"Chara.h"
+
 #include "Code\Scene\Shop\Shop.h"
+#include "Code/Scene/Adventure/Adventure.h"
+#include "Code/Scene/Tutorial/Tutorial.h"
+#include "Code/Scene/Result/Result.h"
 
 #include "Code/AppData/SaveData/SaveData.h"
 
@@ -201,13 +205,15 @@ void GameMainInitialize(){
 
 	Shop_Intialize();
 
+	Adeventure_Initialize();
+
 	s_Work.nowGameState = eGameState_Initialize;
 
 	if (SaveData_Exits(SAVE_DATA_FILENAME) == true) {
 		s_Work.nextGameState = eGameState_MainGame;
 	}
 	else {
-		s_Work.nextGameState = eGameState_Tutorial;
+		s_Work.nextGameState = eGameState_Adventure;
 	}
 
 	s_Work.fadeCounter = 0;
@@ -233,6 +239,9 @@ void GameMainupdate(){
 			s_Work.fadeCounter = 0;
 		}
 
+		break;
+	case eGameState_Adventure:
+		Adeventure_Update();
 		break;
 	case eGameState_Tutorial:
 
@@ -265,6 +274,9 @@ void GameMainDraw(){
 	case eGameState_Fade:
 		Fade_Draw();
 		break;
+	case eGameState_Adventure:
+		Adeventure_Draw();
+		break;
 	case eGameState_Tutorial:
 
 		break;
@@ -289,5 +301,7 @@ void GameMainFainalize(){
 	StageFainalize();
 
 	Shop_Finalize();
+
+	Adeventure_Finalize();
 
 }

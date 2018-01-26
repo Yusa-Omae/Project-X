@@ -85,7 +85,7 @@ bool Mouse_Relese(int keyCode) {
 
 //キーが押され続けている
 bool Mouse_Repeat(int keyCode) {
-	return false;
+	return (s_Mouse.InputBotton[keyCode] == 1 || (s_Mouse.InputBotton[keyCode] >= 20));
 }
 
 //キーが押された

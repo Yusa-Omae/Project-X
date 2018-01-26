@@ -44,23 +44,33 @@ StringBase::~StringBase() {
 	true:	一文字ずつ表示する	false:すべて描画
 	int length = 30			:一行に表示させる文字数(デフォルトは30文字)
 	int interval  = 20		:文字を描画する間隔
+
+	return			-1		:エラー
+					0		:描画中
+					1		:描画終了
+					2		:表示インターバル中
+
 */
-void StringBase::Update(bool isOnletter/* = false*/, int length/* = 30*/, int interval /* = 20*/) {
+int StringBase::Update(bool isOnletter/* = false*/, int length/* = 30*/, int interval /* = 20*/) {
 
 	mIsOnletter = isOnletter;
 
 	//一文字ずつ表示させないなら処理を抜ける
-	if (mIsOnletter == false) return;
+	if (mIsOnletter == false) return 1;
+
+	if (mString[mTotalPos] == '\0') {
+		return 1;
+	}
 
 	mCounter++;
-	if (mCounter % interval != 0) return;
+	if (mCounter % interval != 0) return 2;
 
 	mNextLineLength = length;
 	int pos = mPos + mLine * mNextLineLength;
 
-	if (mLine >= mNextLineLength) {
+	if (mLine >= STRING_LINE_MAX) {
 		printfDx("これ以上改行することができません");
-		return;
+		return -1;
 	}
 
 	if (mString[mTotalPos] != '\0') {
@@ -74,7 +84,7 @@ void StringBase::Update(bool isOnletter/* = false*/, int length/* = 30*/, int in
 			if (mString[mTotalPos] == '\n') {
 				mTotalPos++;
 			}
-			return;
+			return 0;
 		}
 
 		int num = this->GetCharBytes(&mString[mTotalPos]);
@@ -96,8 +106,9 @@ void StringBase::Update(bool isOnletter/* = false*/, int length/* = 30*/, int in
 
 		mStrNum ++;
 
-
+		return 0;
 	}
+	return 1;
 }
 
 /*

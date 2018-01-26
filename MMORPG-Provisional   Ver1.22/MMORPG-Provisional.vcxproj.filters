@@ -91,6 +91,24 @@
     <Filter Include="ヘッダー ファイル\Code\Common\Mouse">
       <UniqueIdentifier>{6793c92c-9887-40b8-a3be-5cadb79f5683}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Code\Scene\Adventure">
+      <UniqueIdentifier>{cefe589f-316f-44b0-b9d4-33668196b8b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\Scene\Result">
+      <UniqueIdentifier>{750aea46-dfbe-4f17-8f8e-0c3042d2155d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Code\Scene\Tutorial">
+      <UniqueIdentifier>{0caf948c-15cd-4db3-aac8-51b49b079192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Scene\Adventure">
+      <UniqueIdentifier>{9fc35514-84d2-4e4d-af41-7bf6ae1fea16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Scene\Result">
+      <UniqueIdentifier>{ef5fd6f5-7f95-4d16-a5eb-54457d430685}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Scene\Tutorial">
+      <UniqueIdentifier>{03348471-cbd8-427c-a7ac-930dd3e73fb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -171,6 +189,15 @@
     <ClCompile Include="TextParam.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Scene\Adventure\Adventure.cpp">
+      <Filter>ソース ファイル\Code\Scene\Adventure</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scene\Result\Result.cpp">
+      <Filter>ソース ファイル\Code\Scene\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scene\Tutorial\Tutorial.cpp">
+      <Filter>ソース ファイル\Code\Scene\Tutorial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -250,6 +277,15 @@
     </ClInclude>
     <ClInclude Include="TextParam.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scene\Adventure\Adventure.h">
+      <Filter>ヘッダー ファイル\Code\Scene\Adventure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scene\Result\Result.h">
+      <Filter>ヘッダー ファイル\Code\Scene\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scene\Tutorial\Tutorial.h">
+      <Filter>ヘッダー ファイル\Code\Scene\Tutorial</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
