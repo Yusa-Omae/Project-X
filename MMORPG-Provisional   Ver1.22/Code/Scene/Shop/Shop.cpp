@@ -14,9 +14,14 @@
 
 #include "DxLib.h"
 #include "../Code/AppData/Item/ItemData.h"
+#include "../Code/Common/Window/ScrollWindow.h"
 #include "../Code/Common/Keyboard/Keyboard.h"
+#include "../Code/Common/Mouse/Mouse.h"
+
 #include "../Gamemain.h"
+
 #include "Shop.h"
+
 
 enum eImage{
 
@@ -27,14 +32,19 @@ enum eImage{
 
 typedef struct {
 
+	SCROLL_WINDOW_DATA_t scrollWindow;
 	int imgHandle[eImage_Num];	//画像ハンドル
 	
 }WORK_OBJ_t;
+
+static WORK_OBJ_t s_Work;
 
 
 void Shop_Intialize() {
 
 	//リソース読み込み
+
+	ScrollWindow_Initialize(&s_Work.scrollWindow, 20, 20, 1000, 1000, 1000);
 
 }
 
@@ -45,6 +55,13 @@ void Shop_Finalize() {
 }
 
 void Shop_Update() {
+
+	if (Mouse_WheelValueF() > 0) {
+		ScrollWindow_Scroll(&s_Work.scrollWindow, -1);
+	}
+	else if (Mouse_WheelValueF() < 0) {
+		ScrollWindow_Scroll(&s_Work.scrollWindow, 1);
+	}
 
 	if (Keyboard_Press(KEY_INPUT_X) == true) {
 		GameMain_ChangeGameState(eGameState_MainGame, eFadeType_CrossFade);
@@ -59,8 +76,12 @@ void Shop_Draw() {
 	DrawString(0, 20, "Xキーでゲームメインへ移動", GetColor(255, 255, 255));
 #endif
 
+
+
+	ScrollWindow_Draw(s_Work.scrollWindow, eScrollWindow_ScrollbarVertical);
+	
 	/*
-		アイテムデータ一覧
+	アイテムデータ一覧
 	*/
 	int itemNum = ItemData_GetItemDataNum();
 	ITEM_DATA_t itemData;
@@ -68,6 +89,5 @@ void Shop_Draw() {
 		ItemData_GetItemData(i, &itemData);
 		DrawString(20, 60 + i * 20, itemData.name, GetColor(255, 255, 255));
 	}
-
 
 }

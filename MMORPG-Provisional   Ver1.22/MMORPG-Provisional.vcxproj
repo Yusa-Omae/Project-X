@@ -95,6 +95,9 @@
     <ClCompile Include="Code\Common\Mouse\Mouse.cpp" />
     <ClCompile Include="Code\Common\String\FontMgr\FontMgr.cpp" />
     <ClCompile Include="Code\Common\String\StringBase.cpp" />
+    <ClCompile Include="Code\Common\Window\Scrollbar.cpp" />
+    <ClCompile Include="Code\Common\Window\ScrollWindow.cpp" />
+    <ClCompile Include="Code\Common\Window\WindowBase.cpp" />
     <ClCompile Include="Code\Scene\Adventure\Adventure.cpp" />
     <ClCompile Include="Code\Scene\Result\Result.cpp" />
     <ClCompile Include="Code\Scene\Shop\Shop.cpp" />
@@ -126,6 +129,9 @@
     <ClInclude Include="Code\Common\Mouse\Mouse.h" />
     <ClInclude Include="Code\Common\String\FontMgr\FontMgr.h" />
     <ClInclude Include="Code\Common\String\StringBase.h" />
+    <ClInclude Include="Code\Common\Window\Scrollbar.h" />
+    <ClInclude Include="Code\Common\Window\ScrollWindow.h" />
+    <ClInclude Include="Code\Common\Window\WindowBase.h" />
     <ClInclude Include="Code\Scene\Adventure\Adventure.h" />
     <ClInclude Include="Code\Scene\Result\Result.h" />
     <ClInclude Include="Code\Scene\Shop\Shop.h" />

@@ -109,6 +109,12 @@
     <Filter Include="ヘッダー ファイル\Code\Scene\Tutorial">
       <UniqueIdentifier>{03348471-cbd8-427c-a7ac-930dd3e73fb7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Code\Common\WIndow">
+      <UniqueIdentifier>{fc0ee606-7184-4178-ba65-55b0c9a038e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\Common\Window">
+      <UniqueIdentifier>{90d76181-49bb-4ee3-93f8-c5876d3b429d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -198,6 +204,15 @@
     <ClCompile Include="Code\Scene\Tutorial\Tutorial.cpp">
       <Filter>ソース ファイル\Code\Scene\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Common\Window\WindowBase.cpp">
+      <Filter>ソース ファイル\Code\Common\WIndow</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Common\Window\Scrollbar.cpp">
+      <Filter>ソース ファイル\Code\Common\WIndow</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Common\Window\ScrollWindow.cpp">
+      <Filter>ソース ファイル\Code\Common\WIndow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -286,6 +301,15 @@
     </ClInclude>
     <ClInclude Include="Code\Scene\Tutorial\Tutorial.h">
       <Filter>ヘッダー ファイル\Code\Scene\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Common\Window\WindowBase.h">
+      <Filter>ヘッダー ファイル\Code\Common\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Common\Window\Scrollbar.h">
+      <Filter>ヘッダー ファイル\Code\Common\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Common\Window\ScrollWindow.h">
+      <Filter>ヘッダー ファイル\Code\Common\Window</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
