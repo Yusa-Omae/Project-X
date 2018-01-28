@@ -24,7 +24,7 @@
 #include "Shop.h"
 
 #define STRING_LINE_LENGTH_MAX (30)								//一行に表示する最大文字数
-#define ONELETTER_DISP_INTERVAL (20)							//一文字表示するまでの間隔
+#define ONELETTER_DISP_INTERVAL (5)							//一文字表示するまでの間隔
 #define STRING_DRAW_POSITION_X (1200)							//文字列描画座標X
 #define STRING_DRAW_POSITION_Y (INIT_AREA_Y2 - 20 * 7)			//文字列描画座標Y
 
@@ -35,15 +35,46 @@ enum eImage{
 	eImage_Num,
 };
 
+enum eStep {
+	eStep_Init,		//初期化
+	eStep_Select,	//アイテム選択
+	eStep_Buy,		//購入するか？
+};
+
 typedef struct {
 
 	SCROLL_WINDOW_DATA_t scrollWindow;
 	StringBase* stringBase;
 	int imgHandle[eImage_Num];	//画像ハンドル
-	
+	eStep step;
 }WORK_OBJ_t;
 
 static WORK_OBJ_t s_Work;
+
+
+static void ItemSelect() {
+	if (Mouse_WheelValueF() > 0) {
+		ScrollWindow_Scroll(&s_Work.scrollWindow, -1);
+	}
+	else if (Mouse_WheelValueF() < 0) {
+		ScrollWindow_Scroll(&s_Work.scrollWindow, 1);
+	}
+
+	if (Mouse_Press(eMouseInputBotton_Left) == true) {
+		int posX;
+		int posY;
+		Mouse_GetPositioin(&posX, &posY);
+		int ret = ScrollWindow_GetValue(s_Work.scrollWindow, posX, posY);
+		
+		if (ret != -1) {
+			ScrolWindow_SetValue(&s_Work.scrollWindow, ret);
+			ITEM_DATA_t item;
+			ItemData_GetItemData(ret, &item);
+			s_Work.stringBase->SetString(item.direction);
+		}
+	}
+
+};
 
 
 void Shop_Intialize() {
@@ -57,7 +88,7 @@ void Shop_Intialize() {
 
 	ScrollWindow_Initialize(&s_Work.scrollWindow, 20, 20, 1000, 1000, 1000);
 
-
+	s_Work.step = eStep_Init;
 }
 
 void Shop_Finalize() {
@@ -69,28 +100,26 @@ void Shop_Finalize() {
 
 void Shop_Update() {
 
-	if (Mouse_WheelValueF() > 0) {
-		ScrollWindow_Scroll(&s_Work.scrollWindow, -1);
-	}
-	else if (Mouse_WheelValueF() < 0) {
-		ScrollWindow_Scroll(&s_Work.scrollWindow, 1);
+	switch (s_Work.step) {
+	case eStep_Init:
+		s_Work.stringBase->SetString("いらっしゃい！\n今日はどうするんだい？");
+		s_Work.step = eStep_Select;
+		break;
+	case eStep_Select:
+		ItemSelect();
+		break;
+	case eStep_Buy:
+
+		break;
 	}
 
-	if (Mouse_Press(eMouseInputBotton_Left) == true) {
-		int posX;
-		int posY;
-		Mouse_GetPositioin(&posX, &posY);
-		int ret = ScrollWindow_GetValue(s_Work.scrollWindow, posX, posY);
-		ScrolWindow_SetValue(&s_Work.scrollWindow, ret);
-		printfDx("選択したアイテム番号は%d\n", ret);
-	}
-
+	
 
 	if (Keyboard_Press(KEY_INPUT_X) == true) {
 		GameMain_ChangeGameState(eGameState_MainGame, eFadeType_CrossFade);
 	}
 
-	s_Work.stringBase->SetString("いらっしゃい！\n今日はどうするんだい？");
+	
 	s_Work.stringBase->Update(true, STRING_LINE_LENGTH_MAX,ONELETTER_DISP_INTERVAL);
 
 }
@@ -103,21 +132,20 @@ void Shop_Draw() {
 #endif
 
 
+	switch (s_Work.step) {
+	case eStep_Init:
+
+		break;
+	case eStep_Select:
+
+		break;
+	case eStep_Buy:
+
+		break;
+	}
+
 
 	ScrollWindow_Draw(s_Work.scrollWindow, eScrollWindow_ScrollbarVertical);
-	
-#if false
-	/*
-	アイテムデータ一覧
-	*/
-	int itemNum = ItemData_GetItemDataNum();
-	ITEM_DATA_t itemData;
-	for (int i = 0; i < itemNum; i++) {
-		ItemData_GetItemData(i, &itemData);
-		DrawString(20, 60 + i * 20, itemData.name, GetColor(255, 255, 255));
-	}
-#endif
-
 	s_Work.stringBase->DrawString(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y);
 
 }

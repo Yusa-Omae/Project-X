@@ -72,6 +72,10 @@ void Adeventure_Finalize() {
 
 void Adeventure_Update() {
 	
+	if (Mouse_Press(eMouseInputBotton_Rigth) == true) {
+		GameMain_ChangeGameState(eGameState_Tutorial, eFadeType_CrossFade);
+	}
+
 	s_Work.stringBase->SetString(STRING_TBL[s_Work.num]);
 	
 	int result = s_Work.stringBase->Update(s_Work.isOneletter, STRING_LINE_LENGTH_MAX, s_Work.OneletterDispInterval);
@@ -103,6 +107,8 @@ void Adeventure_Update() {
 
 void Adeventure_Draw() {
 
+
+	DrawString(10, 20, "右クリックでスキップ", GetColor(255, 255, 255));
 
 	s_Work.stringBase->DrawString(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y, s_Work.isDisp);
 
