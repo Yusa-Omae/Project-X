@@ -149,7 +149,7 @@ extern void System_SetDebugParamInt(
 	int ParamNum
 );
 
-#endif
+
 
 #if false
 void Set_Exit_Game();
@@ -188,4 +188,8 @@ struct _SYSTEM_INFO_t{	//_SYSTEM_INFO‚ÍŠù‘¶‚Ìƒ‰ƒCƒuƒ‰ƒŠ‚ÅŽg—p‚³‚ê‚Ä‚¢‚½‚Ì‚Å–¼‘O‚
 	char WinTitle;
 
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> b602117a3cdc6b0978bf1ef5fd829b828e5786a6
 #endif
