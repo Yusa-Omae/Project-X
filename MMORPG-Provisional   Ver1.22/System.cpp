@@ -13,6 +13,7 @@
 #include "Task_AllStageClear.h"
 #include "Task_DebugStartMenu.h"
 #include "Mathematics.h"
+#include "Code/Common/Mouse/Mouse.h"
 
 // フェードアウト、フェードインの速度
 #define FADE_SPEED			(1.0f)
@@ -452,6 +453,8 @@ static bool System_MainLoop(void)
 		// 状態推移処理を行う回数分ループ
 		for (i = 0; i < g_SystemInfo.StepNum; i++)
 		{
+			Mouse_Update();
+
 			// エスケープキーが押されるか、
 			// ソフトを終了するかどうかのフラグが立っていたらループを抜ける
 			if (CheckHitKey(KEY_INPUT_ESCAPE) == 1 || g_SystemInfo.ExitGame)

@@ -15,9 +15,14 @@
 #ifndef __ADVENTURE_H__
 #define __ADVENTURE_H__
 
+STaskInfo* Task_Adventure_Start();
+bool Task_Adventure_IsDelete();
+
+#if false
 void Adeventure_Initialize();
 void Adeventure_Finalize();
 void Adeventure_Update();
 void Adeventure_Draw();
+#endif
 
 #endif // __ADVENTURE_H__

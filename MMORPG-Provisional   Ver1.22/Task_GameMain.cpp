@@ -12,6 +12,7 @@
 #include "Task_StageClear.h"
 #include "Task_GameOver.h"
 #include "Task_PauseMenu.h"
+#include "Code/Scene/Adventure/Adventure.h"
 #include <math.h>
 
 // ステージ開始をする前に待つ時間
@@ -46,8 +47,10 @@
 // ゲームメイン処理の状態
 typedef enum _ETask_GameMainState
 {
+	
 	ETask_GameMainState_StageStart_Wait,	// ステージ開始待ち中
 	ETask_GameMainState_Stage_FadeIn,		// ステージフェードイン中
+	ETask_GameMainState_Adventure_EndWait,	//会話パート終了待ち
 	ETask_GameMainState_StageNumber,		// ステージ番号表示中
 	ETask_GameMainState_InGame,				// ゲーム中
 	ETask_GameMainState_PauseMenu,			// ポーズメニュー中
@@ -99,6 +102,9 @@ typedef struct _STask_GameMainData
 
 	// ポーズメニュータスク情報構造体へのポインタ
 	STaskInfo *         PauseMenuTaskInfo;
+
+	// 会話パートタスク情報構造体へのポインタ
+	STaskInfo *         AdventureTaskInfo;
 } STask_GameMainData;
 
 // ゲームメインの状態推移処理を行う
@@ -159,6 +165,7 @@ static bool Task_GameMain_Step(
 	// ゲームメイン処理の状態によって処理を分岐
 	switch( GMData->State )
 	{
+	
 	case ETask_GameMainState_StageStart_Wait:	// ステージ開始待ち中
 		GMData->Counter += StepTime;
 		if( GMData->Counter > STAGE_START_WAIT )
@@ -174,15 +181,30 @@ static bool Task_GameMain_Step(
 	case ETask_GameMainState_Stage_FadeIn:	// ステージフェードイン中
 		if( !System_CheckFade() )
 		{
+			//会話タスク生成
+			GMData->AdventureTaskInfo = Task_Adventure_Start();
+			if (GMData->AdventureTaskInfo == NULL) {
+				return false;
+			}
+			GMData->State   = ETask_GameMainState_Adventure_EndWait;
+			GMData->Counter = 0.0f;
+		}
+		break;
+
+	case ETask_GameMainState_Adventure_EndWait:
+		if (Task_Adventure_IsDelete() == true) {
+			TaskSystem_DelTask(
+
+				//会話タスク削除
+				System_GetTaskSystemInfo(), GMData->AdventureTaskInfo);
+
 			// フェードインが完了したらステージ番号表示を開始する
 			GMData->StageNumberTaskInfo = Task_StageNumber_Start();
-			if( GMData->StageNumberTaskInfo == NULL )
+			if (GMData->StageNumberTaskInfo == NULL)
 			{
 				return false;
 			}
-
-			GMData->State   = ETask_GameMainState_StageNumber;
-			GMData->Counter = 0.0f;
+			GMData->State = ETask_GameMainState_StageNumber;
 		}
 		break;
 
@@ -612,7 +634,8 @@ STaskInfo * Task_GameMain_Start( void )
 	GMData->DrawHUD             = true;
 
 	// ステージ開始待ち状態にする
-	GMData->State               = ETask_GameMainState_StageStart_Wait;
+	//GMData->State               = ETask_GameMainState_StageStart_Wait;
+	GMData->State = ETask_GameMainState_StageStart_Wait;
 	GMData->Counter             = 0.0f;
 
 	// タスクを登録する

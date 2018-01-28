@@ -1,5 +1,4 @@
-﻿#if false
-/*
+﻿/*
 				ファイル名		:Adventure.cpp
 				作成者			:Syara
 				作成日時		:2018/01/26
@@ -14,7 +13,8 @@
 !*/
 
 #include "DxLib.h""
-
+#include "../Task.h"
+#include "../System.h"
 #include "../Define.h"
 #include "../Gamemain.h"
 
@@ -26,15 +26,17 @@
 #define STRING_LINE_LENGTH_MAX (60)								//一行に表示する最大文字数
 #define ONELETTER_DISP_INTERVAL (20)							//一文字表示するまでの間隔
 #define STRING_DRAW_POSITION_X (120)							//文字列描画座標X
-#define STRING_DRAW_POSITION_Y (INIT_AREA_Y2 - 20 * 7)			//文字列描画座標Y
+#define STRING_DRAW_POSITION_Y (GAME_SCREEN_HEIGHT - 20 * 7)			//文字列描画座標Y
 
 typedef struct {
+	STaskInfo task;
 	StringBase* stringBase;
 	bool isOneletter;				//一文字ずつ描画するか？
 	int OneletterDispInterval;		//一文字表示するまでの間隔
 	bool isDisp;					//表示するか？
 	int num;
-}WORK_OBJ_t;
+	bool isEnd;						//会話が終了したか
+}TASK_ADVENTURE_t;
 
 const char* STRING_TBL[] = {
 	{"あいうえおかきくけこ。"},
@@ -48,7 +50,123 @@ const char* STRING_TBL[] = {
 	{"無事抜け出せることができるのでしょうか？！" },
 };
 
-static WORK_OBJ_t s_Work;
+static bool Task_Adbentrue_Step(STaskInfo* task, float stepTime);
+static void Task_Adventure_Render(STaskInfo* task);
+static void Task_Adventure_Terminate(STaskInfo* task);
+
+// タイトル処理タスクの基本情報
+static STaskBaseInfo g_Task_AdventureTaskBaseInfo =
+{
+	8,
+	8,
+	Task_Adbentrue_Step,
+	Task_Adventure_Render,
+	Task_Adventure_Terminate,
+};
+
+static TASK_ADVENTURE_t* s_Work;
+
+
+STaskInfo* Task_Adventure_Start() {
+	TASK_ADVENTURE_t* task;
+
+	task = (TASK_ADVENTURE_t*)calloc(1, sizeof(TASK_ADVENTURE_t));
+	if (task == NULL) {
+		return false;
+	}
+
+	task->stringBase = new StringBase();
+	task->stringBase->FontCreate("ＭＳ 明朝", 24, 1, -1);
+	task->stringBase->SetColor(GetColor(255, 255, 255));
+	task->isOneletter = true;
+	task->OneletterDispInterval = ONELETTER_DISP_INTERVAL;
+	task->isDisp = true;
+
+	task->num = 0;
+
+	task->task.Base = &g_Task_AdventureTaskBaseInfo;
+	task->task.Data = task;
+	TaskSystem_AddTask(System_GetTaskSystemInfo(), &task->task);
+
+	task->isEnd = false;
+
+	s_Work = task;
+
+	return &task->task;
+}
+
+bool Task_Adventure_IsDelete() {
+	return s_Work->isEnd;
+}
+
+
+static bool Task_Adbentrue_Step(STaskInfo* stask, float stepTime) {
+
+	TASK_ADVENTURE_t* task = (TASK_ADVENTURE_t*)stask->Data;
+
+	if (Mouse_Press(eMouseInputBotton_Rigth) == true) {
+		//GameMain_ChangeGameState(eGameState_Tutorial, eFadeType_CrossFade);
+		//TaskSystem_DelTask(System_GetTaskSystemInfo(), &task->task);
+		task->isEnd = true;
+		return true;
+	}
+
+	task->stringBase->SetString(STRING_TBL[task->num]);
+
+	int result = task->stringBase->Update(task->isOneletter, STRING_LINE_LENGTH_MAX,task->OneletterDispInterval);
+
+	//描画終了していたら次の文字列を設定する
+	if (result == 1) {
+		if (Mouse_Press(eMouseInputBotton_Left)) {
+			task->num++;
+			if (task->num >= 9) {
+				task->num = 0;
+				task->isDisp = false;
+
+				//次のタスクをスタートさせる
+
+
+				//GameMain_ChangeGameState(eGameState_Tutorial, eFadeType_CrossFade);
+				// タスクを削除する
+				//TaskSystem_DelTask(System_GetTaskSystemInfo(), &task->task);
+				task->isEnd = true;
+			}
+		}
+	}
+	//描画中の場合
+	else if (result == 0) {
+
+		if (Mouse_Repeat(eMouseInputBotton_Left)) {
+			task->OneletterDispInterval = 2;
+		}
+		else {
+			task->OneletterDispInterval = ONELETTER_DISP_INTERVAL;
+		}
+
+	}
+	return true;
+}
+
+static void Task_Adventure_Render(STaskInfo* stask) {
+
+	TASK_ADVENTURE_t* task = (TASK_ADVENTURE_t*)stask->Data;
+
+	DrawString(10, 20, "右クリックでスキップ", GetColor(255, 255, 255));
+
+	task->stringBase->DrawString(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y, task->isDisp);
+
+}
+
+static void Task_Adventure_Terminate(STaskInfo* stask) {
+
+	TASK_ADVENTURE_t* task = (TASK_ADVENTURE_t*)stask->Data;
+
+	delete (task->stringBase);
+	task->stringBase = NULL;
+
+}
+
+#if false
 
 void Adeventure_Initialize() {
 
