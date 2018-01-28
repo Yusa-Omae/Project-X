@@ -126,7 +126,19 @@
 // 文字列のパラメータの最大文字数
 #define TEXTPARAM_STRING_MAXLENGTH 64
 
+// ディレクショナルライトの方向
+#define DIRLIGHT_DIRECTION_X		( 0.57735026f)
+#define DIRLIGHT_DIRECTION_Y		(-0.57735026f)
+#define DIRLIGHT_DIRECTION_Z		( 0.57735026f)
 
+// 空用３Ｄモデル描画用のカメラの手前クリップ距離
+#define SKYMODEL_CAMERA_NEAR_Z		(10.0f)
+
+// 空用３Ｄモデル描画用のカメラの奥クリップ距離
+#define SKYMODEL_CAMERA_FAR_Z		(100000.0f)
+
+// ポイントライトの光が届く距離
+#define POINTLIGHT_RANGE			(8000.0f)
 
 //---------------------------------------------------------------------------------------------マップチップ関係---------------------------------------------------------------------------------------------
 

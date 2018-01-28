@@ -83,8 +83,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chara.cpp" />
+    <ClCompile Include="CharaBase.cpp" />
     <ClCompile Include="Chara_Enemy.cpp" />
     <ClCompile Include="Code\AppData\Item\ItemData.cpp" />
     <ClCompile Include="Code\AppData\SaveData\SaveData.cpp" />
@@ -106,20 +108,25 @@
     <ClCompile Include="Code\Test\TestMenu.cpp" />
     <ClCompile Include="Code\Test\TestString.cpp" />
     <ClCompile Include="Gamemain.cpp" />
+    <ClCompile Include="GameMainRender.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Chara_NPC.cpp" />
     <ClCompile Include="Chara_Player.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="StageData.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="TextParam.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chara.h" />
+    <ClInclude Include="CharaBase.h" />
     <ClInclude Include="Chara_Enemy.h" />
     <ClInclude Include="Code\AppData\Item\ItemData.h" />
     <ClInclude Include="Code\AppData\SaveData\SaveData.h" />
@@ -142,12 +149,16 @@
     <ClInclude Include="Code\Test\TestString.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Gamemain.h" />
+    <ClInclude Include="GameMainRender.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="Chara_NPC.h" />
     <ClInclude Include="Chara_Player.h" />
     <ClInclude Include="SceneMgr.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="StageData.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="Task.h" />
     <ClInclude Include="TextParam.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="UI.h" />
