@@ -31,7 +31,7 @@ void ScrollWindow_Initialize(SCROLL_WINDOW_DATA_t* window,int drawX,int drawY,in
 	for (int i = 0; i < ITEM_WINDOW_NUM; i++) {
 		int x = drawX + 5;
 		int y = (i * winHeigh) + drawY + 5;
-		int width = x + windowWidth - 65;
+		int width = x + windowWidth - 75;
 		int height = winHeigh - 5;
 		WindowBase_Initialize(&window->itemWindow[i], x, y, width, height);
 	}
@@ -74,14 +74,16 @@ void ScrollWindow_Draw(SCROLL_WINDOW_DATA_t window,int scrollbarType) {
 	
 	ITEM_DATA_t itemData;
 	for (int i = 0; i < window.scrollbar.valueMax; i++) {
-		int alpha = 100;
+		
 		
 		int drawItem = i + (int)window.scrollbar.nowValue;
 		if (drawItem >= 0 && drawItem < window.scrollbar.valueMax) {
-
+			
+			int alpha = 100;
 			if (drawItem == ((int)window.scrollbar.nowValue)) {
 				alpha = 255;
 			}
+
 
 			WindowBase_Draw(window.itemWindow[i], alpha, GetColor(255, 255, 0), GetColor(255, 255, 255));
 
