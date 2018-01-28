@@ -13,16 +13,39 @@
 !*/
 #include "DxLib.h"
 
+#include "../Code/AppData/Item/ItemData.h"
 #include "ScrollWindow.h"
 
 
 void ScrollWindow_Initialize(SCROLL_WINDOW_DATA_t* window,int drawX,int drawY,int windowWidth,int windowHeigh,int scrollSize) {
 
 	WindowBase_Initialize(&window->window, drawX, drawY, windowWidth, windowHeigh);
-	Scrollbar_Initialize(&window->scrollbar, scrollSize, 100);
+	Scrollbar_Initialize(&window->scrollbar, scrollSize, ItemData_GetItemDataNum());
 	window->alpha = 255;
 	window->windowColor = GetColor(0, 255, 255);
 	window->frameColor = GetColor(0, 255, 0);
+
+
+
+	int winHeigh = windowHeigh / ITEM_WINDOW_NUM;
+	for (int i = 0; i < ITEM_WINDOW_NUM; i++) {
+		int x = drawX + 5;
+		int y = (i * winHeigh) + drawY + 5;
+		int width = x + windowWidth - 65;
+		int height = winHeigh - 5;
+		WindowBase_Initialize(&window->itemWindow[i], x, y, width, height);
+	}
+
+	/*
+	アイテムデータ一覧
+	*/
+	int itemNum = ItemData_GetItemDataNum();
+	ITEM_DATA_t itemData;
+	for (int i = 0; i < itemNum; i++) {
+		ItemData_GetItemData(i, &itemData);
+		DrawString(20, 60 + i * 20, itemData.name, GetColor(255, 255, 255));
+	}
+
 }
 
 /*
@@ -49,6 +72,24 @@ void ScrollWindow_Draw(SCROLL_WINDOW_DATA_t window,int scrollbarType) {
 		break;
 	}	
 	
+	ITEM_DATA_t itemData;
+	for (int i = 0; i < ITEM_WINDOW_NUM; i++) {
+		int alpha = 100;
+		
+		if(i == ((int)window.scrollbar.nowValue % ITEM_WINDOW_NUM)){
+			alpha = 255;
+		}
+		WindowBase_Draw(window.itemWindow[i], alpha, GetColor(255, 255, 0), GetColor(255, 255, 255));
+		
+		
+		int drawItem = i + (int)window.scrollbar.nowValue / ITEM_WINDOW_NUM;
+		if (drawItem < ItemData_GetItemDataNum()) {
+			ItemData_GetItemData(drawItem, &itemData);
+			DrawString(20, 60 + i * 181, itemData.name, GetColor(0, 0, 0));
+		}
+		
+	}
+
 }
 
 /*

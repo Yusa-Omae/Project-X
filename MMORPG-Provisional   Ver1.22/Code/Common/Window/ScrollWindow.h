@@ -18,6 +18,8 @@
 #include "Scrollbar.h"
 #include "WindowBase.h"
 
+#define ITEM_WINDOW_NUM (6)					//画面上に表示させるアイテムウィンドウの数
+
 enum eScrollWindow {
 	eScrollWindow_ScrollbarVertical,		//縦向きスクロールバー
 	eScrollWindow_ScrollbarHorizontal,		//横向きスクロールバー
@@ -26,6 +28,7 @@ enum eScrollWindow {
 typedef struct {
 	SCROLLBAR_DATA_t scrollbar;
 	WINDOW_BASE_t window;
+	WINDOW_BASE_t itemWindow[ITEM_WINDOW_NUM];
 	int alpha;					//アルファ値
 	unsigned int windowColor;	//ウィンドウの色
 	unsigned int frameColor;	//枠の色	
