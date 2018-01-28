@@ -149,7 +149,7 @@ extern void System_SetDebugParamInt(
 	int ParamNum
 );
 
-
+#endif
 
 #if false
 void Set_Exit_Game();
