@@ -47,7 +47,7 @@ public :
 	void WriteString(const char* paramString);
 	void WriteUChar(unsigned char paramUChar);
 	void WriteUInt(unsigned int paramUInt);
-
+	void WriteVector(VECTOR paramVector);
 };
 
 #endif // __WRITE_BYNARY_H__

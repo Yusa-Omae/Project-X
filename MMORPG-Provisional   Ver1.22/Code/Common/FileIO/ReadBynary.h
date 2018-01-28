@@ -53,6 +53,7 @@ public :
 	bool ReadString(char* paramString);
 	bool ReadUChar(unsigned char* paramUChar);
 	bool ReadUInt(unsigned int* paramUInt);
+	bool ReadVector(VECTOR *paramVector);
 
 };
 

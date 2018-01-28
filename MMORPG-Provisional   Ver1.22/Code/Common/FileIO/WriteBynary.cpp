@@ -128,3 +128,7 @@ void WriteBynary::WriteUChar(unsigned char paramUChar) {
 void WriteBynary::WriteUInt(unsigned int paramUInt) {
 	WriteData(&paramUInt, sizeof(unsigned int));
 }
+
+void WriteBynary::WriteVector(VECTOR paramVector) {
+	WriteData(&paramVector, sizeof(VECTOR));
+}

@@ -134,3 +134,7 @@ bool ReadBynary::ReadUChar(unsigned char* paramUChar) {
 bool ReadBynary::ReadUInt(unsigned int* paramUInt) {
 	return ReadData(paramUInt, sizeof(unsigned int));
 }
+
+bool ReadBynary::ReadVector(VECTOR *paramVector) {
+	return ReadData(paramVector, sizeof(VECTOR));
+}
