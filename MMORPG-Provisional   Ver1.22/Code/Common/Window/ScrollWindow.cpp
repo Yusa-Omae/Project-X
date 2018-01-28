@@ -73,19 +73,22 @@ void ScrollWindow_Draw(SCROLL_WINDOW_DATA_t window,int scrollbarType) {
 	}	
 	
 	ITEM_DATA_t itemData;
-	for (int i = 0; i < ITEM_WINDOW_NUM; i++) {
+	for (int i = 0; i < window.scrollbar.valueMax; i++) {
 		int alpha = 100;
 		
-		if(i == ((int)window.scrollbar.nowValue % ITEM_WINDOW_NUM)){
-			alpha = 255;
-		}
-		WindowBase_Draw(window.itemWindow[i], alpha, GetColor(255, 255, 0), GetColor(255, 255, 255));
-		
-		
-		int drawItem = i + (int)window.scrollbar.nowValue / ITEM_WINDOW_NUM;
-		if (drawItem < ItemData_GetItemDataNum()) {
-			ItemData_GetItemData(drawItem, &itemData);
-			DrawString(20, 60 + i * 181, itemData.name, GetColor(0, 0, 0));
+		int drawItem = i + (int)window.scrollbar.nowValue;
+		if (drawItem >= 0 && drawItem < window.scrollbar.valueMax) {
+
+			if (drawItem == ((int)window.scrollbar.nowValue)) {
+				alpha = 255;
+			}
+
+			WindowBase_Draw(window.itemWindow[i], alpha, GetColor(255, 255, 0), GetColor(255, 255, 255));
+
+			if (drawItem < ItemData_GetItemDataNum()) {
+				ItemData_GetItemData(drawItem, &itemData);
+				DrawString(20, 60 + i * 181, itemData.name, GetColor(0, 0, 0));
+			}
 		}
 		
 	}
@@ -134,4 +137,29 @@ void ScrollWindow_SetWindowPosition(SCROLL_WINDOW_DATA_t* window,int drawPosX,in
 */
 void ScrollWindow_Scroll(SCROLL_WINDOW_DATA_t* window,int value) {
 	Scrollbar_AddValue(&window->scrollbar, value);
+}
+
+void ScrolWindow_SetValue(SCROLL_WINDOW_DATA_t* window, int value) {
+	Scrollbar_SetValue(&window->scrollbar, value);
+}
+
+/*
+	値を返却する
+*/
+int ScrollWindow_GetValue(SCROLL_WINDOW_DATA_t window,int posX,int posY) {
+	
+	int result = -1;
+
+	for (int i = 0; i < ITEM_WINDOW_NUM; i++) {
+	
+		if (WindowBase_IsInSide(window.itemWindow[i], posX, posY) == true) {
+
+			int drawItem = i + (int)window.scrollbar.nowValue;
+			if (drawItem >= 0 && drawItem < window.scrollbar.valueMax) {
+				result = drawItem;
+				break;
+			}
+		}
+	}
+	return result;
 }

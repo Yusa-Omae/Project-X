@@ -62,3 +62,28 @@ void WindowBase_DrawGraph(WINDOW_BASE_t win,int graphicHandle,int alpha/* = 255*
 	DrawExtendGraph(drawX, drawY, width, height, graphicHandle,TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
+
+/*
+	ウィンドウの中にあるか判断する
+	WINDOW_BASE_t win
+	int posX			:座標
+	int posY			:
+	return	true	:ウィンドウの中にある
+			false	:ウィンドウの中にない
+*/
+bool WindowBase_IsInSide(WINDOW_BASE_t win,int posX,int posY) {
+
+	int drawX = win.drawPosX;
+	int drawY = win.drawPosY;
+	int width = win.width;
+	int height = win.height;
+
+	float result = false;
+
+	if (posX >= drawX && posX <= drawX + width &&
+		posY >= drawY && posY <= drawY + height) {
+		result = true;
+	}
+
+	return result;
+}

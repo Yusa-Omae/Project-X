@@ -50,6 +50,9 @@ void Scrollbar_AddValue(SCROLLBAR_DATA_t* bar, int value);
 */
 int Scrollbar_GetValue();
 
-void Scrollbar_SetValue(int value);
+/*
+値を設定する
+*/
+void Scrollbar_SetValue(SCROLLBAR_DATA_t* bar, int value);
 
 #endif // __SCROLLBAR_H__

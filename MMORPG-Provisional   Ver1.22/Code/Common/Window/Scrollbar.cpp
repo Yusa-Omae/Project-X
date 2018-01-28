@@ -85,6 +85,15 @@ int Scrollbar_GetValue(SCROLLBAR_DATA_t bar) {
 	return (int)bar.nowValue;
 }
 
+/*
+	値を設定する
+*/
 void Scrollbar_SetValue(SCROLLBAR_DATA_t* bar,int value) {
-	
+	bar->nowValue = value;
+	if (bar->nowValue < 0) {
+		bar->nowValue = 0;
+	}
+	else if (bar->nowValue >= bar->valueMax) {
+		bar->nowValue = bar->valueMax - 1;
+	}
 }

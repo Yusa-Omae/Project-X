@@ -76,6 +76,16 @@ void Shop_Update() {
 		ScrollWindow_Scroll(&s_Work.scrollWindow, 1);
 	}
 
+	if (Mouse_Press(eMouseInputBotton_Left) == true) {
+		int posX;
+		int posY;
+		Mouse_GetPositioin(&posX, &posY);
+		int ret = ScrollWindow_GetValue(s_Work.scrollWindow, posX, posY);
+		ScrolWindow_SetValue(&s_Work.scrollWindow, ret);
+		printfDx("選択したアイテム番号は%d\n", ret);
+	}
+
+
 	if (Keyboard_Press(KEY_INPUT_X) == true) {
 		GameMain_ChangeGameState(eGameState_MainGame, eFadeType_CrossFade);
 	}
@@ -96,6 +106,7 @@ void Shop_Draw() {
 
 	ScrollWindow_Draw(s_Work.scrollWindow, eScrollWindow_ScrollbarVertical);
 	
+#if false
 	/*
 	アイテムデータ一覧
 	*/
@@ -105,6 +116,7 @@ void Shop_Draw() {
 		ItemData_GetItemData(i, &itemData);
 		DrawString(20, 60 + i * 20, itemData.name, GetColor(255, 255, 255));
 	}
+#endif
 
 	s_Work.stringBase->DrawString(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y);
 

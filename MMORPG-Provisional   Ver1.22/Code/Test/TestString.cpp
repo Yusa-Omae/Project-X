@@ -72,6 +72,16 @@ void TestString_Update() {
 		ScrollWindow_Scroll(&s_scrollWindow, 1);
 	}
 
+	
+	if (Mouse_Press(eMouseInputBotton_Left) == true) {
+		int posX;
+		int posY;
+		Mouse_GetPositioin(&posX, &posY);
+		int ret = ScrollWindow_GetValue(s_scrollWindow, posX, posY);
+		ScrolWindow_SetValue(&s_scrollWindow, ret);
+		printfDx("選択したアイテム番号は%d\n",ret);
+	}
+
 	if (Keyboard_Press(KEY_INPUT_X)) {
 		SceneMgr_ChangeScene(eScene_TestMemu);
 	}

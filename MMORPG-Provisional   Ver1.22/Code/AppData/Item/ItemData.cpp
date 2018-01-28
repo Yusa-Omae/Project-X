@@ -21,6 +21,12 @@ static const ITEM_DATA_t s_cItemTbl[] = {
 	{ 0,"移動速度アップ",			"移動速度を少し速くします.",							eItemType_MoveSpeed_Up,		1.25f,	20},
 	{ 1,"防御力アップ",				"防御力を気持ち上昇させます.",							eItemType_Deffence_Up ,		1.115f,	99},
 	{ 1,"クリティカルヒット率アップ","クリティカルヒットが起きる確率を0.15%増加します.",	eItemType_CriticalHit_Up,	1.15f,	30},
+	{ 1,"No Empty1","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
+	{ 1,"No Empty2","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
+	{ 1,"No Empty3","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
+	{ 1,"No Empty4","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
+	{ 1,"No Empty5","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
+	{ 1,"No Empty6","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
 };
 
 

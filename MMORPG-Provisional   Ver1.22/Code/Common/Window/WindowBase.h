@@ -47,4 +47,15 @@ int alpha = 255		:アルファ値(デフォルトは255)
 */
 void WindowBase_DrawGraph(WINDOW_BASE_t win, int graphicHandle, int alpha = 255);
 
+
+/*
+ウィンドウの中にあるか判断する
+WINDOW_BASE_t win
+int posX			:座標
+int posY			:
+return	true	:ウィンドウの中にある
+false	:ウィンドウの中にない
+*/
+bool WindowBase_IsInSide(WINDOW_BASE_t win, int posX, int posY);
+
 #endif // __WINDOW_BASE_H__

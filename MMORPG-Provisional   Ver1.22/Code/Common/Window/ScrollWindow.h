@@ -57,4 +57,11 @@ int value						:設定した値だけスクロールする
 */
 void ScrollWindow_Scroll(SCROLL_WINDOW_DATA_t* window, int value);
 
+/*
+値を返却する
+*/
+int ScrollWindow_GetValue(SCROLL_WINDOW_DATA_t window, int posX, int posY);
+
+void ScrolWindow_SetValue(SCROLL_WINDOW_DATA_t* window, int value);
+
 #endif // __SCROLL_WINDOW_H__
