@@ -1,4 +1,5 @@
-﻿/*
+﻿#if false
+/*
 				ファイル名		:Adventure.cpp
 				作成者			:Syara
 				作成日時		:2018/01/26
@@ -114,3 +115,4 @@ void Adeventure_Draw() {
 
 
 }
+#endif

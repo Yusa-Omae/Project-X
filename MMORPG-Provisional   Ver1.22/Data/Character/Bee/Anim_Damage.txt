@@ -1,0 +1,5 @@
+int EventNum = 1
+string Event0_TypeName = Sound
+float Event0_Time = 1.000
+string Event0_SoundPath = Bee\VO_damage_B
+

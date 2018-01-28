@@ -1,3 +1,4 @@
+#if false
 #pragma once
 
 
@@ -30,3 +31,4 @@ void SceneMgr_ChangeScene(eScene nextScene);
 void SceneInitialize();
 
 void SceneFainalize();
+#endif

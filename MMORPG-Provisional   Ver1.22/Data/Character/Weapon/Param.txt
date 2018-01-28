@@ -1,0 +1,6 @@
+string CharaWeapon000_DirectoryName = Sabel
+string CharaWeapon001_DirectoryName = Sword
+string CharaWeapon002_DirectoryName = Axe
+string CharaWeapon003_DirectoryName = Needle
+string CharaWeapon004_DirectoryName = RockKnuckle
+

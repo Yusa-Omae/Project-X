@@ -1,0 +1,29 @@
+string BGM0_FilePath   = BGM_stg0.ogg
+int    BGM0_Loop_Start = 1840611
+int    BGM0_Loop_End   = 10517587
+
+string BGM1_FilePath   = BGM_stg1.ogg
+int    BGM1_Loop_Start = 235079
+int    BGM1_Loop_End   = 10819078
+
+string BGM2_FilePath   = BGM_title.ogg
+int    BGM2_Loop_Start = 445332
+int    BGM2_Loop_End   = 4890636
+
+string BGM3_FilePath   = BGM_boss.ogg
+int    BGM3_Loop_Start = 0
+int    BGM3_Loop_End   = 7938075
+
+string BGM4_FilePath   = JINGLE_gameover.ogg
+int    BGM4_Loop_Start = -1
+int    BGM4_Loop_End   = -1
+
+string BGM5_FilePath   = JINGLE_stageclear.ogg
+int    BGM5_Loop_Start = -1
+int    BGM5_Loop_End   = -1
+
+string BGM6_FilePath   = JINGLE_stageclearALL.ogg
+int    BGM6_Loop_Start = -1
+int    BGM6_Loop_End   = -1
+
+

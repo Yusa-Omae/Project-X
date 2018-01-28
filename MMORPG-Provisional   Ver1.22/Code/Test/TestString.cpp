@@ -1,4 +1,6 @@
-﻿/*
+﻿
+#if false
+/*
 				ファイル名		:
 				作成者			:
 				作成日時		:
@@ -107,3 +109,4 @@ void TestString_Draw() {
 }
 
 #endif	//__MY_DEBUG__
+#endif

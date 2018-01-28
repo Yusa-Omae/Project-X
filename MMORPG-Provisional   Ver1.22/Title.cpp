@@ -1,3 +1,4 @@
+#if false
 #include"DxLib.h"
 #include"key.h"
 #include"SceneMgr.h"
@@ -295,3 +296,4 @@ void TitleFainalize()
 	DeleteGraph(Mark_Backimage);
 	DeleteGraph(Title_Charimage);
 }
+#endif

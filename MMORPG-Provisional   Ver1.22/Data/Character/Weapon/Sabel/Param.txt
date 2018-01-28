@@ -1,0 +1,2 @@
+string Name      = ƒT[ƒxƒ‹
+string ModelPath = Sabel.mv1

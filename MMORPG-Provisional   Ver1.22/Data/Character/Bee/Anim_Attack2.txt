@@ -1,0 +1,16 @@
+int EventNum = 4
+string Event0_TypeName = Sound
+float Event0_Time = 0.500
+string Event0_SoundPath = Bee\VO_attack
+
+string Event1_TypeName = Sound
+float Event1_Time = 16.500
+string Event1_SoundPath = Bee\attack_sult_B
+
+string Event2_TypeName = Other
+float Event2_Time = 18.500
+
+string Event3_TypeName = Sound
+float Event3_Time = 33.000
+string Event3_SoundPath = Bee\flying_1shot
+

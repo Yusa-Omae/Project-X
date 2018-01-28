@@ -6,19 +6,19 @@
 #include "Chara.h"
 
 // ƒQ[ƒ€‰æ–Ê‚Ì•
-#define GAME_SCREEN_WIDTH			(1280)
+#define GAME_SCREEN_WIDTH 1280
 
 // ƒQ[ƒ€‰æ–Ê‚Ì‚‚³
-#define GAME_SCREEN_HEIGHT			(720)
+#define GAME_SCREEN_HEIGHT 720
 
 // ¬ƒtƒHƒ“ƒg‚ÌƒTƒCƒY
-#define FONTHANDLE_SMALL_SIZE		(24)
+#define FONTHANDLE_SMALL_SIZE 24
 
 // ’†ƒtƒHƒ“ƒg‚ÌƒTƒCƒY
-#define FONTHANDLE_MIDIUM_SIZE		(32)
+#define FONTHANDLE_MIDIUM_SIZE 32
 
 // ‘åƒtƒHƒ“ƒg‚ÌƒTƒCƒY
-#define FONTHANDLE_BIG_SIZE			(80)
+#define FONTHANDLE_BIG_SIZE 80
 
 // ƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹
 typedef enum _EFontHandle
@@ -151,7 +151,7 @@ extern void System_SetDebugParamInt(
 
 #endif
 
-
+#if false
 void Set_Exit_Game();
 bool Get_Exit_Game();
 void SystemInitialize();
@@ -188,3 +188,4 @@ struct _SYSTEM_INFO_t{	//_SYSTEM_INFO‚ÍŠù‘¶‚Ìƒ‰ƒCƒuƒ‰ƒŠ‚Åg—p‚³‚ê‚Ä‚¢‚½‚Ì‚Å–¼‘O‚
 	char WinTitle;
 
 };
+#endif

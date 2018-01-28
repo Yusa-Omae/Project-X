@@ -1,0 +1,32 @@
+string Name                    = êj
+string Type                    = EnemyShot
+int    Health                  = 100
+string MainModelPath           = Needle.mv1
+string RootFrameName           = root
+
+string EquipWeapon             = Needle
+
+float  DamageHitWidth          = 10.0
+float  DamageHitHeight         = 10.0
+vector DamageHitCenterPosition = 0.0 0.0 0.0
+
+vector HealthGaugePosition     = 0.0 180.0 0.0
+
+string AttackPosInfo0_StartFrameName   = hari
+string AttackPosInfo0_FormType         = Sphere
+float  AttackPosInfo0_SphereSize       = 10.0
+vector AttackPosInfo0_EndLocalPosition = 60.0 0.0 0.0
+color  AttackPosInfo0_EffectColor      = 128 128 0 255
+
+float  ProgramMoveSpeed     = 600.0
+float  ShadowSize           = 50.0
+
+float  CharaHitWidth                = 10.0
+float  CharaHitHeight               = 0.0
+vector CharaHitCenterPosition       = 0.0 0.0 0.0
+float  StageHitBottomWidth          = 10.0
+float  StageHitBottomHeight         = 0.0
+vector StageHitBottomCenterPosition = 0.0 0.0 0.0
+float  StageHitTopWidth             = 10.0
+float  StageHitTopHeight            = 0.0
+vector StageHitTopCenterPosition    = 0.0 0.0 0.0

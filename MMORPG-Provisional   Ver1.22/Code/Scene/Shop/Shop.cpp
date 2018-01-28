@@ -1,4 +1,5 @@
-﻿/*
+﻿#if false
+/*
 				ファイル名		:Shop.cpp
 				作成者			:Syara
 				作成日時		:2018/01/23
@@ -148,3 +149,4 @@ void Shop_Draw() {
 	s_Work.stringBase->DrawString(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y);
 
 }
+#endif

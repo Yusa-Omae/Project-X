@@ -1,0 +1,13 @@
+int EventNum = 3
+string Event0_TypeName = Sound
+float Event0_Time = 0.000
+string Event0_SoundPath = Bee\flapDead
+
+string Event1_TypeName = Sound
+float Event1_Time = 6.000
+string Event1_SoundPath = Bee\VO_dead_B2
+
+string Event2_TypeName = PhysicsSound
+float Event2_Time = 26.500
+string Event2_PhysicsSoundType = down
+

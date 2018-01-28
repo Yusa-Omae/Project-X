@@ -1,0 +1,14 @@
+int EventNum = 3
+string Event0_TypeName = Sound
+float Event0_Time = 16.500
+string Event0_SoundPath = Bee\needle_shot
+
+string Event1_TypeName = AttackStart
+float Event1_Time = 16.500
+int Event1_AttackNo = 0
+int Event1_AttackPosIndex = 0
+
+string Event2_TypeName = AttackEnd
+float Event2_Time = 20.000
+int Event2_AttackNo = 0
+

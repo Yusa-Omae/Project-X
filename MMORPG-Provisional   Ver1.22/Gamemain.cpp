@@ -1,3 +1,4 @@
+#if false
 #include"DxLib.h"
 #include"Code/Common/Keyboard/Keyboard.h"
 #include"SceneMgr.h"
@@ -305,3 +306,4 @@ void GameMainFainalize(){
 	Adeventure_Finalize();
 
 }
+#endif

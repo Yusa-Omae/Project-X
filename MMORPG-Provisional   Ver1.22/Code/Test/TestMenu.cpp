@@ -1,4 +1,5 @@
-﻿/*
+﻿#if false
+/*
 				ファイル名		:TestMenu.h
 				作成者			:Syara
 				作成日時		:2018/01/22
@@ -85,3 +86,4 @@ void TestMenu_Draw() {
 
 
 #endif //__MY_DEBUG__
+#endif

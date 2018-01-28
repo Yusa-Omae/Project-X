@@ -1,0 +1,26 @@
+int EventNum = 6
+string Event0_TypeName = Sound
+float Event0_Time = 0.000
+string Event0_SoundPath = Golem\VO_idle
+
+string Event1_TypeName = Sound
+float Event1_Time = 23.000
+string Event1_SoundPath = Golem\attack_swish_S
+
+string Event2_TypeName = AttackStart
+float Event2_Time = 24.500
+int Event2_AttackNo = 0
+int Event2_AttackPosIndex = 1
+
+string Event3_TypeName = Sound
+float Event3_Time = 28.000
+string Event3_SoundPath = Golem\VO_attack
+
+string Event4_TypeName = AttackEnd
+float Event4_Time = 31.500
+int Event4_AttackNo = 0
+
+string Event5_TypeName = Sound
+float Event5_Time = 63.000
+string Event5_SoundPath = Golem\MAT_run_grass_S
+

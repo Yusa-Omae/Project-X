@@ -1,0 +1,17 @@
+int EventNum = 4
+string Event0_TypeName = Sound
+float Event0_Time = 0.000
+string Event0_SoundPath = Golem\downing
+
+string Event1_TypeName = Sound
+float Event1_Time = 5.500
+string Event1_SoundPath = Golem\VO_dead
+
+string Event2_TypeName = PhysicsSound
+float Event2_Time = 60.000
+string Event2_PhysicsSoundType = down
+
+string Event3_TypeName = PhysicsSound
+float Event3_Time = 82.500
+string Event3_PhysicsSoundType = footstep
+

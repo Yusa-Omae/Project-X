@@ -1,0 +1,5 @@
+int EventNum = 1
+string Event0_TypeName = Sound
+float Event0_Time = 6.500
+string Event0_SoundPath = Bee\flying_1shot
+

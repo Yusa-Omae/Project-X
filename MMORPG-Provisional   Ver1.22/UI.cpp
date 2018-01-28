@@ -1,3 +1,4 @@
+#if false
 #include"DxLib.h"
 #include"System.h"
 #include"Define.h"
@@ -75,3 +76,4 @@ void UI_Fainalize(){
 
 
 }
+#endif

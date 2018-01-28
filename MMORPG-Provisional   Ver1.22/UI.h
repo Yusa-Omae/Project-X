@@ -1,5 +1,5 @@
-#pragma once
 
+#if false
 void UI_Initialize();
 void UI_Update();
 void UI_Draw();
@@ -38,3 +38,4 @@ typedef struct _UI_INFO {
 
 
 }_UI_INFO;
+#endif

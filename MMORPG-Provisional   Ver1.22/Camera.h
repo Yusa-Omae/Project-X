@@ -1,3 +1,50 @@
+#ifndef CAMERA_H
+#define CAMERA_H
+
+#include "DxLib.h"
+
+// カメラの手前クリップ距離
+#define CAMERA_NEAR_Z		(20.0f)
+
+// カメラの奥クリップ距離
+#define CAMERA_FAR_Z		(25000.0f)
+
+// カメラの処理を初期化する
+extern void Camera_Initialize(void);
+
+// カメラの状態推移処理を実行する
+extern void Camera_Step(
+	// 推移させる時間( 単位：秒 )
+	float StepTime
+);
+
+// カメラの設定を行う
+extern void Camera_Setup(void);
+
+// カメラを揺らす処理を開始する
+extern void Camera_Shake(
+	// 揺れる幅
+	float ShakeWidth,
+
+	// 揺れる時間
+	float ShakeTime,
+
+	// 揺れの速度
+	float ShakeAngleSpeed
+);
+
+// カメラの向いている方向を取得する
+//     戻り値 : カメラの向いている方向のベクトル
+extern VECTOR Camera_FrontDirection(void);
+
+// カメラの向いている方向から見て右方向を取得する
+//     戻り値 : カメラの向いている方向から見て右方向のベクトルを取得する
+extern VECTOR Camera_RightDirection(void);
+
+#endif
+
+
+#if false
 #pragma once
 
 void Camera_Initialize();
@@ -104,3 +151,4 @@ struct _MOUSE{
 	int Input;
 
 };
+#endif

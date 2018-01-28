@@ -1,3 +1,4 @@
+#if false
 #include"DxLib.h"
 #include"SceneMgr.h"
 #include"Title.h"
@@ -167,3 +168,4 @@ void SceneMgr_draw()
 	}
 
 }
+#endif

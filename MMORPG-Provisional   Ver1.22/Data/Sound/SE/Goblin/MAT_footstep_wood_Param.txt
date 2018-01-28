@@ -1,0 +1,2 @@
+float Volume = 1.0
+float Radius = 5000.0

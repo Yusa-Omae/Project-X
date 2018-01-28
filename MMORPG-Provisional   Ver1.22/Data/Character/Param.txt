@@ -1,0 +1,6 @@
+string Chara000_DirectoryName = Player
+string Chara001_DirectoryName = Goblin
+string Chara002_DirectoryName = Bee
+string Chara003_DirectoryName = Golem
+string Chara004_DirectoryName = RedGoblin
+string Chara005_DirectoryName = Needle

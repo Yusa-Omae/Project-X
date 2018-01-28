@@ -1,0 +1,13 @@
+int EventNum = 3
+string Event0_TypeName = PhysicsSound
+float Event0_Time = 0.000
+string Event0_PhysicsSoundType = down
+
+string Event1_TypeName = Sound
+float Event1_Time = 2.500
+string Event1_SoundPath = RedGoblin\VO_dmg
+
+string Event2_TypeName = PhysicsSound
+float Event2_Time = 22.000
+string Event2_PhysicsSoundType = footstep
+

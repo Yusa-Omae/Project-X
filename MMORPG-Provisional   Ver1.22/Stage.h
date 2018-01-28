@@ -1,5 +1,68 @@
-#pragma once
 
+#ifndef STAGE_H
+#define STAGE_H
+
+#include "DxLib.h"
+
+// ステージ処理の初期化をする
+//     戻り値 : 初期化に成功したかどうか
+//              ( true:成功   false:失敗 )
+extern bool Stage_Initialize(void);
+
+// ステージ処理の後始末をする
+extern void Stage_Terminate(void);
+
+// ステージをセットアップする
+//     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
+extern bool Stage_Setup(
+	// セットアップするステージの番号
+	int StageNumber
+);
+
+// ステージの状態推移処理を行う
+//     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
+extern bool Stage_Step(
+	// 推移させる時間( 単位：秒 )
+	float StepTime
+);
+
+// ステージのライトのセットアップを行う
+extern void Stage_LightSetup(void);
+
+// ステージを描画する
+extern void Stage_Render(
+	// シャドウマップへの描画かどうか
+	bool ShadowMapDraw
+);
+
+// ステージのコリジョン用３Ｄモデルを描画する
+extern void Stage_CollisionRender(void);
+
+// ステージの空用３Ｄモデルを描画する
+extern void Stage_SkyRender(void);
+
+// ステージのディレクショナルライトの方向を取得する
+//     戻り値 : ディレクショナルライトの方向
+extern VECTOR Stage_GetLightDirection(void);
+
+// 指定のカプセル形状がステージのコリジョン用３Ｄモデルのポリゴンや
+// ステージオブジェクトのコリジョン用３Ｄモデルのポリゴンに当たるかどうかをチェックする
+//     戻り値 : コリジョン用ポリゴンに当たるかどうか
+//              ( true : 当たる   false : 当たらない )
+extern bool Stage_HitCheck(
+	// カプセルを形成する座標１
+	VECTOR Pos1,
+
+	// カプセルを形成する座標２
+	VECTOR Pos2,
+
+	// カプセルの幅
+	float r
+);
+
+#endif
+
+#if false
 void StageInitialize();
 void StageUpdata();
 void StageDraw();
@@ -80,3 +143,4 @@ typedef enum _EStage_ParamInt
 
 	EStgParInt_Num					// ステージ処理用の整数パラメータの数
 } EStage_ParamInt;
+#endif
