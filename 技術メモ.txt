@@ -1,0 +1,79 @@
+
+○タスクシステム
+・シーンのタスクは一個だけで
+　シーンを移行時に現段階のシーンを破棄して
+　次のシーンを入れ込む
+
+○各シーンはTask_シーン名_Startは引数なしで
+　かつ戻り値はbool型でないとダメ。
+
+○後始末、レンダー、ステップ系は
+必ずs_taskInfoのポインターを引数に持たせないとダメ。
+
+○ステップ系はさらにfloat型のstep_timeがないとだめ
+
+・すべてstatic関数で
+　レンダーと後始末はVoid
+
+・ステップがboolの戻り値が必要
+
+
+○詳細はタイトルの関数へ…
+
+
+・s_TaskBaseInfoという構造体に優先度とステップとレンダーと後始末を登録する。
+
+
+・状態推移用のステップ関数とレンダーの優先順位のプライオリティの二つがある。
+
+
+・Start関数内でタイトルで使う構造体のポインター変数をローカル変数として宣言してポインターだからメモリを確保しないといけない。
+　確保したメモリーがちゃんと取れているかを確認して正常にできていなければfalseを返す。
+
+
+・リソース関係読み込みして最後にT_TaskDataタスクの情報を入れなければならない。
+
+	TTData->TaskInfo.Base     = &g_Task_TitleTaskBaseInfo;
+ 	　TTData->TaskInfo.Data     = TTData;
+ 	　TaskSystem_AddTask( System_GetTaskSystemInfo(), &TTData->TaskInfo );
+
+
+○キャストする意味
+　voidポインターは戦闘のアドレスを指しているだけなので
+　自信の構造体にキャストしてあげる
+　やっと値をいじったりすることができる。
+
+	STask_TitleData TTData = ( STask_TitleData  )TInfo->Data;
+
+(汎用性が高いため簡単に使えるが下手するとデータを壊す
+　任意の型で読み込むため文字列などだったらアウト)
+
+
+
+○関数ポインタ
+　関数名は違ってもいいけど戻り値と引数は同じじゃないと登録することができない。
+
+・引数なしでも作れてしまう
+
+・引数なしのvoid型のポインタだから怖い。
+
+
+	// タスクの基本情報
+	typedef struct _STaskBaseInfo
+	{
+ 	// 状態推移処理の実行優先順位
+ 	int StepPriority;
+
+ 	// 描画処理の実行優先順位
+	 int RenderPriority;
+	
+	 // 状態推移処理を行う関数へのポインタ
+	 bool(*Step)(struct _STaskInfo *TInfo, float StepTime);
+	
+	 // 描画処理を行う関数へのポインタ
+	 void(*Render)(struct _STaskInfo *TInfo);
+	
+ 	// 後始末処理を行う関数へのポインタ
+ 	void(*Terminate)(struct _STaskInfo *TInfo);
+	} STaskBaseInfo;
+
