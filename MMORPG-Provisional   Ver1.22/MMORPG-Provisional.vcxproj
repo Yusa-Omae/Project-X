@@ -99,6 +99,7 @@
     <ClCompile Include="Code\Common\Window\ScrollWindow.cpp" />
     <ClCompile Include="Code\Common\Window\WindowBase.cpp" />
     <ClCompile Include="Code\Scene\Adventure\Adventure.cpp" />
+    <ClCompile Include="Code\Scene\Pouse\Pouse.cpp" />
     <ClCompile Include="Code\Scene\Result\Result.cpp" />
     <ClCompile Include="Code\Scene\Shop\Shop.cpp" />
     <ClCompile Include="Code\Scene\Tutorial\Tutorial.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Code\Common\Window\ScrollWindow.h" />
     <ClInclude Include="Code\Common\Window\WindowBase.h" />
     <ClInclude Include="Code\Scene\Adventure\Adventure.h" />
+    <ClInclude Include="Code\Scene\Pouse\Pouse.h" />
     <ClInclude Include="Code\Scene\Result\Result.h" />
     <ClInclude Include="Code\Scene\Shop\Shop.h" />
     <ClInclude Include="Code\Scene\Tutorial\Tutorial.h" />

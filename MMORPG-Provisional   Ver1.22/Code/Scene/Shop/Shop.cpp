@@ -24,7 +24,7 @@
 #include "Shop.h"
 
 #define STRING_LINE_LENGTH_MAX (30)								//一行に表示する最大文字数
-#define ONELETTER_DISP_INTERVAL (5)							//一文字表示するまでの間隔
+#define ONELETTER_DISP_INTERVAL (5)								//一文字表示するまでの間隔
 #define STRING_DRAW_POSITION_X (1200)							//文字列描画座標X
 #define STRING_DRAW_POSITION_Y (INIT_AREA_Y2 - 20 * 7)			//文字列描画座標Y
 
@@ -52,7 +52,7 @@ typedef struct {
 static WORK_OBJ_t s_Work;
 
 
-static void ItemSelect() {
+static void ItemSelectProc() {
 	if (Mouse_WheelValueF() > 0) {
 		ScrollWindow_Scroll(&s_Work.scrollWindow, -1);
 	}
@@ -73,8 +73,7 @@ static void ItemSelect() {
 			s_Work.stringBase->SetString(item.direction);
 		}
 	}
-
-};
+}
 
 
 void Shop_Intialize() {
@@ -106,7 +105,7 @@ void Shop_Update() {
 		s_Work.step = eStep_Select;
 		break;
 	case eStep_Select:
-		ItemSelect();
+		ItemSelectProc();
 		break;
 	case eStep_Buy:
 
