@@ -1,79 +1,82 @@
 
-���^�X�N�V�X�e��
-�E�V�[���̃^�X�N�͈������
-�@�V�[�����ڍs���Ɍ��i�K�̃V�[����j������
-�@���̃V�[������ꍞ��
+○タスクシステム
+・シーンのタスクは一個だけで
+　シーンを移行時に現段階のシーンを破棄して
+　次のシーンを入れ込む
 
-���e�V�[����Task_�V�[����_Start�͈����Ȃ���
-�@���߂�l��bool�^�łȂ��ƃ_���B
+○各シーンはTask_シーン名_Startは引数なしで
+　かつ戻り値はbool型でないとダメ。
+ ※タスクの追加を他のタスクで行う場合は、設定したタスクを返却するようにする
+ 渡したタスクの削除タイミングを他のタスクで行わせるため。
+ 
 
-����n���A�����_�[�A�X�e�b�v�n��
-�K��s_taskInfo�̃|�C���^�[�������Ɏ������Ȃ��ƃ_���B
+○後始末、レンダー、ステップ系は
+必ずs_taskInfoのポインターを引数に持たせないとダメ。
 
-���X�e�b�v�n�͂����float�^��step_time���Ȃ��Ƃ���
+○ステップ系はさらにfloat型のstep_timeがないとだめ
 
-�E���ׂ�static�֐���
-�@�����_�[�ƌ�n����Void
+・すべてstatic関数で
+　レンダーと後始末はVoid
 
-�E�X�e�b�v��bool�̖߂�l���K�v
-
-
-���ڍׂ̓^�C�g���̊֐��ցc
-
-
-�Es_TaskBaseInfo�Ƃ����\���̂ɗD��x�ƃX�e�b�v�ƃ����_�[�ƌ�n����o�^����B
+・ステップがboolの戻り値が必要
 
 
-�E��Ԑ��ڗp�̃X�e�b�v�֐��ƃ����_�[�̗D�揇�ʂ̃v���C�I���e�B�̓������B
+○詳細はタイトルの関数へ…
 
 
-�EStart�֐����Ń^�C�g���Ŏg���\���̂̃|�C���^�[�ϐ������[�J���ϐ��Ƃ��Đ錾���ă|�C���^�[�����烁�������m�ۂ��Ȃ��Ƃ����Ȃ��B
-�@�m�ۂ����������[�������Ǝ��Ă��邩���m�F���Đ���ɂł��Ă��Ȃ����false��Ԃ��B
+・s_TaskBaseInfoという構造体に優先度とステップとレンダーと後始末を登録する。
 
 
-�E���\�[�X�֌W�ǂݍ��݂��čŌ��T_TaskData�^�X�N�̏������Ȃ���΂Ȃ�Ȃ��B
+・状態推移用のステップ関数とレンダーの優先順位のプライオリティの二つがある。
+
+
+・Start関数内でタイトルで使う構造体のポインター変数をローカル変数として宣言してポインターだからメモリを確保しないといけない。
+　確保したメモリーがちゃんと取れているかを確認して正常にできていなければfalseを返す。
+
+
+・リソース関係読み込みして最後にT_TaskDataタスクの情報を入れなければならない。
 
 	TTData->TaskInfo.Base     = &g_Task_TitleTaskBaseInfo;
- 	�@TTData->TaskInfo.Data     = TTData;
- 	�@TaskSystem_AddTask( System_GetTaskSystemInfo(), &TTData->TaskInfo );
+ 	　TTData->TaskInfo.Data     = TTData;
+ 	　TaskSystem_AddTask( System_GetTaskSystemInfo(), &TTData->TaskInfo );
 
 
-���L���X�g����Ӗ�
-�@void�|�C���^�[�͐퓬�̃A�h���X���w���Ă��邾���Ȃ̂�
-�@���M�̍\���̂ɃL���X�g���Ă�����
-�@����ƒl�����������肷�邱�Ƃ��ł���B
+○キャストする意味
+　voidポインターは戦闘のアドレスを指しているだけなので
+　自信の構造体にキャストしてあげる
+　やっと値をいじったりすることができる。
 
 	STask_TitleData TTData = ( STask_TitleData  )TInfo->Data;
 
-(�ėp�����������ߊȒP�Ɏg���邪���肷��ƃf�[�^����
-�@�C�ӂ̌^�œǂݍ��ނ��ߕ�����Ȃǂ�������A�E�g)
+(汎用性が高いため簡単に使えるが下手するとデータを壊す
+　任意の型で読み込むため文字列などだったらアウト)
 
 
 
-���֐��|�C���^
-�@�֐����͈���Ă��������ǖ߂�l�ƈ����͓�������Ȃ��Ɠo�^���邱�Ƃ��ł��Ȃ��B
+○関数ポインタ
+　関数名は違ってもいいけど戻り値と引数は同じじゃないと登録することができない。
 
-�E�����Ȃ��ł����Ă��܂�
+・引数なしでも作れてしまう
 
-�E�����Ȃ���void�^�̃|�C���^������|���B
+・引数なしのvoid型のポインタだから怖い。
 
 
-	// �^�X�N�̊�{���
+	// タスクの基本情報
 	typedef struct _STaskBaseInfo
 	{
- 	// ��Ԑ��ڏ����̎��s�D�揇��
+ 	// 状態推移処理の実行優先順位
  	int StepPriority;
 
- 	// �`�揈���̎��s�D�揇��
+ 	// 描画処理の実行優先順位
 	 int RenderPriority;
 	
-	 // ��Ԑ��ڏ������s���֐��ւ̃|�C���^
+	 // 状態推移処理を行う関数へのポインタ
 	 bool(*Step)(struct _STaskInfo *TInfo, float StepTime);
 	
-	 // �`�揈�����s���֐��ւ̃|�C���^
+	 // 描画処理を行う関数へのポインタ
 	 void(*Render)(struct _STaskInfo *TInfo);
 	
- 	// ��n���������s���֐��ւ̃|�C���^
+ 	// 後始末処理を行う関数へのポインタ
  	void(*Terminate)(struct _STaskInfo *TInfo);
 	} STaskBaseInfo;
 
