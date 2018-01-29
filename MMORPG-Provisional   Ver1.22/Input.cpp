@@ -2,7 +2,9 @@
 #include "Code\Common\Mouse\Mouse.h"
 #include "DxLib.h"
 #include "BinaryFile.h"
+#include "System.h"
 #include <string.h>
+#include <math.h>
 
 // 入力コンフィグファイルのパス
 #define INPUTCONFIG_PATH		"Data\\InputConfig.dat"
@@ -87,10 +89,10 @@ static SInputSystemData g_InpSys;
 // ゲームでの各入力とキーやパッドなどの入力とのデフォルトの対応設定
 static SInputTypeInfo g_DefaultInputTypeInfo[ EInputType_Num ] =
 {
-	0, EDInputType_X,      -1, 0, KEY_INPUT_LEFT,	eMouseInputBotton_None,		// EInputType_Left
-	0, EDInputType_X,       1, 0, KEY_INPUT_RIGHT,	eMouseInputBotton_None,		// EInputType_Right
-	0, EDInputType_Y,      -1, 0, KEY_INPUT_UP,		eMouseInputBotton_None,			// EInputType_Up 
-	0, EDInputType_Y,       1, 0, KEY_INPUT_DOWN,	eMouseInputBotton_None,		// EInputType_Down 
+	0, EDInputType_X,      -1, 0, KEY_INPUT_A,	eMouseInputBotton_None,		// EInputType_Left
+	0, EDInputType_X,       1, 0, KEY_INPUT_D,	eMouseInputBotton_None,		// EInputType_Right
+	0, EDInputType_Y,      -1, 0, KEY_INPUT_W,		eMouseInputBotton_None,			// EInputType_Up 
+	0, EDInputType_Y,       1, 0, KEY_INPUT_S,	eMouseInputBotton_None,		// EInputType_Down 
 	0, EDInputType_Rx,     -1, 0, KEY_INPUT_V,		eMouseInputBotton_None,			// EInputType_Camera_Left
 	0, EDInputType_Rx,      1, 0, KEY_INPUT_N,		eMouseInputBotton_None,			// EInputType_Camera_Right
 	0, EDInputType_Ry,     -1, 0, KEY_INPUT_G,		eMouseInputBotton_None,			// EInputType_Camera_Up
@@ -253,6 +255,10 @@ void InputInitialize( void )
 		// ファイルの読み込みに失敗した場合はデフォルト設定にする
 		SetDefaultSetting();
 	}
+
+	//マウスの座標を画面中央へ移動する
+	SetMousePoint(GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2);
+
 }
 
 // ProcessInput 用の軸入力タイプの処理を行う補助関数
@@ -338,6 +344,39 @@ void ProcessInput( void )
 				InputState[i] = DIRECTINPUT_MAX_VALUE;
 			}
 		}
+		else {
+			int posX;
+			int posY;
+			Mouse_GetPositioin(&posX,&posY);
+
+			posX -= GAME_SCREEN_WIDTH / 2;
+			posY -= GAME_SCREEN_HEIGHT / 2;
+
+			int len = abs(posX + posY);
+			if (len > 100) {
+				int btn = -1;
+				float angle = atan2(posY, posX) * 180.0f / DX_PI_F;
+
+				printfDx("%f\n", angle);
+
+				if (angle > -160.0f && angle < -20.0f) {
+					btn = EInputType_Camera_Up;
+				}
+				else if (angle > 20.0f && angle < 160.0f) {
+					btn = EInputType_Camera_Down;
+				}
+				else if (angle > -20.0f && angle < -0.0f || angle > 0.0f && angle < 20.0f) {
+					btn = EInputType_Camera_Right;
+				}
+				else if (angle > -160.0f && angle < -180.0f || angle > 160.0f && angle < 180.0f) {
+					btn = EInputType_Camera_Left;
+				}
+				if (btn == i) {
+					InputState[i] = DIRECTINPUT_MAX_VALUE;
+				}
+			}
+
+		}
 
 		// 対応する DirectInput の情報タイプによって処理を分岐
 		DIJState = &g_InpSys.DirectInputState[ ITInfo->PadNo ];
@@ -384,6 +423,8 @@ void ProcessInput( void )
 			break;
 		}
 	}
+
+
 
 	// １フレーム前の入力状態をとっておく
 	ButtonPrevInput = g_InpSys.ButtonInput;
