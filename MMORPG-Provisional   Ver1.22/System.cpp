@@ -453,7 +453,6 @@ static bool System_MainLoop(void)
 		// 状態推移処理を行う回数分ループ
 		for (i = 0; i < g_SystemInfo.StepNum; i++)
 		{
-			Mouse_Update();
 
 			// エスケープキーが押されるか、
 			// ソフトを終了するかどうかのフラグが立っていたらループを抜ける
