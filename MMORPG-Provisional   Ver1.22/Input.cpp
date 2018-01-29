@@ -1,4 +1,5 @@
 #include "Input.h"
+#include "Code\Common\Mouse\Mouse.h"
 #include "DxLib.h"
 #include "BinaryFile.h"
 #include <string.h>
@@ -52,6 +53,10 @@ typedef struct _SInputTypeInfo
 
 	// 対応するキーボードのキー( KEY_INPUT_UP など )
 	int              KeyInput;
+
+	// 対応するマウスのボタン
+	int				MouseBottonInput;
+
 } SInputTypeInfo;
 
 // 入力処理用の情報
@@ -82,18 +87,18 @@ static SInputSystemData g_InpSys;
 // ゲームでの各入力とキーやパッドなどの入力とのデフォルトの対応設定
 static SInputTypeInfo g_DefaultInputTypeInfo[ EInputType_Num ] =
 {
-	0, EDInputType_X,      -1, 0, KEY_INPUT_LEFT,		// EInputType_Left
-	0, EDInputType_X,       1, 0, KEY_INPUT_RIGHT,		// EInputType_Right
-	0, EDInputType_Y,      -1, 0, KEY_INPUT_UP,			// EInputType_Up 
-	0, EDInputType_Y,       1, 0, KEY_INPUT_DOWN,		// EInputType_Down 
-	0, EDInputType_Rx,     -1, 0, KEY_INPUT_V,			// EInputType_Camera_Left
-	0, EDInputType_Rx,      1, 0, KEY_INPUT_N,			// EInputType_Camera_Right
-	0, EDInputType_Ry,     -1, 0, KEY_INPUT_G,			// EInputType_Camera_Up
-	0, EDInputType_Ry,      1, 0, KEY_INPUT_B,			// EInputType_Camera_Down
-	0, EDInputType_Button,  0, 0, KEY_INPUT_Z,			// EInputType_Attack
-	0, EDInputType_Button,  1, 0, KEY_INPUT_X,			// EInputType_Defence
-	0, EDInputType_Button,  2, 0, KEY_INPUT_C,			// EInputType_Jump
-	0, EDInputType_Button,  3, 0, KEY_INPUT_SPACE,		// EInputType_Pause
+	0, EDInputType_X,      -1, 0, KEY_INPUT_LEFT,	eMouseInputBotton_None,		// EInputType_Left
+	0, EDInputType_X,       1, 0, KEY_INPUT_RIGHT,	eMouseInputBotton_None,		// EInputType_Right
+	0, EDInputType_Y,      -1, 0, KEY_INPUT_UP,		eMouseInputBotton_None,			// EInputType_Up 
+	0, EDInputType_Y,       1, 0, KEY_INPUT_DOWN,	eMouseInputBotton_None,		// EInputType_Down 
+	0, EDInputType_Rx,     -1, 0, KEY_INPUT_V,		eMouseInputBotton_None,			// EInputType_Camera_Left
+	0, EDInputType_Rx,      1, 0, KEY_INPUT_N,		eMouseInputBotton_None,			// EInputType_Camera_Right
+	0, EDInputType_Ry,     -1, 0, KEY_INPUT_G,		eMouseInputBotton_None,			// EInputType_Camera_Up
+	0, EDInputType_Ry,      1, 0, KEY_INPUT_B,		eMouseInputBotton_None,			// EInputType_Camera_Down
+	0, EDInputType_Button,  0, 0, KEY_INPUT_Z,		eMouseInputBotton_Left,			// EInputType_Attack
+	0, EDInputType_Button,  1, 0, KEY_INPUT_X,		eMouseInputBotton_Rigth,			// EInputType_Defence
+	0, EDInputType_Button,  2, 0, KEY_INPUT_C,		eMouseInputBotton_None,			// EInputType_Jump
+	0, EDInputType_Button,  3, 0, KEY_INPUT_SPACE,	eMouseInputBotton_None,		// EInputType_Pause
 };
 
 // パッドの識別子テーブル
@@ -312,6 +317,8 @@ void ProcessInput( void )
 	// 現在のキーの入力状態を取得する
 	GetHitKeyStateAll( g_InpSys.KeyInput );
 
+	Mouse_Update();
+
 	// ゲームで使用する入力情報を構築する
 	ITInfo = g_InpSys.InputTypeInfo;
 	for( i = 0; i < EInputType_Num; i++, ITInfo++ )
@@ -323,6 +330,13 @@ void ProcessInput( void )
 		if( g_InpSys.KeyInput[ ITInfo->KeyInput ] != 0 )
 		{
 			InputState[ i ] = DIRECTINPUT_MAX_VALUE;
+		}
+
+		// 対応しているマウスボタンが押されていたら入力ありにする
+		if (ITInfo->MouseBottonInput != eMouseInputBotton_None) {
+			if (Mouse_On(ITInfo->MouseBottonInput) == true) {
+				InputState[i] = DIRECTINPUT_MAX_VALUE;
+			}
 		}
 
 		// 対応する DirectInput の情報タイプによって処理を分岐
