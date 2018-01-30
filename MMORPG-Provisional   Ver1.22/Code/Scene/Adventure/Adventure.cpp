@@ -19,8 +19,7 @@
 #include "../Gamemain.h"
 
 #include "../Code/Common/String/StringBase.h"
-#include "../Code/Common/Mouse/Mouse.h"
-
+#include "../Input.h"
 #include "Adventure.h"
 
 #define STRING_LINE_LENGTH_MAX (60)								//一行に表示する最大文字数
@@ -104,12 +103,18 @@ static bool Task_Adbentrue_Step(STaskInfo* stask, float stepTime) {
 
 	TASK_ADVENTURE_t* task = (TASK_ADVENTURE_t*)stask->Data;
 
-	if (Mouse_Press(eMouseInputBotton_Rigth) == true) {
+	// 押された瞬間のみの入力状態を取得
+	int EdgeInput = GetEdgeInput();
+	int Input = GetInput();
+
+	if ((EdgeInput & (1 << EInputType_Defence)) != 0) {
 		//GameMain_ChangeGameState(eGameState_Tutorial, eFadeType_CrossFade);
 		//TaskSystem_DelTask(System_GetTaskSystemInfo(), &task->task);
 		task->isEnd = true;
 		return true;
 	}
+
+	
 
 	task->stringBase->SetString(STRING_TBL[task->num]);
 
@@ -117,7 +122,7 @@ static bool Task_Adbentrue_Step(STaskInfo* stask, float stepTime) {
 
 	//描画終了していたら次の文字列を設定する
 	if (result == 1) {
-		if (Mouse_Press(eMouseInputBotton_Left)) {
+		if ((EdgeInput & (1 << EInputType_Attack)) != 0) {
 			task->num++;
 			if (task->num >= 9) {
 				task->num = 0;
@@ -136,7 +141,7 @@ static bool Task_Adbentrue_Step(STaskInfo* stask, float stepTime) {
 	//描画中の場合
 	else if (result == 0) {
 
-		if (Mouse_Repeat(eMouseInputBotton_Left)) {
+		if ((Input & (1 << EInputType_Attack)) != 0) {
 			task->OneletterDispInterval = 2;
 		}
 		else {

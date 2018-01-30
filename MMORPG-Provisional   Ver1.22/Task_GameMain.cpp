@@ -381,6 +381,18 @@ static bool Task_GameMain_Step(
 	case ETask_GameMainState_StageClear_FadeOut:	// ステージクリア後フェードアウト中
 		if( !System_CheckFade() )
 		{
+
+			/*
+			
+				ここで、ショップを挟むをタスクで実行させる。
+
+				ケースを増やし、ショップでの購入が終了したかを判断するケース分を追加する
+
+				
+			
+			
+			*/
+
 			// ステージクリア後フェードアウトが完了したら、一旦キャラを全て削除する
 			Chara_AllDelete();
 
