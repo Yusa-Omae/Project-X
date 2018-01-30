@@ -47,6 +47,7 @@ enum eSystemToke {
 
 typedef struct {
 	STaskInfo task;
+	int imageHandle;
 	eState state;						//ステート
 	int itemType;						//アイテムの種類
 	SCROLL_WINDOW_DATA_t scrollWindow;	//スクロールウィンドウ
@@ -142,6 +143,8 @@ STaskInfo* Task_Shop_Start() {
 	task->stringBase->FontCreate("ＭＳ 明朝", 24, 1, -1);
 	task->stringBase->SetColor(GetColor(255, 255, 255));
 
+	task->imageHandle = LoadGraph("Data/2D/Shop_BG00.png");
+
 	task->isExit = false;
 
 	task->task.Base = &g_Task_ShopTaskBaseInfo;
@@ -190,6 +193,7 @@ static bool Task_Shop_Step(STaskInfo* stask, float stepTime) {
 static void Task_Shop_Render(STaskInfo* stask) {
 	TASK_SHOP_t* task = (TASK_SHOP_t*)stask->Data;
 
+	DrawGraph(0, 0, task->imageHandle, TRUE);
 
 	eState state = task->state;
 
@@ -205,6 +209,8 @@ static void Task_Shop_Terminate(STaskInfo* stask) {
 
 	delete (task->stringBase);
 	task->stringBase = NULL;
+
+	DeleteGraph(task->imageHandle);
 
 }
 

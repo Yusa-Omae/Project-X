@@ -420,7 +420,9 @@ static bool Task_GameMain_Step(
 			}
 			else
 			{
-				
+			
+
+
 				GMData->KillEnemyNum        = 0;
 				GMData->KillTargetCharaKill = false;
 
@@ -452,14 +454,10 @@ static bool Task_GameMain_Step(
 		break;
 	case ETask_GameMainState_Shop_End:
 		if (Task_Shop_IsExit()) {
-			
-			//ショップタスクの削除をする
-			TaskSystem_DelTask(
-				System_GetTaskSystemInfo(), GMData->ShopTaskInfo);
-			GMData->ShopTaskInfo = NULL;
+					
 			
 			System_FadeOut();
-
+						
 
 			GMData->State = ETask_GameMainState_Shop_FadeOut;
 			GMData->Counter = 0.0f;
@@ -470,6 +468,10 @@ static bool Task_GameMain_Step(
 
 		if (!System_CheckFade()) {
 
+			//ショップタスクの削除をする
+			TaskSystem_DelTask(
+				System_GetTaskSystemInfo(), GMData->ShopTaskInfo);
+			GMData->ShopTaskInfo = NULL;
 
 			// 次のステージがある場合は、次のステージのセットアップを行い、
 			// その後ステージ開始待ちを開始する
@@ -477,6 +479,7 @@ static bool Task_GameMain_Step(
 			{
 				return false;
 			}
+
 			GMData->State = ETask_GameMainState_StageStart_Wait;
 			GMData->Counter = 0.0f;
 
