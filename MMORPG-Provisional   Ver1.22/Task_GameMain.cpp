@@ -13,6 +13,7 @@
 #include "Task_GameOver.h"
 #include "Task_PauseMenu.h"
 #include "Code/Scene/Adventure/Adventure.h"
+#include "Code/Scene/Shop/Shop.h"
 #include <math.h>
 
 // ステージ開始をする前に待つ時間
@@ -57,6 +58,11 @@ typedef enum _ETask_GameMainState
 	ETask_GameMainState_StageClear_Wait,	// ステージクリア処理開始待ち中
 	ETask_GameMainState_StageClear_String,	// ステージクリア文字表示中
 	ETask_GameMainState_StageClear_FadeOut,	// ステージクリア後フェードアウト中
+
+	ETask_GameMainState_Shop_Start,			//ショップを開く
+	ETask_GameMainState_Shop_End,			//ショップ終了待ち
+	ETask_GameMainState_Shop_FadeOut,		//ショップ終了後フェードアウト中
+
 	ETask_GameMainState_StageAllClear_Wait,	// 全ステージクリア処理開始待ち中
 	ETask_GameMainState_GameOver_Wait,		// ゲームオーバー処理開始待ち中
 	ETask_GameMainState_GameOver,			// ゲームオーバー表示中
@@ -105,6 +111,10 @@ typedef struct _STask_GameMainData
 
 	// 会話パートタスク情報構造体へのポインタ
 	STaskInfo *         AdventureTaskInfo;
+
+	//ショップタスク情報構造体へのポインタ
+	STaskInfo *			ShopTaskInfo;
+
 } STask_GameMainData;
 
 // ゲームメインの状態推移処理を行う
@@ -410,21 +420,69 @@ static bool Task_GameMain_Step(
 			}
 			else
 			{
-				// 次のステージがある場合は、次のステージのセットアップを行い、
-				// その後ステージ開始待ちを開始する
-				if( !Stage_Setup( StageData_GetLoadStageNo() + 1 ) )
-				{
-					return false;
-				}
+				
 				GMData->KillEnemyNum        = 0;
 				GMData->KillTargetCharaKill = false;
 
-				GMData->State   = ETask_GameMainState_StageStart_Wait;
+				GMData->State   = ETask_GameMainState_Shop_Start;
 				GMData->Counter = 0.0f;
 			}
+
+			
+
 		}
 		break;
+	case ETask_GameMainState_Shop_Start:
+		
+		/*
+			ここでショップタスク生成
+		
+		*/
 
+		GMData->ShopTaskInfo = Task_Shop_Start();
+		if (GMData->ShopTaskInfo == NULL) {
+			return false;
+		}
+
+
+		System_FadeIn();
+		GMData->State = ETask_GameMainState_Shop_End;
+		GMData->Counter = 0.0f;
+		
+		break;
+	case ETask_GameMainState_Shop_End:
+		if (Task_Shop_IsExit()) {
+			
+			//ショップタスクの削除をする
+			TaskSystem_DelTask(
+				System_GetTaskSystemInfo(), GMData->ShopTaskInfo);
+			GMData->ShopTaskInfo = NULL;
+			
+			System_FadeOut();
+
+
+			GMData->State = ETask_GameMainState_Shop_FadeOut;
+			GMData->Counter = 0.0f;
+
+		}
+		break;
+	case ETask_GameMainState_Shop_FadeOut:
+
+		if (!System_CheckFade()) {
+
+
+			// 次のステージがある場合は、次のステージのセットアップを行い、
+			// その後ステージ開始待ちを開始する
+			if (!Stage_Setup(StageData_GetLoadStageNo() + 1))
+			{
+				return false;
+			}
+			GMData->State = ETask_GameMainState_StageStart_Wait;
+			GMData->Counter = 0.0f;
+
+		}
+
+		break;
 	case ETask_GameMainState_StageAllClear_Wait:	// 全ステージクリア処理開始待ち中
 		GMData->Counter += StepTime;
 		if( GMData->Counter > STAGE_ALLCLEAR_WAIT )
