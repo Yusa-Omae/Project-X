@@ -51,12 +51,12 @@ ItemHav[10]=アイテムは何を持っているかの確認
 Item_Db[10]=アイテム欄の耐久値
 
 Add_Hp=所持アイテムの最大HPアップ合計値
-Add_Atk=所持アイテムの攻撃力合計値
+Add_Atk=装備武器アイテムの攻撃力
 Add_Def=所持アイテムの防御力合計値
 Add_Crt=所持アイテムのクリティカル率合計値
 Add_Spd=所持アイテムの移動スピード値合計
-Abp_Hp=攻撃を与えた際のHp吸収率(ダメージ*吸収率(%)、ON,OFF フラグいるかな？)
-Auto_Heal=リジェネ(1秒間に回復する量(微量)、ON,OFF フラグいるかな？)　?>0　0より大きかったら処理するでいいや
+Abp_Hp=攻撃を与えた際のHp吸収率(ダメージ*吸収率(%)、Add_Hp>0　0より大きかったら処理する)
+Auto_Heal=リジェネ(1秒間に回復する量(微量)、Auto_Heal>0　0より大きかったら処理する
 Gold_Per=お金の取れる量が増える(敵の場合はモデル消滅時にコインを落とす際、にかける(強い武器を使う分お金もとれる量が増える))
 
 
@@ -68,13 +68,13 @@ Def=基本防御値
 Crt=基本クリティカル率
 Speed=基本移動スピード
 Gold=所持金
-名声？
+Fame=名声
 
 ItemHav[10]=アイテムは何を持っているかの確認
 Item_Db[10]=アイテム欄の耐久値
 
 Add_Hp=所持アイテムの最大HPアップ合計値
-Add_Atk=所持アイテムの攻撃力合計値
+Add_Atk=装備武器アイテムの攻撃力
 Add_Def=所持アイテムの防御力合計値
 Add_Crt=所持アイテムのクリティカル率合計値
 Add_Spd=所持アイテムの移動スピード値合計
@@ -102,7 +102,7 @@ float Gold=敵を倒した際のドロップ金増加率
 }
 
 
-_ITEM_PARAM ItemParam[?]
+_ITEM_PARAM ItemParam[38]
 
 
 
@@ -110,13 +110,15 @@ _ITEM_PARAM ItemParam[?]
 
 extern bool Item_Load(){
 
-char FilePath[256];←？Char型でいいのかな
-for(int i=0,ItemParam[?],i++){
-for(int j=0,ItemParam[?],j++)?{
-テキストからパラメータ読み込み(Db,Hp,Atk,Def,Crt,Spd,Abp,Heal,Gold)9要素+進化図(どうやろう？要相談)
+char FilePath[256];←ファイルを読み込む
+for(int i=0,ItemParam[38],i++){
+for(int j=0,ItemParam[38],j++)?{
+テキストからパラメータ読み込み(Pre,Db,Hp,Atk,Def,Crt,Spd,Abp,Heal,Gold)10要素+進化図(どうやろう？要相談)
 パラメータがない場合0を入れ込む。
 パラメータが0の場合は出力時(Shop)の時に表示しない。改行\0表示で詰めて出力できると思う。
 
+
+//進化図は別で読み込み組み合わせを別で保存しておく
 
 }
 }
