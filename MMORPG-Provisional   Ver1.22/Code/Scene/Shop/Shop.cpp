@@ -24,6 +24,7 @@
 #include "../Gamemain.h"
 #include "../Code/Common/Window/ScrollWindow.h"
 #include "../Code/Common/String/StringBase.h"
+#include "../Code/AppData/Item/ItemData.h"
 #include "../Input.h"
 
 #define STRING_LINE_LENGTH_MAX (30)								//一行に表示する最大文字数
@@ -150,6 +151,10 @@ STaskInfo* Task_Shop_Start() {
 	task->task.Base = &g_Task_ShopTaskBaseInfo;
 	task->task.Data = task;
 	TaskSystem_AddTask(System_GetTaskSystemInfo(), &task->task);
+
+	if (ItemData_ReadData() == false) {
+		return false;
+	}
 
 	s_Work = task;
 

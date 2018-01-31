@@ -35,6 +35,30 @@ typedef struct {
 	int haveMax;			//持てる量
 }ITEM_DATA_t;
 
+typedef struct _ITEM_PARAM {
+
+	int		Level;
+	int		Price;
+	int		Durable;
+	int		Hp ;
+	int		Atk;
+	int		Def;
+	float	Critical;
+	float	Spd;
+	float	Absorption;
+	int		AutoHeal;
+	float	GoldPrice;
+	int		Evol[5];
+
+}ITEM_PARAM_DATA_t;
+
+/*
+データファイルを読み込む
+return	true	:読み込み成功
+false	:読み込み失敗
+*/
+bool ItemData_ReadData();
+
 /*
 アイテムデータを返却
 */
