@@ -35,7 +35,6 @@ enum eData {
 	eData_Evol2,
 	eData_Evol3,
 	eData_Evol4,
-	eData_Evol5,
 	eData_Num,
 };
 
@@ -150,9 +149,6 @@ bool ItemData_ReadData() {
 				break;
 			case eData_Evol4:
 				item->Evol[3] = atoi(&ch);
-				break;
-			case eData_Evol5:
-				item->Evol[4] = atoi(&ch);
 				break;
 			}
 
