@@ -3,10 +3,10 @@
 
 ItemParamTbl
 
-0(ItemNum).Level,Pre,Db,Hp,Atk,Def,Crt,Spd,Abp,Heal,Gold,Evol1,Evol2,Evol3,Evol4,Evol5
-1(ItemNum).Level,Pre,Db,Hp,Atk,Def,Crt,Spd,Abp,Heal,Gold,Evol1,Evol2,Evol3,Evol4,Evol5
-2(ItemNum).Level,Pre,Db,Hp,Atk,Def,Crt,Spd,Abp,Heal,Gold,Evol1,Evol2,Evol3,Evol4,Evol5
-3(ItemNum).Level,Pre,Db,Hp,Atk,Def,Crt,Spd,Abp,Heal,Gold,Evol1,Evol2,Evol3,Evol4,Evol5
+0(ItemNum).Level,Pre,Db,Hp,Atk,Def,Crt,Spd,Abp,Heal,Gold,Evol1,Evol2,Evol3,Evol4
+1(ItemNum).Level,Pre,Db,Hp,Atk,Def,Crt,Spd,Abp,Heal,Gold,Evol1,Evol2,Evol3,Evol4
+2(ItemNum).Level,Pre,Db,Hp,Atk,Def,Crt,Spd,Abp,Heal,Gold,Evol1,Evol2,Evol3,Evol4
+3(ItemNum).Level,Pre,Db,Hp,Atk,Def,Crt,Spd,Abp,Heal,Gold,Evol1,Evol2,Evol3,Evol4
 
 
 …38まで(合計39個)
@@ -15,7 +15,7 @@ ItemParamTbl
 
 パラメータのない場所には-1を入れる
 
-Evol1～5=進化先
+Evol1～4=進化先
 進化先がない場合は-1を入れる
 
 
