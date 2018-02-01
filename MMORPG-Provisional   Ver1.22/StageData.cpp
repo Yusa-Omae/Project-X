@@ -248,7 +248,7 @@ extern bool StageData_Load(
 	// ヘッダのアドレスを代入
 	Header = &g_StageData.Header;
 
-	//5回に一度ステージデータ2、それ以外は1を読み込む
+	//20回に一度ステージデータ2、それ以外は1を読み込む
 	int stageNumberBuffer = (StageNumber % 19 == 0 && StageNumber != 0 ? 1 : 0);
 
 	// ステージデータのバイナリファイルを開く
