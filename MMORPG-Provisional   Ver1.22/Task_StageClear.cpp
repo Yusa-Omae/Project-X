@@ -175,7 +175,7 @@ static void Task_StageClear_Render(
 	int                   DrawX2;
 	int                   DrawX3;
 	int                   DrawY;
-	char                  NumberStr[ 2 ];
+	char                  NumberStr[ 3 ];
 	int                   FontHandle;
 
 	// ステージクリア表示の不透明度が０だったら何もせず終了
@@ -188,8 +188,21 @@ static void Task_StageClear_Render(
 	FontHandle = System_GetFontHandle( EFontHandle_Big );
 
 	// ステージ番号の文字列を作成
-	NumberStr[ 0 ] = '1' + StageData_GetLoadStageNo();
-	NumberStr[ 1 ] = '\0';
+	if (StageData_GetLoadStageNo() >= 9) {
+
+		int statgeNumber = StageData_GetLoadStageNo() + 1;
+
+		NumberStr[0] = '0' + statgeNumber / 10;
+		NumberStr[1] = '0' + statgeNumber % 10;
+		NumberStr[2] = '\0';
+
+	}
+	else {
+		NumberStr[0] = '1' + StageData_GetLoadStageNo();
+		NumberStr[1] = '\0';
+		NumberStr[2] = '\0';
+	}
+
 
 	// ステージクリア表示全体の横幅と、『STAGE 』だけを描画した場合の横幅と、
 	// 『 CLEAR!』だけを描画した場合の横幅を取得

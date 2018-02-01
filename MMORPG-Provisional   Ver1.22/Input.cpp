@@ -86,7 +86,7 @@ static SInputSystemData g_InpSys;
 // ゲームでの各入力とキーやパッドなどの入力とのデフォルトの対応設定
 static SInputTypeInfo g_DefaultInputTypeInfo[ EInputType_Num ] =
 {
-	//PAD番号 入力タイプ キー番号 入力判定	キー入力
+	//PAD番号 入力タイプ キー番号 入力判定	
 	0, EDInputType_X,      -1, 0, KEY_INPUT_A,		// EInputType_Left
 	0, EDInputType_X,       1, 0, KEY_INPUT_D,		// EInputType_Right
 	0, EDInputType_Y,      -1, 0, KEY_INPUT_W,		// EInputType_Up 
@@ -97,7 +97,7 @@ static SInputTypeInfo g_DefaultInputTypeInfo[ EInputType_Num ] =
 	0, EDInputType_Ry,      1, 0, KEY_INPUT_B,		// EInputType_Camera_Down
 	0, EDInputType_Button,  1, 0, KEY_INPUT_Z,		// EInputType_Attack
 	0, EDInputType_Button,  2, 0, KEY_INPUT_X,		// EInputType_Defence
-	0, EDInputType_Button,  2, 0, KEY_INPUT_C,		// EInputType_Jump
+	0, EDInputType_Button,  0, 0, KEY_INPUT_C,		// EInputType_Jump
 	0, EDInputType_Button,  7, 0, KEY_INPUT_SPACE,	// EInputType_Pause
 };
 

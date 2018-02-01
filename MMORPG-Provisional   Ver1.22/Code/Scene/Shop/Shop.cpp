@@ -31,7 +31,7 @@
 #define ONELETTER_DISP_INTERVAL (5)								//一文字表示するまでの間隔
 #define STRING_DRAW_POSITION_X (800)							//文字列描画座標X
 #define STRING_DRAW_POSITION_Y (GAME_SCREEN_HEIGHT - 20 * 7)			//文字列描画座標Y
-
+#define ITEM_GRAPHIC_NUM (69)
 enum eImage {
 	eImage_BackImage,		//背景
 	eImage_MessageWindow,
@@ -55,6 +55,7 @@ enum eSystemToke {
 typedef struct {
 	STaskInfo task;
 	int imageHandle[eImage_Num];
+	int itemImagehandle[ITEM_GRAPHIC_NUM ];
 	eState state;						//ステート
 	int itemType;						//アイテムの種類
 	SCROLL_WINDOW_DATA_t scrollWindow;	//スクロールウィンドウ
@@ -132,6 +133,13 @@ static void BuySelectProc(TASK_SHOP_t* task) {
 }
 static void BuySelectDraw(TASK_SHOP_t* task) {
 
+	for (int i = 0; i < ITEM_GRAPHIC_NUM; i++) {
+		
+		int drawX = (i % 10) * 48;
+		int drawY = (i / 10) * 48;
+		DrawGraph(drawX,drawY, task->itemImagehandle[i], TRUE);
+	}
+
 }
 
 
@@ -158,6 +166,11 @@ STaskInfo* Task_Shop_Start() {
 	
 	task->imageHandle[eImage_MessageWindow] = LoadGraph("Data/2D/MessageWindow.png");
 	if (task->imageHandle[eImage_MessageWindow] == -1) {
+		return NULL;
+	}
+
+	int ret = LoadDivGraph("Data/Shop/Item_Pic.png", ITEM_GRAPHIC_NUM, 10, 10, 48, 48, task->itemImagehandle);
+	if (ret == -1) {
 		return NULL;
 	}
 
@@ -239,6 +252,10 @@ static void Task_Shop_Terminate(STaskInfo* stask) {
 
 	DeleteGraph(task->imageHandle[eImage_BackImage]);
 	DeleteGraph(task->imageHandle[eImage_MessageWindow]);
+
+	for (int i = 0; i < ITEM_GRAPHIC_NUM; i++) {
+		DeleteGraph(task->itemImagehandle[i]);
+	}
 
 }
 

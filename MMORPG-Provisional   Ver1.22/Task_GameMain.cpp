@@ -419,7 +419,8 @@ static bool Task_GameMain_Step(
 			Chara_AllDelete();
 
 			// 全ステージクリアしたかどうかで処理を分岐
-			if( StageData_GetTotalStageNum() == StageData_GetLoadStageNo() + 1 )
+			//if( StageData_GetTotalStageNum() == StageData_GetLoadStageNo() + 1 )
+			if (STAGE_MAX_NUM == StageData_GetLoadStageNo() + 1)
 			{
 				// 全ステージクリアした場合は全ステージクリア表示開始待ちを開始する
 				GMData->EnableGameMainStepProcess = false;
