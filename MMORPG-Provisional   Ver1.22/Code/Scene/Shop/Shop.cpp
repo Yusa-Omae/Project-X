@@ -110,7 +110,7 @@ static bool Input(int inputType) {
 	bool result = false;
 
 	if (inputType >= EInputType_Left && inputType <= EInputType_Down) {
-		result = ((Input     & (1 << EInputType_Left)) != 0);
+		result = ((Input     & (1 << inputType)) != 0);
 	}
 	else {
 		result = ((EdgeInput & (1 << inputType)) != 0);
@@ -217,7 +217,7 @@ static bool Task_Shop_Step(STaskInfo* stask, float stepTime) {
 
 #ifdef __MY_DEBUG__
 	//強制的に終了する
-	if (Input(EInputType_Defence)) {
+	if (Input(EInputType_Jump)) {
 		task->isExit = true;
 	}
 

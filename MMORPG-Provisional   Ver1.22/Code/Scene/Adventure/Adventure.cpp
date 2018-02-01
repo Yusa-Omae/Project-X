@@ -107,7 +107,7 @@ static bool Task_Adbentrue_Step(STaskInfo* stask, float stepTime) {
 	int EdgeInput = GetEdgeInput();
 	int Input = GetInput();
 
-	if ((EdgeInput & (1 << EInputType_Defence)) != 0) {
+	if ((EdgeInput & (1 << EInputType_Pause)) != 0) {
 		//GameMain_ChangeGameState(eGameState_Tutorial, eFadeType_CrossFade);
 		//TaskSystem_DelTask(System_GetTaskSystemInfo(), &task->task);
 		task->isEnd = true;
@@ -156,7 +156,7 @@ static void Task_Adventure_Render(STaskInfo* stask) {
 
 	TASK_ADVENTURE_t* task = (TASK_ADVENTURE_t*)stask->Data;
 
-	DrawString(10, 20, "右クリックでスキップ", GetColor(255, 255, 255));
+	DrawString(10, 20, "スタートボタンでスキップ", GetColor(255, 255, 255));
 
 	task->stringBase->DrawString(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y, task->isDisp);
 
