@@ -200,8 +200,8 @@ static void Task_StageNumber_Render(
 	DrawY = GAME_SCREEN_HEIGHT / 2 - FONTHANDLE_BIG_SIZE / 2 - SSData->DrawY;
 
 	// ステージ番号表示全体の横幅と、『STAGE 』だけを描画した場合の横幅を取得
-	DrawWidth1 = GetDrawStringWidthToHandle( "STAGE 0", strlen( "STAGE 0" ),FontHandle );
-	DrawWidth2 = GetDrawStringWidthToHandle( "STAGE ",  strlen( "STAGE "  ),FontHandle );
+	DrawWidth1 = GetDrawStringWidthToHandle( "WAVE 0", strlen( "WAVE 0" ),FontHandle );
+	DrawWidth2 = GetDrawStringWidthToHandle( "WAVE ",  strlen( "WAVE "  ),FontHandle );
 
 	// 『STAGE』を描画するX座標とステージ番号を描画するX座標の算出
 	DrawX1     = GAME_SCREEN_WIDTH / 2 - DrawWidth1 / 2;
@@ -211,7 +211,7 @@ static void Task_StageNumber_Render(
 	SetDrawBlendMode( DX_BLENDMODE_ALPHA, SSData->Opacity );
 
 	// 『STAGE』とステージ番号の描画
-	DrawStringToHandle( DrawX1, DrawY, "STAGE",   GetColor( 255,255,255 ), FontHandle );
+	DrawStringToHandle( DrawX1, DrawY, "WAVE",   GetColor( 255,255,255 ), FontHandle );
 	DrawStringToHandle( DrawX2, DrawY, NumberStr, GetColor( 255,  0,  0 ), FontHandle );
 
 	// ブレンドモードを標準の状態に戻す

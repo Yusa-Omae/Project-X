@@ -39,12 +39,14 @@ void ScrollWindow_Initialize(SCROLL_WINDOW_DATA_t* window,int drawX,int drawY,in
 	/*
 	アイテムデータ一覧
 	*/
+#if false
 	int itemNum = ItemData_GetItemDataNum();
-	ITEM_DATA_t itemData;
+	ITEM_PARAM_DATA_t itemData;
 	for (int i = 0; i < itemNum; i++) {
 		ItemData_GetItemData(i, &itemData);
 		DrawString(20, 60 + i * 20, itemData.name, GetColor(255, 255, 255));
 	}
+#endif
 
 }
 
@@ -71,8 +73,8 @@ void ScrollWindow_Draw(SCROLL_WINDOW_DATA_t window,int scrollbarType) {
 		Scrollbar_DrawHorizontal(window.scrollbar, scrollbarDrawX, scrollbarDrawY);
 		break;
 	}	
-	
-	ITEM_DATA_t itemData;
+#if false
+	ITEM_PARAM_DATA_t itemData;
 	for (int i = 0; i < window.scrollbar.valueMax; i++) {
 		
 		
@@ -94,7 +96,7 @@ void ScrollWindow_Draw(SCROLL_WINDOW_DATA_t window,int scrollbarType) {
 		}
 		
 	}
-
+#endif
 }
 
 /*

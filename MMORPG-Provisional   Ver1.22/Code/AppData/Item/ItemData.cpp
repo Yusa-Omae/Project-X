@@ -38,19 +38,6 @@ enum eData {
 	eData_Num,
 };
 
-static const ITEM_DATA_t s_cItemTbl[] = {
-	//ID　アイテム名				説明													//アイテム効果				効果量	持てる数
-	{ 0,"移動速度アップ",			"移動速度を少し速くします.",							eItemType_MoveSpeed_Up,		1.25f,	20},
-	{ 1,"防御力アップ",				"防御力を気持ち上昇させます.",							eItemType_Deffence_Up ,		1.115f,	99},
-	{ 1,"クリティカルヒット率アップ","クリティカルヒットが起きる確率を0.15%増加します.",	eItemType_CriticalHit_Up,	1.15f,	30},
-	{ 1,"No Empty1","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
-	{ 1,"No Empty2","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
-	{ 1,"No Empty3","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
-	{ 1,"No Empty4","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
-	{ 1,"No Empty5","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
-	{ 1,"No Empty6","No Empty.",	eItemType_CriticalHit_Up,	1.15f,	30 },
-};
-
 static ITEM_PARAM_DATA_t s_ItemParam[ITEM_PARAM_DATA_NUM];
 
 /*
@@ -176,7 +163,7 @@ bool ItemData_ReadData() {
 /*
 	アイテムデータを返却
 */
-void ItemData_GetItemData(int idx,ITEM_DATA_t* item) {
+void ItemData_GetItemData(int idx, ITEM_PARAM_DATA_t* item) {
 	
 	if (idx < 0 || idx >= ItemData_GetItemDataNum()) {
 		
@@ -187,7 +174,7 @@ void ItemData_GetItemData(int idx,ITEM_DATA_t* item) {
 		return;
 	}
 	
-	*item = s_cItemTbl[idx];
+	*item = s_ItemParam[idx];
 }
 
 /*
@@ -195,5 +182,5 @@ void ItemData_GetItemData(int idx,ITEM_DATA_t* item) {
 	return	アイテムデータ数
 */
 int ItemData_GetItemDataNum() {
-	return sizeof(s_cItemTbl) / sizeof(s_cItemTbl[0]);
+	return sizeof(s_ItemParam) / sizeof(s_ItemParam[0]);
 }

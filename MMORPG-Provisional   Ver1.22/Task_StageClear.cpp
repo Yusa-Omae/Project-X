@@ -193,7 +193,7 @@ static void Task_StageClear_Render(
 
 	// ステージクリア表示全体の横幅と、『STAGE 』だけを描画した場合の横幅と、
 	// 『 CLEAR!』だけを描画した場合の横幅を取得
-	DrawWidth1 = GetDrawStringWidthToHandle( "STAGE ",  strlen( "STAGE " ), FontHandle );
+	DrawWidth1 = GetDrawStringWidthToHandle( "WAVE ",  strlen( "WAVE " ), FontHandle );
 	DrawWidth2 = GetDrawStringWidthToHandle( NumberStr, strlen( NumberStr ),FontHandle );
 	DrawWidth3 = GetDrawStringWidthToHandle( " CLEAR!", strlen( " CLEAR!" ),FontHandle );
 
@@ -209,7 +209,7 @@ static void Task_StageClear_Render(
 	SetDrawBlendMode( DX_BLENDMODE_ALPHA, SCData->StringOpacity );
 
 	// 『STAGE』とステージ番号と『CLEAR!』の描画
-	DrawStringToHandle( DrawX1, DrawY, "STAGE",   GetColor( 255,255,255 ), FontHandle );
+	DrawStringToHandle( DrawX1, DrawY, "WAVE",   GetColor( 255,255,255 ), FontHandle );
 	DrawStringToHandle( DrawX2, DrawY, NumberStr, GetColor( 255,0  ,0   ), FontHandle );
 	DrawStringToHandle( DrawX3, DrawY, " CLEAR!", GetColor( 255,255,255 ), FontHandle );
 
