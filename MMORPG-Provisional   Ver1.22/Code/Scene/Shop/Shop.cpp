@@ -32,6 +32,12 @@
 #define STRING_DRAW_POSITION_X (800)							//文字列描画座標X
 #define STRING_DRAW_POSITION_Y (GAME_SCREEN_HEIGHT - 20 * 7)			//文字列描画座標Y
 
+enum eImage {
+	eImage_BackImage,		//背景
+	eImage_MessageWindow,
+	eImage_Num,
+};
+
 enum eState{
 	eState_Init,			//初期化
 	eState_BuySelect,		//買い物の選択
@@ -48,7 +54,7 @@ enum eSystemToke {
 
 typedef struct {
 	STaskInfo task;
-	int imageHandle;
+	int imageHandle[eImage_Num];
 	eState state;						//ステート
 	int itemType;						//アイテムの種類
 	SCROLL_WINDOW_DATA_t scrollWindow;	//スクロールウィンドウ
@@ -144,7 +150,16 @@ STaskInfo* Task_Shop_Start() {
 	task->stringBase->FontCreate("ＭＳ 明朝", 24, 1, -1);
 	task->stringBase->SetColor(GetColor(255, 255, 255));
 
-	task->imageHandle = LoadGraph("Data/2D/Shop_BG00.png");
+	task->imageHandle[eImage_BackImage] = LoadGraph("Data/2D/Shop_BG00.png");
+	
+	if (task->imageHandle[eImage_BackImage] == -1) {
+		return NULL;
+	}
+	
+	task->imageHandle[eImage_MessageWindow] = LoadGraph("Data/2D/MessageWindow.png");
+	if (task->imageHandle[eImage_MessageWindow] == -1) {
+		return NULL;
+	}
 
 	task->isExit = false;
 
@@ -153,7 +168,7 @@ STaskInfo* Task_Shop_Start() {
 	TaskSystem_AddTask(System_GetTaskSystemInfo(), &task->task);
 
 	if (ItemData_ReadData() == false) {
-		return false;
+		return NULL;
 	}
 
 	s_Work = task;
@@ -171,6 +186,9 @@ bool Task_Shop_IsExit() {
 }
 
 static bool Task_Shop_Step(STaskInfo* stask, float stepTime) {
+
+	if (stask->Data == NULL) return true;
+
 	TASK_SHOP_t* task = (TASK_SHOP_t*)stask->Data;
 
 	
@@ -196,9 +214,13 @@ static bool Task_Shop_Step(STaskInfo* stask, float stepTime) {
 }
 
 static void Task_Shop_Render(STaskInfo* stask) {
+	
+	if (stask->Data == NULL) return;
+
 	TASK_SHOP_t* task = (TASK_SHOP_t*)stask->Data;
 
-	DrawGraph(0, 0, task->imageHandle, TRUE);
+	DrawGraph(0, 0, task->imageHandle[eImage_BackImage], TRUE);
+	DrawGraph(STRING_DRAW_POSITION_X - 20, STRING_DRAW_POSITION_Y - 10, task->imageHandle[eImage_MessageWindow], TRUE);
 
 	eState state = task->state;
 
@@ -215,7 +237,8 @@ static void Task_Shop_Terminate(STaskInfo* stask) {
 	delete (task->stringBase);
 	task->stringBase = NULL;
 
-	DeleteGraph(task->imageHandle);
+	DeleteGraph(task->imageHandle[eImage_BackImage]);
+	DeleteGraph(task->imageHandle[eImage_MessageWindow]);
 
 }
 
