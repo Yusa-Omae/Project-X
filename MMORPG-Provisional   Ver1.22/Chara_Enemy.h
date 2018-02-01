@@ -61,12 +61,3 @@ extern bool Chara_Enemy_MessageRecv(
 );
 
 #endif
-
-
-
-#if false
-#pragma once
-
-void Enemy_Initialize();
-void Enemy_Ai();
-#endif
