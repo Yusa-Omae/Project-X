@@ -249,7 +249,7 @@ extern bool StageData_Load(
 	Header = &g_StageData.Header;
 
 	//5回に一度ステージデータ2、それ以外は1を読み込む
-	int stageNumberBuffer = (StageNumber % 5 == 0 && StageNumber != 0 ? 0 : 0);
+	int stageNumberBuffer = (StageNumber % 19 == 0 && StageNumber != 0 ? 1 : 0);
 
 	// ステージデータのバイナリファイルを開く
 	if (ReadBinFile_Open(&BinFileData, "Data\\Stage\\Stage%02d.dat", stageNumberBuffer))
