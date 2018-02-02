@@ -18,7 +18,7 @@
 #include "Scrollbar.h"
 #include "WindowBase.h"
 
-#define ITEM_WINDOW_NUM (6)					//画面上に表示させるアイテムウィンドウの数
+#define ITEM_WINDOW_NUM (10)					//画面上に表示させるアイテムウィンドウの数
 
 enum eScrollWindow {
 	eScrollWindow_ScrollbarVertical,		//縦向きスクロールバー

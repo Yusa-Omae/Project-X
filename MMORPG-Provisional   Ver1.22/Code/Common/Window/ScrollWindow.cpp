@@ -123,6 +123,57 @@ void ScrollWindow_DrawGraph(SCROLL_WINDOW_DATA_t window,int graphichandle,int sc
 		break;
 	}
 
+	ITEM_PARAM_DATA_t itemData;
+	for (int i = 0; i < window.scrollbar.valueMax; i++) {
+
+
+		int drawSelectItem = (int)window.scrollbar.nowValue;
+		int drawItem = i;
+
+#if false
+		if (i < ITEM_WINDOW_NUM / 2 && window.scrollbar.nowValue < ITEM_WINDOW_NUM / 2) {
+			drawItem = i;
+		}
+		else {
+			drawItem = i + (int)window.scrollbar.nowValue;
+		}
+#endif
+
+		if ((int)window.scrollbar.nowValue > window.scrollbar.valueMax - (ITEM_WINDOW_NUM / 2)) {
+			drawSelectItem = ITEM_WINDOW_NUM - (int)(window.scrollbar.valueMax - window.scrollbar.nowValue);
+			drawItem = (i + window.scrollbar.valueMax) - (ITEM_WINDOW_NUM);
+		}
+		else if ((int)window.scrollbar.nowValue < ITEM_WINDOW_NUM / 2) {
+			drawSelectItem = (int)window.scrollbar.nowValue;
+			drawItem = i;
+		}
+		else {
+			drawSelectItem = ITEM_WINDOW_NUM / 2;
+			drawItem = (i + (int)window.scrollbar.nowValue) - (ITEM_WINDOW_NUM / 2);
+		}
+		
+
+		char str[256];
+		sprintf_s(str, "テスト%d", drawItem);
+		if (drawSelectItem >= 0 && drawSelectItem < window.scrollbar.valueMax) {
+
+			int alpha = 100;
+			if (drawSelectItem == i) {
+				alpha = 255;
+			}
+
+
+			WindowBase_Draw(window.itemWindow[i], alpha, GetColor(255, 255, 0), GetColor(255, 255, 255));
+
+			if (drawSelectItem < ItemData_GetItemDataNum()) {
+				//ItemData_GetItemData(drawItem, &itemData);
+				
+				//DrawString(20, 60 + i * 181, itemData.name, GetColor(0, 0, 0));
+				DrawString(20, 36 + i * 72, str, GetColor(0, 0, 0));
+			}
+		}
+
+	}
 }
 
 /*

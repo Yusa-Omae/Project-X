@@ -22,7 +22,7 @@
 #include "../Input.h"
 #include "Adventure.h"
 
-#define STRING_LINE_LENGTH_MAX (60)								//一行に表示する最大文字数
+#define STRING_LINE_LENGTH_MAX (30)								//一行に表示する最大文字数
 #define ONELETTER_DISP_INTERVAL (20)							//一文字表示するまでの間隔
 #define STRING_DRAW_POSITION_X (120)							//文字列描画座標X
 #define STRING_DRAW_POSITION_Y (GAME_SCREEN_HEIGHT - 20 * 7)			//文字列描画座標Y

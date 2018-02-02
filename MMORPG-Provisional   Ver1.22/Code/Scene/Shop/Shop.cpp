@@ -41,13 +41,16 @@ enum eImage {
 enum eState{
 	eState_Init,			//初期化
 	eState_BuySelect,		//買い物の選択
-	eState_ItemSelect,		//アイテム選択
+	eState_BuyChacek,		//購入確認
 	eState_Exit,			//終了処理
 	eState_Num,
 };		
 
 enum eSystemToke {
 	eSystemToke_Aisatu,		//最初の挨拶
+	eSystemToke_kau,		//購入する
+	eSystemToke_yameru,		//購入をやめる
+	eSystemToke_Exit,		//店を出る
 
 	eSystemToke_Num,
 };
@@ -60,7 +63,8 @@ typedef struct {
 	int itemType;						//アイテムの種類
 	SCROLL_WINDOW_DATA_t scrollWindow;	//スクロールウィンドウ
 	StringBase* stringBase;				//文字列
-	bool isExit;						//終了した
+	bool isExit;						//終了した				
+	int select;
 }TASK_SHOP_t;
 
 typedef struct {
@@ -93,8 +97,18 @@ static STaskBaseInfo g_Task_ShopTaskBaseInfo =
 	Task_Shop_Terminate,
 };
 
-static const char SYSTEM_TOKE_TBL[][256] = {
-	{"いらっしゃい！\n今回はどうするんだい？"},
+static const char SYSTEM_TOKE_TBL[eSystemToke_Num][256] = {
+	{"いらっしゃい！\n今回はどうするんだい？"},	//最初の挨拶
+	{ "これを買うのかい？" },					//購入する
+	{ "なんだ、やめるのか" },					//購入をやめる
+	{ "また来いよな！" },						//店を出る
+};
+
+//選択
+static const char SYSTEM_SELECT_TBL[][256] = {
+	{ "購入する" },
+	{ "合成する" },
+	{ "店を出る" },
 };
 
 static TASK_SHOP_t* s_Work;
@@ -109,12 +123,16 @@ static bool Input(int inputType) {
 
 	bool result = false;
 
+#if true
+	result = ((EdgeInput & (1 << inputType)) != 0);
+#else
 	if (inputType >= EInputType_Left && inputType <= EInputType_Down) {
 		result = ((Input     & (1 << inputType)) != 0);
 	}
 	else {
 		result = ((EdgeInput & (1 << inputType)) != 0);
 	}
+#endif
 	return result;
 }
 
@@ -130,15 +148,39 @@ static void InitProc(TASK_SHOP_t* task) {
 */
 static void BuySelectProc(TASK_SHOP_t* task) {
 
+	if (Input(EInputType_Down)) {
+		ScrollWindow_Scroll(&task->scrollWindow, 1);
+	}
+	else if (Input(EInputType_Up)) {
+		ScrollWindow_Scroll(&task->scrollWindow, -1);
+	}
+
 }
 static void BuySelectDraw(TASK_SHOP_t* task) {
 
+
+	for (int i = 0; i < 3; i++) {
+
+		int drawX = i * 200 + 20;
+		int drawY = 200;
+
+		if (task->select == i) {
+			DrawString(drawX, drawY, SYSTEM_SELECT_TBL[i], GetColor(255, 0, 0));
+		}
+		else {
+			DrawString(drawX, drawY, SYSTEM_SELECT_TBL[i], GetColor(255, 255, 255));
+		}
+	}
+
+
+#if false
 	for (int i = 0; i < ITEM_GRAPHIC_NUM; i++) {
 		
 		int drawX = (i % 10) * 48;
 		int drawY = (i / 10) * 48;
 		DrawGraph(drawX,drawY, task->itemImagehandle[i], TRUE);
 	}
+#endif
 
 }
 
@@ -158,7 +200,7 @@ STaskInfo* Task_Shop_Start() {
 	task->stringBase->FontCreate("ＭＳ 明朝", 24, 1, -1);
 	task->stringBase->SetColor(GetColor(255, 255, 255));
 
-	task->imageHandle[eImage_BackImage] = LoadGraph("Data/2D/Shop_BG00.png");
+	task->imageHandle[eImage_BackImage] = LoadGraph("Data/2D/Shop_BG01.png");
 	
 	if (task->imageHandle[eImage_BackImage] == -1) {
 		return NULL;
@@ -175,6 +217,7 @@ STaskInfo* Task_Shop_Start() {
 	}
 
 	task->isExit = false;
+	task->select = 0;
 
 	task->task.Base = &g_Task_ShopTaskBaseInfo;
 	task->task.Data = task;
@@ -183,6 +226,8 @@ STaskInfo* Task_Shop_Start() {
 	if (ItemData_ReadData() == false) {
 		return NULL;
 	}
+
+	ScrollWindow_Initialize(&task->scrollWindow, 0, 0, 640, 720, 720);
 
 	s_Work = task;
 
@@ -232,8 +277,10 @@ static void Task_Shop_Render(STaskInfo* stask) {
 
 	TASK_SHOP_t* task = (TASK_SHOP_t*)stask->Data;
 
-	DrawGraph(0, 0, task->imageHandle[eImage_BackImage], TRUE);
+	//DrawGraph(0, 0, task->imageHandle[eImage_BackImage], TRUE);
 	DrawGraph(STRING_DRAW_POSITION_X - 20, STRING_DRAW_POSITION_Y - 10, task->imageHandle[eImage_MessageWindow], TRUE);
+
+	ScrollWindow_DrawGraph(task->scrollWindow, task->imageHandle[eImage_BackImage], eScrollWindow_ScrollbarVertical);
 
 	eState state = task->state;
 
