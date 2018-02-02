@@ -13,6 +13,7 @@
 #include "Task_GameOver.h"
 #include "Task_PauseMenu.h"
 #include "Code/Scene/Adventure/Adventure.h"
+#include "Code/Scene/Shop/Shop.h"
 #include <math.h>
 
 // ステージ開始をする前に待つ時間
@@ -48,15 +49,22 @@
 typedef enum _ETask_GameMainState
 {
 	
-	ETask_GameMainState_StageStart_Wait,	// ステージ開始待ち中
-	ETask_GameMainState_Stage_FadeIn,		// ステージフェードイン中
 	ETask_GameMainState_Adventure_EndWait,	//会話パート終了待ち
 	ETask_GameMainState_StageNumber,		// ステージ番号表示中
+
+	ETask_GameMainState_StageStart_Wait,	// ステージ開始待ち中
+	ETask_GameMainState_Stage_FadeIn,		// ステージフェードイン中
+
 	ETask_GameMainState_InGame,				// ゲーム中
 	ETask_GameMainState_PauseMenu,			// ポーズメニュー中
 	ETask_GameMainState_StageClear_Wait,	// ステージクリア処理開始待ち中
 	ETask_GameMainState_StageClear_String,	// ステージクリア文字表示中
 	ETask_GameMainState_StageClear_FadeOut,	// ステージクリア後フェードアウト中
+
+	ETask_GameMainState_Shop_Start,			//ショップを開く
+	ETask_GameMainState_Shop_End,			//ショップ終了待ち
+	ETask_GameMainState_Shop_FadeOut,		//ショップ終了後フェードアウト中
+
 	ETask_GameMainState_StageAllClear_Wait,	// 全ステージクリア処理開始待ち中
 	ETask_GameMainState_GameOver_Wait,		// ゲームオーバー処理開始待ち中
 	ETask_GameMainState_GameOver,			// ゲームオーバー表示中
@@ -105,6 +113,10 @@ typedef struct _STask_GameMainData
 
 	// 会話パートタスク情報構造体へのポインタ
 	STaskInfo *         AdventureTaskInfo;
+
+	//ショップタスク情報構造体へのポインタ
+	STaskInfo *			ShopTaskInfo;
+
 } STask_GameMainData;
 
 // ゲームメインの状態推移処理を行う
@@ -165,13 +177,45 @@ static bool Task_GameMain_Step(
 	// ゲームメイン処理の状態によって処理を分岐
 	switch( GMData->State )
 	{
-	
+
+	case ETask_GameMainState_Adventure_EndWait:
+		if (!System_CheckFade())
+		{
+			if (Task_Adventure_IsDelete() == true) {
+				TaskSystem_DelTask(
+
+					//会話タスク削除
+					System_GetTaskSystemInfo(), GMData->AdventureTaskInfo);
+
+
+				// 最初のステージのセットアップを行う
+				if (!Stage_Setup(System_GetStartStage()))
+				{
+					return false;
+				}
+
+				System_FadeOut();
+
+				GMData->State = ETask_GameMainState_StageStart_Wait;
+			}
+		}
+		break;
 	case ETask_GameMainState_StageStart_Wait:	// ステージ開始待ち中
 		GMData->Counter += StepTime;
 		if( GMData->Counter > STAGE_START_WAIT )
 		{
 			// フェードイン待ち時間が経過したらフェードインを開始する
 			System_FadeIn();
+
+			// フェードインが完了したらステージ番号表示を開始する
+			GMData->StageNumberTaskInfo = Task_StageNumber_Start();
+			if (GMData->StageNumberTaskInfo == NULL)
+			{
+				return false;
+			}
+
+			//プレイヤーの体力などを表示する
+			GMData->DrawHUD = true;
 
 			GMData->State   = ETask_GameMainState_Stage_FadeIn;
 			GMData->Counter = 0.0f;
@@ -181,33 +225,11 @@ static bool Task_GameMain_Step(
 	case ETask_GameMainState_Stage_FadeIn:	// ステージフェードイン中
 		if( !System_CheckFade() )
 		{
-			//会話タスク生成
-			GMData->AdventureTaskInfo = Task_Adventure_Start();
-			if (GMData->AdventureTaskInfo == NULL) {
-				return false;
-			}
-			GMData->State   = ETask_GameMainState_Adventure_EndWait;
+			
+			GMData->State   = ETask_GameMainState_StageNumber;
 			GMData->Counter = 0.0f;
 		}
 		break;
-
-	case ETask_GameMainState_Adventure_EndWait:
-		if (Task_Adventure_IsDelete() == true) {
-			TaskSystem_DelTask(
-
-				//会話タスク削除
-				System_GetTaskSystemInfo(), GMData->AdventureTaskInfo);
-
-			// フェードインが完了したらステージ番号表示を開始する
-			GMData->StageNumberTaskInfo = Task_StageNumber_Start();
-			if (GMData->StageNumberTaskInfo == NULL)
-			{
-				return false;
-			}
-			GMData->State = ETask_GameMainState_StageNumber;
-		}
-		break;
-
 	case ETask_GameMainState_StageNumber:	// ステージ番号表示中
 		if( Task_StageNumber_CheckEnd( GMData->StageNumberTaskInfo ) )
 		{
@@ -397,7 +419,8 @@ static bool Task_GameMain_Step(
 			Chara_AllDelete();
 
 			// 全ステージクリアしたかどうかで処理を分岐
-			if( StageData_GetTotalStageNum() == StageData_GetLoadStageNo() + 1 )
+			//if( StageData_GetTotalStageNum() == StageData_GetLoadStageNo() + 1 )
+			if (STAGE_MAX_NUM == StageData_GetLoadStageNo() + 1)
 			{
 				// 全ステージクリアした場合は全ステージクリア表示開始待ちを開始する
 				GMData->EnableGameMainStepProcess = false;
@@ -410,21 +433,72 @@ static bool Task_GameMain_Step(
 			}
 			else
 			{
-				// 次のステージがある場合は、次のステージのセットアップを行い、
-				// その後ステージ開始待ちを開始する
-				if( !Stage_Setup( StageData_GetLoadStageNo() + 1 ) )
-				{
-					return false;
-				}
+			
+
+
 				GMData->KillEnemyNum        = 0;
 				GMData->KillTargetCharaKill = false;
 
-				GMData->State   = ETask_GameMainState_StageStart_Wait;
+				GMData->State   = ETask_GameMainState_Shop_Start;
 				GMData->Counter = 0.0f;
 			}
+
+			
+
 		}
 		break;
+	case ETask_GameMainState_Shop_Start:
+		
+		/*
+			ここでショップタスク生成
+		
+		*/
 
+		GMData->ShopTaskInfo = Task_Shop_Start();
+		if (GMData->ShopTaskInfo == NULL) {
+			return false;
+		}
+
+
+		System_FadeIn();
+		GMData->State = ETask_GameMainState_Shop_End;
+		GMData->Counter = 0.0f;
+		
+		break;
+	case ETask_GameMainState_Shop_End:
+		if (Task_Shop_IsExit()) {
+					
+			
+			System_FadeOut();
+						
+
+			GMData->State = ETask_GameMainState_Shop_FadeOut;
+			GMData->Counter = 0.0f;
+
+		}
+		break;
+	case ETask_GameMainState_Shop_FadeOut:
+
+		if (!System_CheckFade()) {
+
+			//ショップタスクの削除をする
+			TaskSystem_DelTask(
+				System_GetTaskSystemInfo(), GMData->ShopTaskInfo);
+			GMData->ShopTaskInfo = NULL;
+
+			// 次のステージがある場合は、次のステージのセットアップを行い、
+			// その後ステージ開始待ちを開始する
+			if (!Stage_Setup(StageData_GetLoadStageNo() + 1))
+			{
+				return false;
+			}
+
+			GMData->State = ETask_GameMainState_StageStart_Wait;
+			GMData->Counter = 0.0f;
+
+		}
+
+		break;
 	case ETask_GameMainState_StageAllClear_Wait:	// 全ステージクリア処理開始待ち中
 		GMData->Counter += StepTime;
 		if( GMData->Counter > STAGE_ALLCLEAR_WAIT )
@@ -628,10 +702,10 @@ STaskInfo * Task_GameMain_Start( void )
 		return NULL;
 	}
 
-	// 最初のステージのセットアップを行う
-	if( !Stage_Setup( System_GetStartStage() ) )
-	{
-		return NULL;
+	//会話タスク生成
+	GMData->AdventureTaskInfo = Task_Adventure_Start();
+	if (GMData->AdventureTaskInfo == NULL) {
+		return false;
 	}
 
 	// ゲームメインの処理を行うかどうかのフラグを立てる
@@ -643,17 +717,19 @@ STaskInfo * Task_GameMain_Start( void )
 	GMData->KillTargetCharaKill = false;
 
 	// プレイヤーの体力表示などを行うかどうかのフラグを立てる
-	GMData->DrawHUD             = true;
+	GMData->DrawHUD             = false;
 
 	// ステージ開始待ち状態にする
 	//GMData->State               = ETask_GameMainState_StageStart_Wait;
-	GMData->State = ETask_GameMainState_StageStart_Wait;
+	GMData->State = ETask_GameMainState_Adventure_EndWait;
 	GMData->Counter             = 0.0f;
 
 	// タスクを登録する
 	GMData->TaskInfo.Base = &g_Task_GameMainTaskBaseInfo;
 	GMData->TaskInfo.Data = GMData;
 	TaskSystem_AddTask( System_GetTaskSystemInfo(), &GMData->TaskInfo );
+
+	System_FadeIn();
 
 	// タスク情報構造体のアドレスを返す
 	return &GMData->TaskInfo;

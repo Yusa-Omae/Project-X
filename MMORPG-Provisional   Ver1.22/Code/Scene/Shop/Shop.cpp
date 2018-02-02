@@ -1,4 +1,4 @@
-﻿#if false
+﻿
 /*
 				ファイル名		:Shop.cpp
 				作成者			:Syara
@@ -14,6 +14,253 @@
 !*/
 
 #include "DxLib.h"
+#include "../System.h"
+
+
+#include "Shop.h"
+#include "../Task.h"
+#include "../System.h"
+#include "../Define.h"
+#include "../Gamemain.h"
+#include "../Code/Common/Window/ScrollWindow.h"
+#include "../Code/Common/String/StringBase.h"
+#include "../Code/AppData/Item/ItemData.h"
+#include "../Input.h"
+
+#define STRING_LINE_LENGTH_MAX (30)								//一行に表示する最大文字数
+#define ONELETTER_DISP_INTERVAL (5)								//一文字表示するまでの間隔
+#define STRING_DRAW_POSITION_X (800)							//文字列描画座標X
+#define STRING_DRAW_POSITION_Y (GAME_SCREEN_HEIGHT - 20 * 7)			//文字列描画座標Y
+#define ITEM_GRAPHIC_NUM (69)
+enum eImage {
+	eImage_BackImage,		//背景
+	eImage_MessageWindow,
+	eImage_Num,
+};
+
+enum eState{
+	eState_Init,			//初期化
+	eState_BuySelect,		//買い物の選択
+	eState_ItemSelect,		//アイテム選択
+	eState_Exit,			//終了処理
+	eState_Num,
+};		
+
+enum eSystemToke {
+	eSystemToke_Aisatu,		//最初の挨拶
+
+	eSystemToke_Num,
+};
+
+typedef struct {
+	STaskInfo task;
+	int imageHandle[eImage_Num];
+	int itemImagehandle[ITEM_GRAPHIC_NUM ];
+	eState state;						//ステート
+	int itemType;						//アイテムの種類
+	SCROLL_WINDOW_DATA_t scrollWindow;	//スクロールウィンドウ
+	StringBase* stringBase;				//文字列
+	bool isExit;						//終了した
+}TASK_SHOP_t;
+
+typedef struct {
+	void(*proc)(TASK_SHOP_t* task);
+	void(*draw)(TASK_SHOP_t* task);
+}SHOP_FUNC;
+
+static bool Task_Shop_Step(STaskInfo* task, float stepTime);
+static void Task_Shop_Render(STaskInfo* task);
+static void Task_Shop_Terminate(STaskInfo* task);
+
+static void InitProc(TASK_SHOP_t* task);
+static void BuySelectProc(TASK_SHOP_t* task);
+static void BuySelectDraw(TASK_SHOP_t* task);
+
+
+static SHOP_FUNC s_ShopFunc[eState_Num] = {
+	//更新					//描画
+	{ InitProc,				NULL		  },
+	{ BuySelectProc,		BuySelectDraw },
+};
+
+// タイトル処理タスクの基本情報
+static STaskBaseInfo g_Task_ShopTaskBaseInfo =
+{
+	8,
+	8,
+	Task_Shop_Step,
+	Task_Shop_Render,
+	Task_Shop_Terminate,
+};
+
+static const char SYSTEM_TOKE_TBL[][256] = {
+	{"いらっしゃい！\n今回はどうするんだい？"},
+};
+
+static TASK_SHOP_t* s_Work;
+
+/*
+	入力状態を返却する
+*/
+static bool Input(int inputType) {
+
+	int EdgeInput = GetEdgeInput();
+	int Input = GetInput();
+
+	bool result = false;
+
+	if (inputType >= EInputType_Left && inputType <= EInputType_Down) {
+		result = ((Input     & (1 << inputType)) != 0);
+	}
+	else {
+		result = ((EdgeInput & (1 << inputType)) != 0);
+	}
+	return result;
+}
+
+static void InitProc(TASK_SHOP_t* task) {
+	task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_Aisatu]);
+	if (Input(EInputType_Attack)) {
+		task->state = eState_BuySelect;
+	}
+}
+
+/*
+	購入する項目を選択する
+*/
+static void BuySelectProc(TASK_SHOP_t* task) {
+
+}
+static void BuySelectDraw(TASK_SHOP_t* task) {
+
+	for (int i = 0; i < ITEM_GRAPHIC_NUM; i++) {
+		
+		int drawX = (i % 10) * 48;
+		int drawY = (i / 10) * 48;
+		DrawGraph(drawX,drawY, task->itemImagehandle[i], TRUE);
+	}
+
+}
+
+
+STaskInfo* Task_Shop_Start() {
+	TASK_SHOP_t* task;
+
+	task = (TASK_SHOP_t*)calloc(1, sizeof(TASK_SHOP_t));
+	if (task == NULL) {
+		return false;
+	}
+
+	task->stringBase = new StringBase();
+	if (task->stringBase == NULL) {
+		return false;
+	}
+	task->stringBase->FontCreate("ＭＳ 明朝", 24, 1, -1);
+	task->stringBase->SetColor(GetColor(255, 255, 255));
+
+	task->imageHandle[eImage_BackImage] = LoadGraph("Data/2D/Shop_BG00.png");
+	
+	if (task->imageHandle[eImage_BackImage] == -1) {
+		return NULL;
+	}
+	
+	task->imageHandle[eImage_MessageWindow] = LoadGraph("Data/2D/MessageWindow.png");
+	if (task->imageHandle[eImage_MessageWindow] == -1) {
+		return NULL;
+	}
+
+	int ret = LoadDivGraph("Data/Shop/Item_Pic.png", ITEM_GRAPHIC_NUM, 10, 10, 48, 48, task->itemImagehandle);
+	if (ret == -1) {
+		return NULL;
+	}
+
+	task->isExit = false;
+
+	task->task.Base = &g_Task_ShopTaskBaseInfo;
+	task->task.Data = task;
+	TaskSystem_AddTask(System_GetTaskSystemInfo(), &task->task);
+
+	if (ItemData_ReadData() == false) {
+		return NULL;
+	}
+
+	s_Work = task;
+
+	return &task->task;
+}
+
+/*
+	ショップが終了するか判断する
+	return	true	:終了
+			false	:終了しない
+*/
+bool Task_Shop_IsExit() {
+	return s_Work->isExit;
+}
+
+static bool Task_Shop_Step(STaskInfo* stask, float stepTime) {
+
+	if (stask->Data == NULL) return true;
+
+	TASK_SHOP_t* task = (TASK_SHOP_t*)stask->Data;
+
+	
+	
+	eState state = task->state;
+
+	
+	if (s_ShopFunc[state].proc != NULL) {
+		s_ShopFunc[state].proc(task);
+	}
+
+	task->stringBase->Update(true, 30, 5);
+
+#ifdef __MY_DEBUG__
+	//強制的に終了する
+	if (Input(EInputType_Jump)) {
+		task->isExit = true;
+	}
+
+#endif
+
+	return true;
+}
+
+static void Task_Shop_Render(STaskInfo* stask) {
+	
+	if (stask->Data == NULL) return;
+
+	TASK_SHOP_t* task = (TASK_SHOP_t*)stask->Data;
+
+	DrawGraph(0, 0, task->imageHandle[eImage_BackImage], TRUE);
+	DrawGraph(STRING_DRAW_POSITION_X - 20, STRING_DRAW_POSITION_Y - 10, task->imageHandle[eImage_MessageWindow], TRUE);
+
+	eState state = task->state;
+
+	if (s_ShopFunc[state].draw != NULL) {
+		s_ShopFunc[state].draw(task);
+	}
+
+	task->stringBase->DrawString(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y);
+}
+
+static void Task_Shop_Terminate(STaskInfo* stask) {
+	TASK_SHOP_t* task = (TASK_SHOP_t*)stask->Data;
+
+	delete (task->stringBase);
+	task->stringBase = NULL;
+
+	DeleteGraph(task->imageHandle[eImage_BackImage]);
+	DeleteGraph(task->imageHandle[eImage_MessageWindow]);
+
+	for (int i = 0; i < ITEM_GRAPHIC_NUM; i++) {
+		DeleteGraph(task->itemImagehandle[i]);
+	}
+
+}
+
+
+#if false
 #include "../Define.h"
 #include "../Code/AppData/Item/ItemData.h"
 #include "../Code/Common/Window/ScrollWindow.h"

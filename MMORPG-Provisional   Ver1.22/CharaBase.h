@@ -208,6 +208,29 @@ typedef struct _SCharaBaseInfo
 
 	// 体力
 	int                   Health;
+	/*
+
+	Hp=基本体力値
+	Atk=基本攻撃値
+	Def=基本防御値
+	Crt=基本クリティカル率
+	Speed=基本移動スピード
+	Gold=所持金
+	Fame=名声
+	
+	ItemHav[10]=アイテムは何を持っているかの確認
+	Item_Db[10]=アイテム欄の耐久値
+	
+	Add_Hp=所持アイテムの最大HPアップ合計値
+	Add_Atk=装備武器アイテムの攻撃力
+	Add_Def=所持アイテムの防御力合計値
+	Add_Crt=所持アイテムのクリティカル率合計値
+	Add_Spd=所持アイテムの移動スピード値合計
+	Abp_Hp=攻撃を与えた際のHp吸収率(ダメージ*吸収率(%))
+	Auto_Heal=リジェネ(1秒間に回復する量(微量))
+	Gold_Per=敵を倒した際にもらえるお金の量が増える。
+
+	*/
 
 	// 武器による攻撃を受けたときに鳴らす音の登録番号
 	int                   WeaponAttackDamageSound[ECharaWeapon_Num];

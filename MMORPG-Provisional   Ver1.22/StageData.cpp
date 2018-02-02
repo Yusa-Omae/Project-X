@@ -248,8 +248,11 @@ extern bool StageData_Load(
 	// ヘッダのアドレスを代入
 	Header = &g_StageData.Header;
 
+	//20回に一度ステージデータ2、それ以外は1を読み込む
+	int stageNumberBuffer = (StageNumber % 19 == 0 && StageNumber != 0 ? 1 : 0);
+
 	// ステージデータのバイナリファイルを開く
-	if (ReadBinFile_Open(&BinFileData, "Data\\Stage\\Stage%02d.dat", StageNumber))
+	if (ReadBinFile_Open(&BinFileData, "Data\\Stage\\Stage%02d.dat", stageNumberBuffer))
 	{
 		// 最初の４文字が 『MAPD』 かどうかをチェック
 		ReadBinFile_Data(&BinFileData, &Header->MagicID, 4);
@@ -267,6 +270,14 @@ extern bool StageData_Load(
 			Header->StageClearCondition = (EStageClearCondition)ParamInt;
 			ReadBinFile_Int(&BinFileData, &Header->KillCharaNum);
 			ReadBinFile_Int(&BinFileData, &Header->KillTargetChara);
+
+#if false
+#ifdef __MY_DEBUG__
+
+			Header->KillCharaNum = 0;
+
+#endif
+#endif
 
 			// キャラの配置情報を読み込む
 			CInfo = g_StageData.CharaInfo;
@@ -406,7 +417,7 @@ extern bool StageData_Load(
 	}
 
 	// ステージの３Ｄモデルを読み込む
-	sprintf(FilePath, "Data\\Stage\\Stage%02d.mv1", StageNumber);
+	sprintf(FilePath, "Data\\Stage\\Stage%02d.mv1", stageNumberBuffer);
 	g_StageData.ModelHandle = MV1LoadModel(FilePath);
 	if (g_StageData.ModelHandle == -1)
 	{
@@ -414,7 +425,7 @@ extern bool StageData_Load(
 	}
 
 	// ステージのコリジョン用３Ｄモデルを読み込む
-	sprintf(FilePath, "Data\\Stage\\Stage%02d_c.mv1", StageNumber);
+	sprintf(FilePath, "Data\\Stage\\Stage%02d_c.mv1", stageNumberBuffer);
 	g_StageData.CollisionModelHandle = MV1LoadModel(FilePath);
 	if (g_StageData.CollisionModelHandle == -1)
 	{
@@ -422,7 +433,7 @@ extern bool StageData_Load(
 	}
 
 	// ステージの空表現用３Ｄモデルを読み込む
-	sprintf(FilePath, "Data\\Stage\\Stage%02d_sky.mv1", StageNumber);
+	sprintf(FilePath, "Data\\Stage\\Stage%02d_sky.mv1", stageNumberBuffer);
 	g_StageData.SkyModelHandle = MV1LoadModel(FilePath);
 
 	// コリジョン用３Ｄモデルのマテリアルタイプを調べる

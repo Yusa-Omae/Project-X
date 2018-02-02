@@ -212,7 +212,7 @@ static void Task_AllStageClear_Render(
 	float                    Angle;
 	int                      i;
 	int                      CharNum;
-	const char              *DispString = "ALL STAGE CLEAR!";
+	const char              *DispString = "ALL WAVE CLEAR!";
 	int                      Bright;
 
 	// 全ステージクリア表示の不透明度が０の場合は何もせず終了

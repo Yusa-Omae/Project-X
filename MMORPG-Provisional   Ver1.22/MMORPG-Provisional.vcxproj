@@ -122,6 +122,7 @@
     <ClCompile Include="Gamemain.cpp" />
     <ClCompile Include="GameMainRender.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Chara_NPC.cpp" />
     <ClCompile Include="Chara_Player.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Gamemain.h" />
     <ClInclude Include="GameMainRender.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="Chara_NPC.h" />
     <ClInclude Include="Chara_Player.h" />

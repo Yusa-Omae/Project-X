@@ -5,6 +5,9 @@
 #include "CharaBase.h"
 #include "TextParam.h"
 
+//ステージの最大数
+#define STAGE_MAX_NUM (100)
+
 // ステージデータファイルの先頭に書き込む文字列
 #define STAGEFILE_ID								"MAPD"
 

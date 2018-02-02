@@ -180,7 +180,7 @@ static void Task_StageNumber_Render(
 	int                    DrawX1;
 	int                    DrawX2;
 	int                    DrawY;
-	char                   NumberStr[ 2 ];
+	char                   NumberStr[ 3 ];
 	int                    FontHandle;
 
 	// ステージ番号表示の不透明度が０だったら何もせず終了
@@ -193,16 +193,34 @@ static void Task_StageNumber_Render(
 	FontHandle = System_GetFontHandle( EFontHandle_Big );
 
 	// ステージ番号の文字列を作成
-	NumberStr[ 0 ] = '1' + StageData_GetLoadStageNo();
-	NumberStr[ 1 ] = '\0';
+	if (StageData_GetLoadStageNo() >= 9) {
+		
+		int statgeNumber = StageData_GetLoadStageNo() + 1;
+
+		NumberStr[0] = '0' + statgeNumber / 10;
+		NumberStr[1] = '0' + statgeNumber % 10;
+		NumberStr[2] = '\0';
+
+		// ステージ番号表示全体の横幅と、『STAGE 』だけを描画した場合の横幅を取得
+		DrawWidth1 = GetDrawStringWidthToHandle("WAVE 00", strlen("WAVE 00"), FontHandle);
+		DrawWidth2 = GetDrawStringWidthToHandle("WAVE ", strlen("WAVE "), FontHandle);
+
+	}
+	else {
+		NumberStr[0] = '1' + StageData_GetLoadStageNo();
+		NumberStr[1] = '\0';
+		NumberStr[2] = '\0';
+
+		// ステージ番号表示全体の横幅と、『STAGE 』だけを描画した場合の横幅を取得
+		DrawWidth1 = GetDrawStringWidthToHandle("WAVE 0", strlen("WAVE 0"), FontHandle);
+		DrawWidth2 = GetDrawStringWidthToHandle("WAVE ", strlen("WAVE "), FontHandle);
+
+	}
 
 	// ステージ番号を描画するY座標の算出
 	DrawY = GAME_SCREEN_HEIGHT / 2 - FONTHANDLE_BIG_SIZE / 2 - SSData->DrawY;
 
-	// ステージ番号表示全体の横幅と、『STAGE 』だけを描画した場合の横幅を取得
-	DrawWidth1 = GetDrawStringWidthToHandle( "STAGE 0", strlen( "STAGE 0" ),FontHandle );
-	DrawWidth2 = GetDrawStringWidthToHandle( "STAGE ",  strlen( "STAGE "  ),FontHandle );
-
+	
 	// 『STAGE』を描画するX座標とステージ番号を描画するX座標の算出
 	DrawX1     = GAME_SCREEN_WIDTH / 2 - DrawWidth1 / 2;
 	DrawX2     = DrawX1 + DrawWidth2;
@@ -211,7 +229,7 @@ static void Task_StageNumber_Render(
 	SetDrawBlendMode( DX_BLENDMODE_ALPHA, SSData->Opacity );
 
 	// 『STAGE』とステージ番号の描画
-	DrawStringToHandle( DrawX1, DrawY, "STAGE",   GetColor( 255,255,255 ), FontHandle );
+	DrawStringToHandle( DrawX1, DrawY, "WAVE",   GetColor( 255,255,255 ), FontHandle );
 	DrawStringToHandle( DrawX2, DrawY, NumberStr, GetColor( 255,  0,  0 ), FontHandle );
 
 	// ブレンドモードを標準の状態に戻す
