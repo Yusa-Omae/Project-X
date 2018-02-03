@@ -32,16 +32,25 @@
 #define STRING_DRAW_POSITION_X (800)							//文字列描画座標X
 #define STRING_DRAW_POSITION_Y (GAME_SCREEN_HEIGHT - 20 * 7)			//文字列描画座標Y
 #define ITEM_GRAPHIC_NUM (69)
+#define MESSAGE_WINDOW_BASE_POSITION_X (STRING_DRAW_POSITION_X - 20)
+#define MESSAGE_WINDOW_BASE_POSITION_Y (STRING_DRAW_POSITION_Y - 10)
 enum eImage {
 	eImage_BackImage,		//背景
 	eImage_MessageWindow,
 	eImage_Num,
 };
 
+enum ePopupState {
+	ePopupState_Down,
+	ePopupState_Up,
+	ePopupState_None,
+};
+
 enum eState{
 	eState_Init,			//初期化
 	eState_BuySelect,		//買い物の選択
 	eState_BuyChacek,		//購入確認
+	eState_WindowPopup,		//ウィンドウポップアップ
 	eState_Exit,			//終了処理
 	eState_Num,
 };		
@@ -64,7 +73,14 @@ typedef struct {
 	SCROLL_WINDOW_DATA_t scrollWindow;	//スクロールウィンドウ
 	StringBase* stringBase;				//文字列
 	bool isExit;						//終了した				
-	int select;
+	int select;							//現在選択しているアイテム
+	int oldSelect;						//前回選択していたアイテム
+	int itemWindowAlpha;				//アイテム一覧のアルファ値
+	ePopupState messageWindowPopState;	//メッセージウィンドウステート
+	int messageWindowAlaph;				//メッセージウィンドウのアルファ値
+	int messageWindowPosX;				//メッセージウィンドウX座標
+	int messageWindowPosY;				//メッセージウィンドウY座標
+	float counter;						//タイムカウンタ
 }TASK_SHOP_t;
 
 typedef struct {
@@ -79,12 +95,18 @@ static void Task_Shop_Terminate(STaskInfo* task);
 static void InitProc(TASK_SHOP_t* task);
 static void BuySelectProc(TASK_SHOP_t* task);
 static void BuySelectDraw(TASK_SHOP_t* task);
-
+static void BuyCheckProc(TASK_SHOP_t* task);
+static void BuyCheckDraw(TASK_SHOP_t* task);
+static void MessageWindowPopupProc(TASK_SHOP_t* task);
+static void MessageWindowPopupDraw(TASK_SHOP_t* task);
 
 static SHOP_FUNC s_ShopFunc[eState_Num] = {
-	//更新					//描画
-	{ InitProc,				NULL		  },
-	{ BuySelectProc,		BuySelectDraw },
+	//更新						//描画
+	{ InitProc,					NULL					},	//初期化
+	{ BuySelectProc,			BuySelectDraw			},	//アイテム選択
+	{ BuyCheckProc,				BuyCheckDraw			},	//購入確認
+	{ MessageWindowPopupProc,	MessageWindowPopupDraw	},	//ウィンドウポップアップ
+	{ NULL,						NULL					},	//終了
 };
 
 // タイトル処理タスクの基本情報
@@ -107,8 +129,7 @@ static const char SYSTEM_TOKE_TBL[eSystemToke_Num][256] = {
 //選択
 static const char SYSTEM_SELECT_TBL[][256] = {
 	{ "購入する" },
-	{ "合成する" },
-	{ "店を出る" },
+	{ "やめる" },
 };
 
 static TASK_SHOP_t* s_Work;
@@ -137,9 +158,42 @@ static bool Input(int inputType) {
 }
 
 static void InitProc(TASK_SHOP_t* task) {
-	task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_Aisatu]);
+
+	if (System_CheckFade()) return;
+
+
+	int posX = 0;
+	int posY = 0;
+
+	ScrollWindow_GetWindowPosition(&task->scrollWindow, &posX, &posY);
+
+	if (posX < 5) {
+		posX += 20;
+		task->itemWindowAlpha += 10;
+	}
+	else {
+		ScrollWindow_SetWindowPosition(&task->scrollWindow, 5, 0);
+		task->itemWindowAlpha = 255;
+
+		if (task->messageWindowPosY > MESSAGE_WINDOW_BASE_POSITION_Y) {
+			task->messageWindowPosY -= 25;
+		}
+		else {
+			task->messageWindowPosY > MESSAGE_WINDOW_BASE_POSITION_Y;
+			task->messageWindowAlaph = 255;
+			task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_Aisatu]);
+		}
+
+	}
+
+	ScrollWindow_SetWindowPosition(&task->scrollWindow, posX, posY);
+
 	if (Input(EInputType_Attack)) {
-		task->state = eState_BuySelect;
+		task->messageWindowPosY > MESSAGE_WINDOW_BASE_POSITION_Y;
+		task->messageWindowAlaph = 255;
+		task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_Aisatu]);
+		task->messageWindowPopState = ePopupState_Down;
+		task->state = eState_WindowPopup;
 	}
 }
 
@@ -148,42 +202,103 @@ static void InitProc(TASK_SHOP_t* task) {
 */
 static void BuySelectProc(TASK_SHOP_t* task) {
 
+	task->oldSelect =  ScrollWindow_GetValue(task->scrollWindow);
+
 	if (Input(EInputType_Down)) {
 		ScrollWindow_Scroll(&task->scrollWindow, 1);
 	}
 	else if (Input(EInputType_Up)) {
 		ScrollWindow_Scroll(&task->scrollWindow, -1);
 	}
+	
+	task->select = ScrollWindow_GetValue(task->scrollWindow);
+
+	if (Input(EInputType_Attack)) {
+		task->state = eState_BuyChacek;
+	}
+	//店を出る
+	if (Input(EInputType_Jump)) {
+		task->isExit = true;
+	}
+
+
+	if (task->select != task->oldSelect) {
+		//ポップアップステップへ
+		task->messageWindowPopState = ePopupState_Down;
+		task->state = eState_WindowPopup;
+	}
+
+	
 
 }
 static void BuySelectDraw(TASK_SHOP_t* task) {
 
 
-	for (int i = 0; i < 3; i++) {
+}
 
-		int drawX = i * 200 + 20;
-		int drawY = 200;
+/*
+	購入確認更新処理
+*/
+static void BuyCheckProc(TASK_SHOP_t* task) {
 
-		if (task->select == i) {
-			DrawString(drawX, drawY, SYSTEM_SELECT_TBL[i], GetColor(255, 0, 0));
-		}
-		else {
-			DrawString(drawX, drawY, SYSTEM_SELECT_TBL[i], GetColor(255, 255, 255));
-		}
-	}
-
-
-#if false
-	for (int i = 0; i < ITEM_GRAPHIC_NUM; i++) {
-		
-		int drawX = (i % 10) * 48;
-		int drawY = (i / 10) * 48;
-		DrawGraph(drawX,drawY, task->itemImagehandle[i], TRUE);
-	}
-#endif
 
 }
 
+/*
+	購入確認描画処理
+*/
+static void BuyCheckDraw(TASK_SHOP_t* task) {
+
+}
+
+/*
+	メッセージウィンドウ更新処理
+*/
+static void MessageWindowPopupProc(TASK_SHOP_t* task) {
+
+	switch (task->messageWindowPopState) {
+	case ePopupState_Down:
+
+		if (task->messageWindowPosY < GAME_SCREEN_HEIGHT) {
+			task->messageWindowPosY+= 10;
+			task->messageWindowAlaph -= (GAME_SCREEN_HEIGHT - MESSAGE_WINDOW_BASE_POSITION_Y) / 10;
+		}
+		else {
+			task->messageWindowPosY = GAME_SCREEN_HEIGHT;
+			task->messageWindowPopState = ePopupState_Up;
+			task->messageWindowAlaph = 0;
+		}
+
+		break;
+	case ePopupState_Up:
+
+		if (task->messageWindowPosY > MESSAGE_WINDOW_BASE_POSITION_Y) {
+			task->messageWindowPosY -= 25;
+		}
+		else {
+			task->messageWindowPosY > MESSAGE_WINDOW_BASE_POSITION_Y;
+			task->state = eState_BuySelect;
+			task->messageWindowPopState = ePopupState_None;
+			task->messageWindowAlaph = 255;
+			ITEM_PARAM_DATA_t item;
+			ItemData_GetItemData(task->select, &item);
+			
+			task->stringBase->SetString(item.name);
+		}
+
+		break;
+	}
+
+	
+
+}
+
+/*
+	メッセージウィンドウ描画処理
+*/
+static void MessageWindowPopupDraw(TASK_SHOP_t* task) {
+
+}
 
 STaskInfo* Task_Shop_Start() {
 	TASK_SHOP_t* task;
@@ -199,6 +314,7 @@ STaskInfo* Task_Shop_Start() {
 	}
 	task->stringBase->FontCreate("ＭＳ 明朝", 24, 1, -1);
 	task->stringBase->SetColor(GetColor(255, 255, 255));
+	task->stringBase->SetString("");
 
 	task->imageHandle[eImage_BackImage] = LoadGraph("Data/2D/Shop_BG01.png");
 	
@@ -218,16 +334,31 @@ STaskInfo* Task_Shop_Start() {
 
 	task->isExit = false;
 	task->select = 0;
+	task->oldSelect = -1;
 
-	task->task.Base = &g_Task_ShopTaskBaseInfo;
-	task->task.Data = task;
-	TaskSystem_AddTask(System_GetTaskSystemInfo(), &task->task);
+	task->state = eState_Init;
+
+	task->itemWindowAlpha = 0;
+	task->messageWindowAlaph = 0;
+	task->messageWindowPosX = MESSAGE_WINDOW_BASE_POSITION_X;
+	task->messageWindowPosY = GAME_SCREEN_HEIGHT;
+
+
+	task->counter = 0.0f;
 
 	if (ItemData_ReadData() == false) {
 		return NULL;
 	}
 
-	ScrollWindow_Initialize(&task->scrollWindow, 0, 0, 640, 720, 720);
+	ScrollWindow_Initialize(&task->scrollWindow, 0, 0, 640, 720, 600);
+	ScrollWindow_SetWindowPosition(&task->scrollWindow, -720, 0);
+
+	ScrollWindow_SetImageHndles(&task->scrollWindow, task->itemImagehandle, ITEM_GRAPHIC_NUM);
+
+	task->task.Base = &g_Task_ShopTaskBaseInfo;
+	task->task.Data = task;
+	TaskSystem_AddTask(System_GetTaskSystemInfo(), &task->task);
+
 
 	s_Work = task;
 
@@ -244,7 +375,7 @@ bool Task_Shop_IsExit() {
 }
 
 static bool Task_Shop_Step(STaskInfo* stask, float stepTime) {
-
+	//if (stask == NULL) return true;
 	if (stask->Data == NULL) return true;
 
 	TASK_SHOP_t* task = (TASK_SHOP_t*)stask->Data;
@@ -259,28 +390,30 @@ static bool Task_Shop_Step(STaskInfo* stask, float stepTime) {
 	}
 
 	task->stringBase->Update(true, 30, 5);
-
-#ifdef __MY_DEBUG__
-	//強制的に終了する
-	if (Input(EInputType_Jump)) {
-		task->isExit = true;
+	if (task->state == eState_Init) {
+		task->counter = -1.0f;
+	}
+	else {
+		task->counter += 1.0f;
 	}
 
-#endif
+
 
 	return true;
 }
 
 static void Task_Shop_Render(STaskInfo* stask) {
 	
+	//if (stask == NULL) return;
 	if (stask->Data == NULL) return;
 
 	TASK_SHOP_t* task = (TASK_SHOP_t*)stask->Data;
 
 	//DrawGraph(0, 0, task->imageHandle[eImage_BackImage], TRUE);
-	DrawGraph(STRING_DRAW_POSITION_X - 20, STRING_DRAW_POSITION_Y - 10, task->imageHandle[eImage_MessageWindow], TRUE);
-
-	ScrollWindow_DrawGraph(task->scrollWindow, task->imageHandle[eImage_BackImage], eScrollWindow_ScrollbarVertical);
+	
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, task->itemWindowAlpha);
+	ScrollWindow_DrawGraph(&task->scrollWindow, task->imageHandle[eImage_BackImage], eScrollWindow_ScrollbarVertical, task->counter);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 
 	eState state = task->state;
 
@@ -288,10 +421,14 @@ static void Task_Shop_Render(STaskInfo* stask) {
 		s_ShopFunc[state].draw(task);
 	}
 
-	task->stringBase->DrawString(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, task->messageWindowAlaph);
+	DrawGraph(task->messageWindowPosX, task->messageWindowPosY, task->imageHandle[eImage_MessageWindow], TRUE);
+	task->stringBase->DrawString(STRING_DRAW_POSITION_X, task->messageWindowPosY + 20);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 static void Task_Shop_Terminate(STaskInfo* stask) {
+	
 	TASK_SHOP_t* task = (TASK_SHOP_t*)stask->Data;
 
 	delete (task->stringBase);

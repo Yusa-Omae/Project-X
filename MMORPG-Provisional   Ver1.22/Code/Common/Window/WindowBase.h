@@ -18,7 +18,7 @@
 
 typedef struct {
 
-	int drawPosX;	//秒が座標
+	int drawPosX;	//描画座標
 	int drawPosY;
 	int width;		//ウィンドウサイズ
 	int height;
@@ -47,6 +47,14 @@ int alpha = 255		:アルファ値(デフォルトは255)
 */
 void WindowBase_DrawGraph(WINDOW_BASE_t win, int graphicHandle, int alpha = 255);
 
+
+/*
+ウィンドウの座標を設定する
+WINDOW_BASE_t* win
+int posX			:座標
+int posY			:
+*/
+void WindowBase_SetPosition(WINDOW_BASE_t* win, int posX, int posY);
 
 /*
 ウィンドウの中にあるか判断する

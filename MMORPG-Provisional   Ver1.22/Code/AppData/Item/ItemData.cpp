@@ -143,6 +143,8 @@ bool ItemData_ReadData() {
 			continueNum = 0;
 
 			if (pos == eData_Num) {
+				sprintf_s(item->name, "アイテム%d", num);
+				item->id = num;
 				break;
 			}
 

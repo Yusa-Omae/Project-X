@@ -31,7 +31,9 @@ typedef struct {
 	WINDOW_BASE_t itemWindow[ITEM_WINDOW_NUM];
 	int alpha;					//アルファ値
 	unsigned int windowColor;	//ウィンドウの色
-	unsigned int frameColor;	//枠の色	
+	unsigned int frameColor;	//枠の色
+	void* imageHandles;			//イメージハンドル
+	int imageHandleNum;			//イメージハンドルの数
 }SCROLL_WINDOW_DATA_t;
 
 
@@ -44,11 +46,16 @@ void ScrollWindow_Draw(SCROLL_WINDOW_DATA_t window, int scrollbarType);
 /*
 スクロール機能付きウィンドウ描画
 */
-void ScrollWindow_DrawGraph(SCROLL_WINDOW_DATA_t window, int graphichandle, int scrollbarType);
+void ScrollWindow_DrawGraph(SCROLL_WINDOW_DATA_t* window, int graphichandle, int scrollbarType, float time = -1.0f);
 /*
 ウィンドウの描画座標設定
 */
 void ScrollWindow_SetWindowPosition(SCROLL_WINDOW_DATA_t* window, int drawPosX, int drawPosY);
+
+/*
+ウィンドウの描画座標取得
+*/
+void ScrollWindow_GetWindowPosition(SCROLL_WINDOW_DATA_t* window, int* drawPosX, int* drawPosY);
 
 /*
 スクロールバーをスクロールする
@@ -61,7 +68,14 @@ void ScrollWindow_Scroll(SCROLL_WINDOW_DATA_t* window, int value);
 値を返却する
 */
 int ScrollWindow_GetValue(SCROLL_WINDOW_DATA_t window, int posX, int posY);
+int ScrollWindow_GetValue(SCROLL_WINDOW_DATA_t window);
 
 void ScrolWindow_SetValue(SCROLL_WINDOW_DATA_t* window, int value);
+
+/*
+	画像を設定する
+*/
+void ScrollWindow_SetImageHndles(SCROLL_WINDOW_DATA_t* window,void* imageHandles, int imageHandleNum);
+
 
 #endif // __SCROLL_WINDOW_H__

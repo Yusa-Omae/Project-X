@@ -22,6 +22,7 @@ StringBase::StringBase(){
 	mFontMgr = NULL;
 	mColor = GetColor(255, 255, 255);
 	memset(mString, 0, sizeof(char) * 1024);
+	memset(mDrawString, 0, sizeof(char) * 1024 * 6);
 	mLine = 0;
 	mPos = 0;
 	mIsOnletter = false;

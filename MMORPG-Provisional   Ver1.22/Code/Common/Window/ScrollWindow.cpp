@@ -15,7 +15,9 @@
 
 #include "../Code/AppData/Item/ItemData.h"
 #include "ScrollWindow.h"
+#include "../System.h"
 
+#include <math.h>
 
 void ScrollWindow_Initialize(SCROLL_WINDOW_DATA_t* window,int drawX,int drawY,int windowWidth,int windowHeigh,int scrollSize) {
 
@@ -27,10 +29,11 @@ void ScrollWindow_Initialize(SCROLL_WINDOW_DATA_t* window,int drawX,int drawY,in
 
 
 
-	int winHeigh = windowHeigh / ITEM_WINDOW_NUM;
+	int winHeigh = window->scrollbar.width / ITEM_WINDOW_NUM-5;
+	int posY = drawY + (GAME_SCREEN_HEIGHT - window->scrollbar.width);
 	for (int i = 0; i < ITEM_WINDOW_NUM; i++) {
 		int x = drawX + 5;
-		int y = (i * winHeigh) + drawY + 5;
+		int y = (i * winHeigh) + posY + 5;
 		int width = x + windowWidth - 75;
 		int height = winHeigh - 5;
 		WindowBase_Initialize(&window->itemWindow[i], x, y, width, height);
@@ -63,7 +66,7 @@ void ScrollWindow_Draw(SCROLL_WINDOW_DATA_t window,int scrollbarType) {
 	switch (scrollbarType) {
 	case eScrollWindow_ScrollbarVertical:
 		scrollbarDrawX = window.window.drawPosX + window.window.width - 40;
-		scrollbarDrawY = window.window.drawPosY;
+		scrollbarDrawY = window.window.drawPosY + (GAME_SCREEN_HEIGHT - window.window.height);
 		Scrollbar_DrawVertical(window.scrollbar, scrollbarDrawX, scrollbarDrawY);
 		break;
 	case eScrollWindow_ScrollbarHorizontal:
@@ -102,74 +105,81 @@ void ScrollWindow_Draw(SCROLL_WINDOW_DATA_t window,int scrollbarType) {
 /*
 	スクロール機能付きウィンドウ描画
 */
-void ScrollWindow_DrawGraph(SCROLL_WINDOW_DATA_t window,int graphichandle,int scrollbarType) {
+void ScrollWindow_DrawGraph(SCROLL_WINDOW_DATA_t* window,int graphichandle,int scrollbarType,float time/* = -1.0f*/) {
 
-	WindowBase_DrawGraph(window.window, graphichandle, window.alpha);
+	WindowBase_DrawGraph(window->window, graphichandle, window->alpha);
 
 	int scrollbarDrawX = 0;
 	int scrollbarDrawY = 0;
+	
 
 	switch (scrollbarType) {
 	case eScrollWindow_ScrollbarVertical:
-		scrollbarDrawX = window.window.drawPosX + window.window.width - 40;
-		scrollbarDrawY = window.window.drawPosY;
-		Scrollbar_DrawVertical(window.scrollbar, scrollbarDrawX, scrollbarDrawY);
+		scrollbarDrawX = window->window.drawPosX + window->window.width - 40;
+		scrollbarDrawY = window->window.drawPosY + (GAME_SCREEN_HEIGHT - window->scrollbar.width);
+		Scrollbar_DrawVertical(window->scrollbar, scrollbarDrawX, scrollbarDrawY);
 		break;
 	case eScrollWindow_ScrollbarHorizontal:
 
-		scrollbarDrawY = window.window.drawPosX;
-		scrollbarDrawY = window.window.drawPosY + window.window.width - 40;
-		Scrollbar_DrawHorizontal(window.scrollbar, scrollbarDrawX, scrollbarDrawY);
+		scrollbarDrawY = window->window.drawPosX;
+		scrollbarDrawY = window->window.drawPosY + window->window.width - 40;
+		Scrollbar_DrawHorizontal(window->scrollbar, scrollbarDrawX, scrollbarDrawY);
 		break;
 	}
 
+	for (int i = 0; i < ITEM_WINDOW_NUM; i++) {
+		WindowBase_SetPosition(&window->itemWindow[i], window->window.drawPosX, window->itemWindow[i].drawPosY);
+	}
+
 	ITEM_PARAM_DATA_t itemData;
-	for (int i = 0; i < window.scrollbar.valueMax; i++) {
+	for (int i = 0; i < ITEM_WINDOW_NUM; i++) {
 
 
-		int drawSelectItem = (int)window.scrollbar.nowValue;
+		int drawSelectItem = (int)window->scrollbar.nowValue;
 		int drawItem = i;
 
-#if false
-		if (i < ITEM_WINDOW_NUM / 2 && window.scrollbar.nowValue < ITEM_WINDOW_NUM / 2) {
-			drawItem = i;
-		}
-		else {
-			drawItem = i + (int)window.scrollbar.nowValue;
-		}
-#endif
 
-		if ((int)window.scrollbar.nowValue > window.scrollbar.valueMax - (ITEM_WINDOW_NUM / 2)) {
-			drawSelectItem = ITEM_WINDOW_NUM - (int)(window.scrollbar.valueMax - window.scrollbar.nowValue);
-			drawItem = (i + window.scrollbar.valueMax) - (ITEM_WINDOW_NUM);
+		if ((int)window->scrollbar.nowValue > window->scrollbar.valueMax - (ITEM_WINDOW_NUM / 2)) {
+			drawSelectItem = ITEM_WINDOW_NUM - (int)(window->scrollbar.valueMax - window->scrollbar.nowValue);
+			drawItem = (i + window->scrollbar.valueMax) - (ITEM_WINDOW_NUM);
 		}
-		else if ((int)window.scrollbar.nowValue < ITEM_WINDOW_NUM / 2) {
-			drawSelectItem = (int)window.scrollbar.nowValue;
+		else if ((int)window->scrollbar.nowValue < ITEM_WINDOW_NUM / 2) {
+			drawSelectItem = (int)window->scrollbar.nowValue;
 			drawItem = i;
 		}
 		else {
 			drawSelectItem = ITEM_WINDOW_NUM / 2;
-			drawItem = (i + (int)window.scrollbar.nowValue) - (ITEM_WINDOW_NUM / 2);
+			drawItem = (i + (int)window->scrollbar.nowValue) - (ITEM_WINDOW_NUM / 2);
 		}
 		
 
 		char str[256];
 		sprintf_s(str, "テスト%d", drawItem);
-		if (drawSelectItem >= 0 && drawSelectItem < window.scrollbar.valueMax) {
-
+		if (drawSelectItem >= 0 && drawSelectItem < window->scrollbar.valueMax) {
+			const int* imaage = (const int*)(window->imageHandles);
 			int alpha = 100;
+			
 			if (drawSelectItem == i) {
-				alpha = 255;
+				if (time <= -1) {
+					alpha = 255;
+				}
+				else {
+					alpha = (1.0f + sin(DX_PI_F * 2.0f/60 * time) / 2.0f)  *256;
+				}
 			}
 
+			
 
-			WindowBase_Draw(window.itemWindow[i], alpha, GetColor(255, 255, 0), GetColor(255, 255, 255));
+			WindowBase_Draw(window->itemWindow[i], alpha, GetColor(255, 255, 0), GetColor(255, 255, 255));
 
 			if (drawSelectItem < ItemData_GetItemDataNum()) {
 				//ItemData_GetItemData(drawItem, &itemData);
-				
+				int DrawPosX = window->itemWindow[i].drawPosX + 5;
+				int DrawPosY = window->itemWindow[i].drawPosY + 2;
 				//DrawString(20, 60 + i * 181, itemData.name, GetColor(0, 0, 0));
-				DrawString(20, 36 + i * 72, str, GetColor(0, 0, 0));
+				DrawGraph(DrawPosX, DrawPosY, imaage[drawItem], TRUE);
+				DrawPosY = window->itemWindow[i].drawPosY + window->itemWindow[i].height / 2;
+				DrawString(DrawPosX + 53, DrawPosY, str, GetColor(0, 0, 0));
 			}
 		}
 
@@ -180,8 +190,17 @@ void ScrollWindow_DrawGraph(SCROLL_WINDOW_DATA_t window,int graphichandle,int sc
 	ウィンドウの描画座標設定
 */
 void ScrollWindow_SetWindowPosition(SCROLL_WINDOW_DATA_t* window,int drawPosX,int drawPosY) {
-	window->window.drawPosX = drawPosX;
-	window->window.drawPosY = drawPosY;
+	
+	WindowBase_SetPosition(&window->window, drawPosX, drawPosY);
+
+}
+
+/*
+	ウィンドウの描画座標取得
+*/
+void ScrollWindow_GetWindowPosition(SCROLL_WINDOW_DATA_t* window, int* drawPosX, int* drawPosY) {
+	 *drawPosX = window->window.drawPosX;
+	 *drawPosY = window->window.drawPosY;
 
 }
 
@@ -196,6 +215,10 @@ void ScrollWindow_Scroll(SCROLL_WINDOW_DATA_t* window,int value) {
 
 void ScrolWindow_SetValue(SCROLL_WINDOW_DATA_t* window, int value) {
 	Scrollbar_SetValue(&window->scrollbar, value);
+}
+
+int ScrollWindow_GetValue(SCROLL_WINDOW_DATA_t window) {
+	return window.scrollbar.nowValue;
 }
 
 /*
@@ -217,4 +240,13 @@ int ScrollWindow_GetValue(SCROLL_WINDOW_DATA_t window,int posX,int posY) {
 		}
 	}
 	return result;
+}
+
+
+/*
+画像を設定する
+*/
+void ScrollWindow_SetImageHndles(SCROLL_WINDOW_DATA_t* window,void* imageHandles, int imageHandleNum) {
+	window->imageHandles = imageHandles;
+	window->imageHandleNum = imageHandleNum;
 }

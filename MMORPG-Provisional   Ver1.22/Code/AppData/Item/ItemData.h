@@ -17,18 +17,21 @@
 
 typedef struct _ITEM_PARAM {
 
-	int		Level;
-	int		Price;
-	int		Durable;
-	int		Hp ;
-	int		Atk;
-	int		Def;
-	float	Critical;
-	float	Spd;
-	float	Absorption;
-	int		AutoHeal;
-	float	GoldPrice;
-	int		Evol[5];
+	int		id;					//管理番号
+	int		Level;				//レベル
+	int		Price;				//値段
+	int		Durable;			//耐久値
+	int		Hp ;				//体力
+	int		Atk;				//攻撃力
+	int		Def;				//防御力
+	float	Critical;			//クリティカル率
+	float	Spd;				//速度
+	float	Absorption;			//吸収
+	int		AutoHeal;			//自動回復
+	float	GoldPrice;			//取得金額の倍率
+	int		Evol[4];			//進化先
+	char	name[256];			//アイテム名
+	char	Description[1024];	//説明
 
 }ITEM_PARAM_DATA_t;
 

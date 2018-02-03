@@ -59,8 +59,19 @@ void WindowBase_DrawGraph(WINDOW_BASE_t win,int graphicHandle,int alpha/* = 255*
 	int height = win.height;
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-	DrawExtendGraph(drawX, drawY, width, height, graphicHandle,TRUE);
+	DrawExtendGraph(drawX, drawY, drawX + width,drawY + height, graphicHandle,TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+/*
+	ウィンドウの座標を設定する
+	WINDOW_BASE_t* win
+	int posX			:座標
+	int posY			:
+*/
+void WindowBase_SetPosition(WINDOW_BASE_t* win,int posX,int posY) {
+	win->drawPosX = posX;
+	win->drawPosY = posY;
 }
 
 /*
