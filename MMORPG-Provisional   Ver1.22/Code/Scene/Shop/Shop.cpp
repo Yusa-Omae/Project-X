@@ -464,7 +464,7 @@ static bool Task_Shop_Step(STaskInfo* stask, float stepTime) {
 	}
 
 	task->stringBase->Update(true, 30, 5);
-	if (task->state == eState_Init) {
+	if (task->state == eState_Init || task->state == eState_BuyChacek) {
 		task->counter = -1.0f;
 	}
 	else {
