@@ -205,6 +205,7 @@ static void InitProc(TASK_SHOP_t* task) {
 		task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_Aisatu]);
 		task->messageWindowPopState = ePopupState_Down;
 		task->state = eState_WindowPopup;
+		System_PlayCommonSE(ECommonSE_Enter);
 	}
 }
 
@@ -217,18 +218,23 @@ static void BuySelectProc(TASK_SHOP_t* task) {
 
 	if (Input(EInputType_Down)) {
 		ScrollWindow_Scroll(&task->scrollWindow, 1);
+		System_PlayCommonSE(ECommonSE_Cursor);
 	}
 	else if (Input(EInputType_Up)) {
 		ScrollWindow_Scroll(&task->scrollWindow, -1);
+		System_PlayCommonSE(ECommonSE_Cursor);
 	}
 	
 	task->select = ScrollWindow_GetValue(task->scrollWindow);
 
 	if (Input(EInputType_Attack)) {
 		task->state = eState_BuyChacek;
+		System_PlayCommonSE(ECommonSE_Enter);
 	}
 	//店を出る
 	else if (Input(EInputType_Jump)) {
+		task->state = eState_Exit;
+		System_PlayCommonSE(ECommonSE_Cancel);
 		task->isExit = true;
 	}
 
@@ -262,17 +268,21 @@ static void BuyCheckProc(TASK_SHOP_t* task) {
 	case eBuyCheckState_Select:
 		if (Input(EInputType_Right)) {
 			task->buyCheckSelect = 1;		//やめる
+			System_PlayCommonSE(ECommonSE_Cursor);
 		}
 		else if (Input(EInputType_Left)) {
 			task->buyCheckSelect = 0;		//購入する
+			System_PlayCommonSE(ECommonSE_Cursor);
 		}
 
 		if (Input(EInputType_Attack)) {
 			if (task->buyCheckSelect == 0) {
 				task->buyCheckState = eBuyCheckState_Buy;
+				System_PlayCommonSE(ECommonSE_Enter);
 			}
 			else {
 				task->buyCheckState = eBuyCheckState_Return;
+				System_PlayCommonSE(ECommonSE_Cancel);
 			}
 		}
 		break;
