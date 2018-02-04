@@ -34,6 +34,7 @@
 #define ITEM_GRAPHIC_NUM (69)
 #define MESSAGE_WINDOW_BASE_POSITION_X (STRING_DRAW_POSITION_X - 20)
 #define MESSAGE_WINDOW_BASE_POSITION_Y (STRING_DRAW_POSITION_Y - 10)
+
 enum eImage {
 	eImage_BackImage,		//背景
 	eImage_MessageWindow,
@@ -44,6 +45,12 @@ enum ePopupState {
 	ePopupState_Down,
 	ePopupState_Up,
 	ePopupState_None,
+};
+
+enum eBuyCheckState {
+	eBuyCheckState_Select,
+	eBuyCheckState_Buy,
+	eBuyCheckState_Return,
 };
 
 enum eState{
@@ -76,10 +83,14 @@ typedef struct {
 	int select;							//現在選択しているアイテム
 	int oldSelect;						//前回選択していたアイテム
 	int itemWindowAlpha;				//アイテム一覧のアルファ値
+	eBuyCheckState buyCheckState;		//購入確認ステート
+	int buyCheckSelect;					//購入確認選択
 	ePopupState messageWindowPopState;	//メッセージウィンドウステート
 	int messageWindowAlaph;				//メッセージウィンドウのアルファ値
 	int messageWindowPosX;				//メッセージウィンドウX座標
 	int messageWindowPosY;				//メッセージウィンドウY座標
+	int messageWindowWidth;				//メッセージウィンドウ横幅
+	int messageWindowHeight;			//メッセージウィンドウ縦幅
 	float counter;						//タイムカウンタ
 }TASK_SHOP_t;
 
@@ -121,7 +132,7 @@ static STaskBaseInfo g_Task_ShopTaskBaseInfo =
 
 static const char SYSTEM_TOKE_TBL[eSystemToke_Num][256] = {
 	{"いらっしゃい！\n今回はどうするんだい？"},	//最初の挨拶
-	{ "これを買うのかい？" },					//購入する
+	{ "ありがとうよ！" },					//購入する
 	{ "なんだ、やめるのか" },					//購入をやめる
 	{ "また来いよな！" },						//店を出る
 };
@@ -231,15 +242,56 @@ static void BuySelectProc(TASK_SHOP_t* task) {
 	
 
 }
+
+/*
+	購入アイテム選択描画処理
+*/
 static void BuySelectDraw(TASK_SHOP_t* task) {
 
-
+	
 }
 
 /*
 	購入確認更新処理
 */
 static void BuyCheckProc(TASK_SHOP_t* task) {
+	
+	
+
+	switch (task->buyCheckState) {
+	case eBuyCheckState_Select:
+		if (Input(EInputType_Right)) {
+			task->buyCheckSelect = 1;		//やめる
+		}
+		else if (Input(EInputType_Left)) {
+			task->buyCheckSelect = 0;		//購入する
+		}
+
+		if (Input(EInputType_Attack)) {
+			if (task->buyCheckSelect == 0) {
+				task->buyCheckState = eBuyCheckState_Buy;
+			}
+			else {
+				task->buyCheckState = eBuyCheckState_Return;
+			}
+		}
+		break;
+	case eBuyCheckState_Buy:
+
+		/*
+				購入時の処理
+		*/
+		task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_kau]);
+		task->buyCheckState = eBuyCheckState_Select;
+		task->state = eState_BuySelect;
+		break;
+	case eBuyCheckState_Return:
+
+		task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_yameru]);
+		task->buyCheckState = eBuyCheckState_Select;
+		task->state = eState_BuySelect;
+		break;
+	}
 
 
 }
@@ -248,7 +300,20 @@ static void BuyCheckProc(TASK_SHOP_t* task) {
 	購入確認描画処理
 */
 static void BuyCheckDraw(TASK_SHOP_t* task) {
+	
+	int drawX = (GAME_SCREEN_WIDTH - task->messageWindowWidth) / 2;
+	int drawY = (GAME_SCREEN_HEIGHT - task->messageWindowHeight) / 2;
 
+	DrawGraph(drawX, drawY, task->imageHandle[eImage_MessageWindow], TRUE);
+	
+	for (int i = 0; i < 2; i++) {
+		if (task->buyCheckSelect == i) {
+			DrawString(100 + drawX + i * 100, drawY + 200, SYSTEM_SELECT_TBL[i], GetColor(255, 0,0));
+		}
+		else{
+			DrawString(100 + drawX + i * 100, drawY + 200, SYSTEM_SELECT_TBL[i], GetColor(255, 255, 255));
+		}
+	}
 }
 
 /*
@@ -327,6 +392,12 @@ STaskInfo* Task_Shop_Start() {
 		return NULL;
 	}
 
+	int width;
+	int height;
+	GetGraphSize(task->imageHandle[eImage_MessageWindow], &width, &height);
+	task->messageWindowWidth = width;
+	task->messageWindowHeight = height;
+
 	int ret = LoadDivGraph("Data/Shop/Item_Pic.png", ITEM_GRAPHIC_NUM, 10, 10, 48, 48, task->itemImagehandle);
 	if (ret == -1) {
 		return NULL;
@@ -335,6 +406,9 @@ STaskInfo* Task_Shop_Start() {
 	task->isExit = false;
 	task->select = 0;
 	task->oldSelect = -1;
+
+	task->buyCheckState = eBuyCheckState_Select;
+	task->buyCheckSelect = 0;
 
 	task->state = eState_Init;
 
@@ -415,16 +489,18 @@ static void Task_Shop_Render(STaskInfo* stask) {
 	ScrollWindow_DrawGraph(&task->scrollWindow, task->imageHandle[eImage_BackImage], eScrollWindow_ScrollbarVertical, task->counter);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, task->messageWindowAlaph);
+	DrawGraph(task->messageWindowPosX, task->messageWindowPosY, task->imageHandle[eImage_MessageWindow], TRUE);
+	task->stringBase->DrawString(STRING_DRAW_POSITION_X, task->messageWindowPosY + 20);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	eState state = task->state;
 
 	if (s_ShopFunc[state].draw != NULL) {
 		s_ShopFunc[state].draw(task);
 	}
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, task->messageWindowAlaph);
-	DrawGraph(task->messageWindowPosX, task->messageWindowPosY, task->imageHandle[eImage_MessageWindow], TRUE);
-	task->stringBase->DrawString(STRING_DRAW_POSITION_X, task->messageWindowPosY + 20);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	
 }
 
 static void Task_Shop_Terminate(STaskInfo* stask) {

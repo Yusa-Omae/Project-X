@@ -459,6 +459,8 @@ static bool Task_GameMain_Step(
 			return false;
 		}
 
+		// プレイヤーの体力表示などを行うかどうかのフラグを立てる
+		GMData->DrawHUD = false;
 
 		System_FadeIn();
 		GMData->State = ETask_GameMainState_Shop_End;
