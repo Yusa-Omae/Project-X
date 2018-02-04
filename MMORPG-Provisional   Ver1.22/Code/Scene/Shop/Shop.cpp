@@ -228,7 +228,7 @@ static void BuySelectProc(TASK_SHOP_t* task) {
 		task->state = eState_BuyChacek;
 	}
 	//店を出る
-	if (Input(EInputType_Jump)) {
+	else if (Input(EInputType_Jump)) {
 		task->isExit = true;
 	}
 
