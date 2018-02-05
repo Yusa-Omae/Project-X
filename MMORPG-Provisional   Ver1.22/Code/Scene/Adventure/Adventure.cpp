@@ -26,6 +26,7 @@
 #define ONELETTER_DISP_INTERVAL (20)							//一文字表示するまでの間隔
 #define STRING_DRAW_POSITION_X (120)							//文字列描画座標X
 #define STRING_DRAW_POSITION_Y (GAME_SCREEN_HEIGHT - 20 * 7)			//文字列描画座標Y
+#define STRING_TBL_NUM (sizeof(STRING_TBL) / sizeof(STRING_TBL[0]))
 
 typedef struct {
 	STaskInfo task;
@@ -38,9 +39,6 @@ typedef struct {
 }TASK_ADVENTURE_t;
 
 const char* STRING_TBL[] = {
-	{"あいうえおかきくけこ。"},
-	{ "test test test あぁあぁあぁーーーー" },
-	{ "ああああああああああいいいいいいいいいいううううううううううええええええええええおおおおおおおおおおかかかかかかかかかかかここから改行されるはず" },
 	{ "昔々あるところに、一つの小さな国がありました"},
 	{"その国は行商人が行きかう、小さいけれど栄えた町でした。"},
 	{"ある日、1人の行商人が魔王の土地に・・・"},
@@ -124,7 +122,7 @@ static bool Task_Adbentrue_Step(STaskInfo* stask, float stepTime) {
 	if (result == 1) {
 		if ((EdgeInput & (1 << EInputType_Attack)) != 0) {
 			task->num++;
-			if (task->num >= 9) {
+			if (task->num >= STRING_TBL_NUM) {
 				task->num = 0;
 				task->isDisp = false;
 
