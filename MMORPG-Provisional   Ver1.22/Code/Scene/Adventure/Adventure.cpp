@@ -18,6 +18,8 @@
 #include "../Define.h"
 #include "../Gamemain.h"
 
+#include "../Code/AppData/Script/Script.h"
+#include "../Code/AppData/Script/ScriptGraphicsList.h"
 #include "../Code/Common/String/StringBase.h"
 #include "../Input.h"
 #include "Adventure.h"
@@ -31,6 +33,7 @@
 typedef struct {
 	STaskInfo task;
 	StringBase* stringBase;
+	Script* script;
 	bool isOneletter;				//一文字ずつ描画するか？
 	int OneletterDispInterval;		//一文字表示するまでの間隔
 	bool isDisp;					//表示するか？
@@ -79,6 +82,8 @@ STaskInfo* Task_Adventure_Start() {
 	task->OneletterDispInterval = ONELETTER_DISP_INTERVAL;
 	task->isDisp = true;
 
+	task->script = new Script("Data/Script/script.txt");
+
 	task->num = 0;
 
 	task->task.Base = &g_Task_AdventureTaskBaseInfo;
@@ -88,6 +93,13 @@ STaskInfo* Task_Adventure_Start() {
 	task->isEnd = false;
 
 	s_Work = task;
+
+	/*
+		アドベンチャーで描画する画像を登録する
+		ScriptGraphicsList_AddGraphics関数は　登録するたびにインクリメントしていく
+		画像のIDは0～となる
+	*/
+	ScriptGraphicsList_AddGraphic("Data/2D/KeyConfigBack.png");
 
 	return &task->task;
 }
@@ -113,7 +125,13 @@ static bool Task_Adbentrue_Step(STaskInfo* stask, float stepTime) {
 	}
 
 	
+	task->script->updata();
 
+	if (task->script->GetScriptEnd()) {
+		task->isEnd = true;
+	}
+
+#if false
 	task->stringBase->SetString(STRING_TBL[task->num]);
 
 	int result = task->stringBase->Update(task->isOneletter, STRING_LINE_LENGTH_MAX,task->OneletterDispInterval);
@@ -147,6 +165,8 @@ static bool Task_Adbentrue_Step(STaskInfo* stask, float stepTime) {
 		}
 
 	}
+#endif
+
 	return true;
 }
 
@@ -156,8 +176,8 @@ static void Task_Adventure_Render(STaskInfo* stask) {
 
 	DrawString(10, 20, "スタートボタンでスキップ", GetColor(255, 255, 255));
 
-	task->stringBase->DrawString(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y, task->isDisp);
-
+	//task->stringBase->DrawString(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y, task->isDisp);
+	task->script->draw(STRING_DRAW_POSITION_X, STRING_DRAW_POSITION_Y);
 }
 
 static void Task_Adventure_Terminate(STaskInfo* stask) {
@@ -167,6 +187,8 @@ static void Task_Adventure_Terminate(STaskInfo* stask) {
 	delete (task->stringBase);
 	task->stringBase = NULL;
 
+	delete (task->script);
+	task->script = NULL;
 }
 
 #if false

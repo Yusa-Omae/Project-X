@@ -121,6 +121,12 @@
     <Filter Include="ヘッダー ファイル\Code\Scene\Pouse">
       <UniqueIdentifier>{0c39ab78-f228-45a4-b34c-b484faf841b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Code\AppData\Script">
+      <UniqueIdentifier>{30d9dd0b-c452-40aa-91b6-32959b5fd53b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Code\AppData\Script">
+      <UniqueIdentifier>{f59a6692-d34a-4428-bb4e-4ff5d0144c53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneMgr.cpp">
@@ -312,6 +318,15 @@
     <ClCompile Include="CharaHpGauge.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Code\AppData\Script\Script.cpp">
+      <Filter>ソース ファイル\Code\AppData\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AppData\Script\ScriptFlag.cpp">
+      <Filter>ソース ファイル\Code\AppData\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AppData\Script\ScriptGraphicsList.cpp">
+      <Filter>ソース ファイル\Code\AppData\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -502,6 +517,15 @@
     </ClInclude>
     <ClInclude Include="CharaHpGauge.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AppData\Script\Script.h">
+      <Filter>ヘッダー ファイル\Code\AppData\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AppData\Script\ScriptFlag.h">
+      <Filter>ヘッダー ファイル\Code\AppData\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AppData\Script\ScriptGraphicsList.h">
+      <Filter>ヘッダー ファイル\Code\AppData\Script</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -97,6 +97,9 @@
     <ClCompile Include="Chara_PlayerBase.cpp" />
     <ClCompile Include="Code\AppData\Item\ItemData.cpp" />
     <ClCompile Include="Code\AppData\SaveData\SaveData.cpp" />
+    <ClCompile Include="Code\AppData\Script\Script.cpp" />
+    <ClCompile Include="Code\AppData\Script\ScriptFlag.cpp" />
+    <ClCompile Include="Code\AppData\Script\ScriptGraphicsList.cpp" />
     <ClCompile Include="Code\Common\FileIO\FileIO.cpp" />
     <ClCompile Include="Code\Common\FileIO\ReadBynary.cpp" />
     <ClCompile Include="Code\Common\FileIO\WriteBynary.cpp" />
@@ -162,6 +165,9 @@
     <ClInclude Include="Chara_PlayerBase.h" />
     <ClInclude Include="Code\AppData\Item\ItemData.h" />
     <ClInclude Include="Code\AppData\SaveData\SaveData.h" />
+    <ClInclude Include="Code\AppData\Script\Script.h" />
+    <ClInclude Include="Code\AppData\Script\ScriptFlag.h" />
+    <ClInclude Include="Code\AppData\Script\ScriptGraphicsList.h" />
     <ClInclude Include="Code\Common\FileIO\FileIO.h" />
     <ClInclude Include="Code\Common\FileIO\ReadBynary.h" />
     <ClInclude Include="Code\Common\FileIO\WriteBynary.h" />
