@@ -56,9 +56,9 @@ typedef enum _ECharaAnim
 	ECharaAnim_Jump_Loop,			// ジャンプループ
 	ECharaAnim_Jump_Out,			// ジャンプ終了
 	ECharaAnim_Landed,				// 着地
-	ECharaAnim_Attack1,				// 攻撃アニメーション１
-	ECharaAnim_Attack2,				// 攻撃アニメーション２
-	ECharaAnim_Attack3,				// 攻撃アニメーション３
+	ECharaAnim_Atk1,				// 攻撃アニメーション１
+	ECharaAnim_Atk2,				// 攻撃アニメーション２
+	ECharaAnim_Atk3,				// 攻撃アニメーション３
 	ECharaAnim_Guard_In,			// ガード開始
 	ECharaAnim_Guard_Loop,			// ガードループ
 	ECharaAnim_Guard_Impact,		// 攻撃をガード
@@ -95,13 +95,13 @@ typedef enum _ECharaWeapon
 } ECharaWeapon;
 
 // キャラクターの攻撃判定の形状
-typedef enum _ECharaAttackFormType
+typedef enum _ECharaAtkFormType
 {
-	ECharaAttackFormType_Poly,		// ポリゴン
-	ECharaAttackFormType_Sphere,	// 球
+	ECharaAtkFormType_Poly,		// ポリゴン
+	ECharaAtkFormType_Sphere,	// 球
 
-	ECharaAttackFormType_Num		// 攻撃判定の形状の数
-} ECharaAttackFormType;
+	ECharaAtkFormType_Num		// 攻撃判定の形状の数
+} ECharaAtkFormType;
 
 // キャラクター共通効果音
 typedef enum _ECharaCommonSE
@@ -142,25 +142,25 @@ typedef struct _SCharaAnimBaseInfo
 } SCharaAnimBaseInfo;
 
 // キャラクターの攻撃位置情報
-typedef struct _SCharaAttackPositionInfo
+typedef struct _SCharaAtkPositionInfo
 {
 	// 起点となる３Ｄモデルフレームの番号
 	int                   StartFrameIndex;
 
 	// 攻撃判定の形状
-	ECharaAttackFormType  FormType;
+	ECharaAtkFormType  FormType;
 
 	// 攻撃判定の形成に使用される起点からの相対座標
-	// ( FormType が ECharaAttackFormType_Poly の場合に使用 )
+	// ( FormType が ECharaAtkFormType_Poly の場合に使用 )
 	VECTOR                EndLocalPosition;
 
 	// 球の半径
-	// ( FormType が ECharaAttackFormType_Sphere の場合に使用 )
+	// ( FormType が ECharaAtkFormType_Sphere の場合に使用 )
 	float                 SphereSize;
 
 	// 攻撃の軌跡エフェクトの色
 	COLOR_U8              EffectColor;
-} SCharaAttackPositionInfo;
+} SCharaAtkPositionInfo;
 
 // キャラクターの武器の基本情報
 typedef struct _SCharaWeaponBaseInfo
@@ -207,7 +207,7 @@ typedef struct _SCharaBaseInfo
 	ECharaType            Type;
 
 	// 体力
-	int                   Health;
+	int                   Hp;
 	/*
 
 	Hp=基本体力値
@@ -233,7 +233,7 @@ typedef struct _SCharaBaseInfo
 	*/
 
 	// 武器による攻撃を受けたときに鳴らす音の登録番号
-	int                   WeaponAttackDamageSound[ECharaWeapon_Num];
+	int                   WeaponAtkDamageSound[ECharaWeapon_Num];
 
 	// 素材別のアニメーション物理音の登録番号
 	int                   AnimPhysicsSound[EAnimPhysicsSound_Num][EMaterialType_Num];
@@ -263,13 +263,13 @@ typedef struct _SCharaBaseInfo
 	SCharaHitInfo         DamageHitInfo;
 
 	// 体力ゲージを表示する座標
-	VECTOR                HealthGaugePosition;
+	VECTOR                HpGaugePosition;
 
 	// 攻撃判定位置情報
-	SCharaAttackPositionInfo AttackPosInfo[CHARA_ATTACK_POS_MAX_NUM];
+	SCharaAtkPositionInfo AtkPosInfo[CHARA_ATTACK_POS_MAX_NUM];
 
 	// 移動タイプが ECharaMoveType_Program の場合の移動速度
-	float                 ProgramMoveSpeed;
+	float                 ProgramSpd;
 
 	// 丸影の大きさ
 	float                 ShadowSize;

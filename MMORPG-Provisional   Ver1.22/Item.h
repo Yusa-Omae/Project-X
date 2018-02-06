@@ -4,6 +4,8 @@
 
 typedef struct _ITEM_PARAM{
 
+	//アイテムナンバー
+	int Num;
 	//アイテムのレベル段階
 	int Lv;
 	//アイテムの値段
@@ -29,7 +31,7 @@ typedef struct _ITEM_PARAM{
 	//進化先
 	int Evol[4];
 
-};
+}ITEM_PARAM;
 
 
 

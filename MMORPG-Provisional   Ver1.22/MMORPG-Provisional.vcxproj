@@ -88,7 +88,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chara.cpp" />
     <ClCompile Include="CharaBase.cpp" />
-    <ClCompile Include="CharaHealthGauge.cpp" />
+    <ClCompile Include="CharaHpGauge.cpp" />
     <ClCompile Include="Chara_Bee.cpp" />
     <ClCompile Include="Chara_Enemy.cpp" />
     <ClCompile Include="Chara_EnemyBase.cpp" />
@@ -153,7 +153,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chara.h" />
     <ClInclude Include="CharaBase.h" />
-    <ClInclude Include="CharaHealthGauge.h" />
+    <ClInclude Include="CharaHpGauge.h" />
     <ClInclude Include="Chara_Bee.h" />
     <ClInclude Include="Chara_Enemy.h" />
     <ClInclude Include="Chara_EnemyBase.h" />

@@ -1,16 +1,8 @@
 #ifndef TEXTPARAM_H
 #define TEXTPARAM_H
 
-#include "DxLib.h"
-
-// テキストパラメータの名前に使える最大文字数
-#define TEXTPARAM_NAME_MAXLENGTH		(64)
-
-// ファイル一つに含められるテキストパラメータの最大数
-#define TEXTPARAM_MAXNUM				(1024)
-
-// 文字列タイプのパラメータの最大文字数
-#define TEXTPARAM_STRING_MAXLENGTH		(64)
+#include"DxLib.h"
+#include"Define.h"
 
 // パラメータタイプ
 typedef enum _ETextParamType

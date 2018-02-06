@@ -138,7 +138,7 @@ static bool Task_DebugStartMenu_Step(
 	}
 
 	// Œˆ’èƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚ç‘I‘ğ€–Ú‚É‰‚¶‚½‰æ–Ê‚ÉˆÚ“®‚·‚é
-	if( ( EdgeInput & ( 1 << EInputType_Attack ) ) != 0 )
+	if( ( EdgeInput & ( 1 << EInputType_Atk ) ) != 0 )
 	{
 		// Œˆ’è‰¹‚ğ–Â‚ç‚·
 		System_PlayCommonSE( ECommonSE_Enter );

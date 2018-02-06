@@ -25,7 +25,7 @@ bool Chara_Golem_AnimOtherEvent(
 	{
 		if( !Chara_Damage(
 				PCInfo,
-				ECharaAttack_DamageType_Earthquake,
+				ECharaAtk_DamageType_Earthquake,
 				EARTHQUAKE_DAMAGE,
 				PCInfo->Position,
 				VSub( PCInfo->Position, CInfo->Position ),

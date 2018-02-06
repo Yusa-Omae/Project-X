@@ -199,7 +199,7 @@ static void InitProc(TASK_SHOP_t* task) {
 
 	ScrollWindow_SetWindowPosition(&task->scrollWindow, posX, posY);
 
-	if (Input(EInputType_Attack)) {
+	if (Input(EInputType_Atk)) {
 		task->messageWindowPosY > MESSAGE_WINDOW_BASE_POSITION_Y;
 		task->messageWindowAlaph = 255;
 		task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_Aisatu]);
@@ -227,7 +227,7 @@ static void BuySelectProc(TASK_SHOP_t* task) {
 	
 	task->select = ScrollWindow_GetValue(task->scrollWindow);
 
-	if (Input(EInputType_Attack)) {
+	if (Input(EInputType_Atk)) {
 		task->state = eState_BuyChacek;
 		System_PlayCommonSE(ECommonSE_Enter);
 	}
@@ -275,7 +275,7 @@ static void BuyCheckProc(TASK_SHOP_t* task) {
 			System_PlayCommonSE(ECommonSE_Cursor);
 		}
 
-		if (Input(EInputType_Attack)) {
+		if (Input(EInputType_Atk)) {
 			if (task->buyCheckSelect == 0) {
 				task->buyCheckState = eBuyCheckState_Buy;
 				System_PlayCommonSE(ECommonSE_Enter);

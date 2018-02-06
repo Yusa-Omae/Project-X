@@ -120,7 +120,7 @@ static bool Task_Adbentrue_Step(STaskInfo* stask, float stepTime) {
 
 	//描画終了していたら次の文字列を設定する
 	if (result == 1) {
-		if ((EdgeInput & (1 << EInputType_Attack)) != 0) {
+		if ((EdgeInput & (1 << EInputType_Atk)) != 0) {
 			task->num++;
 			if (task->num >= STRING_TBL_NUM) {
 				task->num = 0;
@@ -139,7 +139,7 @@ static bool Task_Adbentrue_Step(STaskInfo* stask, float stepTime) {
 	//描画中の場合
 	else if (result == 0) {
 
-		if ((Input & (1 << EInputType_Attack)) != 0) {
+		if ((Input & (1 << EInputType_Atk)) != 0) {
 			task->OneletterDispInterval = 2;
 		}
 		else {

@@ -17,18 +17,18 @@ bool Chara_Needle_Create(
 	Chara_AngleParamRefresh( CInfo );
 
 	// 前方方向に飛ぶ
-	CInfo->MoveSpeed   = VScale( CInfo->AngleInfo.FrontDirection, MOVE_SPEED );
-	CInfo->MoveSpeed.y = 10.0f;
+	CInfo->Spd   = VScale( CInfo->AngleInfo.FrontDirection, MOVE_SPEED );
+	CInfo->Spd.y = 10.0f;
 
 	// ジャンプ状態にする
 	CInfo->JumpState                      = true;
 
 	// 攻撃情報をセットする
-	CInfo->AttackInfo[ 0 ].Enable         = true;
-	CInfo->AttackInfo[ 0 ].AttackPosIndex = 0;
+	CInfo->AtkInfo[ 0 ].Enable         = true;
+	CInfo->AtkInfo[ 0 ].AtkPosIndex = 0;
 
 	// 攻撃力をセットする
-	CInfo->AttackPower                    = ATTACK_POWER;
+	CInfo->Atk                    = ATTACK_POWER;
 
 	// 正常終了
 	return true;

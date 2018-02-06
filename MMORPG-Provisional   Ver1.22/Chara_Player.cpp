@@ -37,9 +37,9 @@
 typedef enum _EChara_PlayerState
 {
 	EChara_PlayerState_None,			// 特に無し
-	EChara_PlayerState_Attack1,			// 攻撃１コンボ目
-	EChara_PlayerState_Attack2,			// 攻撃２コンボ目
-	EChara_PlayerState_Attack3,			// 攻撃３コンボ目
+	EChara_PlayerState_Atk1,			// 攻撃１コンボ目
+	EChara_PlayerState_Atk2,			// 攻撃２コンボ目
+	EChara_PlayerState_Atk3,			// 攻撃３コンボ目
 
 	EChara_PlayerState_GuardIn,			// ガード開始
 	EChara_PlayerState_GuardLoop,		// ガード中
@@ -59,7 +59,7 @@ typedef struct _SChara_PlayerInfo
 	EChara_PlayerState PlayerState;
 
 	// 次の攻撃が予約済みかどうかのフラグ
-	bool               NextAttackRequest;
+	bool               NextAtkRequest;
 
 	// アニメーションのキャンセルイベントをチェック済みかどうかのフラグ
 	bool               AnimCancelCheck;
@@ -68,7 +68,7 @@ typedef struct _SChara_PlayerInfo
 	SCharaInfo *       LockOnTarget;
 
 	// ジャンプを開始した時点での速度
-	VECTOR             JumpMoveSpeed;
+	VECTOR             JumpSpd;
 } SChara_PlayerInfo;
 
 
@@ -94,18 +94,18 @@ bool Chara_Player_Create(
 	PInfo = (SChara_PlayerInfo *)CInfo->SubData;
 
 	// プレイヤーの情報を初期化
-	PInfo->NextAttackRequest = false;
+	PInfo->NextAtkRequest = false;
 	PInfo->AnimCancelCheck = false;
 	PInfo->LockOnTarget = NULL;
 
 	// 体力ゲージの情報を初期化
-	CharaHealthGaugeSetup(&CInfo->HealthGauge, true, 1.0f);
+	CharaHpGaugeSetup(&CInfo->HpGauge, true, 1.0f);
 
 	// プレイヤーは常に体力ゲージを表示する
-	CInfo->HealthGaugeVisible = true;
+	CInfo->HpGaugeVisible = true;
 
 	// 攻撃力をセット
-	CInfo->AttackPower = ATTACK_POWER;
+	CInfo->Atk = ATTACK_POWER;
 
 	// 正常終了
 	return true;
@@ -145,18 +145,18 @@ bool Chara_Player_Step(
 	bool   InputDown;
 	bool   InputDefence;
 	bool   InputJump;
-	bool   InputAttack;
+	bool   InputAtk;
 	VECTOR NewSpeed;
 	float  NewAngle;
 
 	// デバッグ機能が有効になっているかどうかで攻撃力を変化させる
 	if (System_GetDispDebugInfo())
 	{
-		CInfo->AttackPower = DEBUG_ATTACK_POWER;
+		CInfo->Atk = DEBUG_ATTACK_POWER;
 	}
 	else
 	{
-		CInfo->AttackPower = ATTACK_POWER;
+		CInfo->Atk = ATTACK_POWER;
 	}
 
 	// 入力状態を取得
@@ -167,7 +167,7 @@ bool Chara_Player_Step(
 	InputRight = (Input     & (1 << EInputType_Right)) != 0;
 	InputUp = (Input     & (1 << EInputType_Up)) != 0;
 	InputDown = (Input     & (1 << EInputType_Down)) != 0;
-	InputAttack = (EdgeInput & (1 << EInputType_Attack)) != 0;
+	InputAtk = (EdgeInput & (1 << EInputType_Atk)) != 0;
 	InputDefence = (Input     & (1 << EInputType_Defence)) != 0;
 	InputJump = (EdgeInput & (1 << EInputType_Jump)) != 0;
 
@@ -217,10 +217,10 @@ STATE_PROCESS:
 		}
 
 		// 攻撃ボタンが押されていたら攻撃状態に移行する
-		if (InputAttack)
+		if (InputAtk)
 		{
-			CInfo->State = ECharaState_Attack;
-			PInfo->PlayerState = EChara_PlayerState_Attack1;
+			CInfo->State = ECharaState_Atk;
+			PInfo->PlayerState = EChara_PlayerState_Atk1;
 			PInfo->AnimCancelCheck = false;
 
 			// ロックオン対象となる敵が居るか検索する
@@ -228,7 +228,7 @@ STATE_PROCESS:
 				LOCKON_DISTANCE, LOCKON_ANGLE);
 
 			// 攻撃１コンボ目のアニメーションを再生
-			if (!Chara_ChangeAnim(CInfo, ECharaAnim_Attack1,
+			if (!Chara_ChangeAnim(CInfo, ECharaAnim_Atk1,
 				CHARA_DEFAULT_ATTACK_CHANGE_ANIM_SPEED))
 			{
 				return false;
@@ -256,7 +256,7 @@ STATE_PROCESS:
 					PInfo->PlayerState = EChara_PlayerState_JumpIn;
 
 					// ジャンプを開始した時点での速度を保存しておく
-					PInfo->JumpMoveSpeed = CInfo->PrevAnimMoveSpeed;
+					PInfo->JumpSpd = CInfo->PrevAnimSpd;
 
 					// ジャンプ開始アニメーションを再生
 					if (!Chara_ChangeAnim(CInfo, ECharaAnim_Jump_In,
@@ -296,16 +296,16 @@ STATE_PROCESS:
 		}
 		break;
 
-	case ECharaState_Attack:		// 攻撃中
+	case ECharaState_Atk:		// 攻撃中
 									// プレイヤーの状態によって処理を分岐
 		switch (PInfo->PlayerState)
 		{
-		case EChara_PlayerState_Attack1:	 // 攻撃１コンボ目
+		case EChara_PlayerState_Atk1:	 // 攻撃１コンボ目
 											 // 攻撃２コンボ目の入力が可能になる時間を経過している状態で攻撃入力が
 											 // されたら、『次の攻撃が予約済みかどうかのフラグ』を立てる
-			if (InputAttack && CInfo->AnimInfo.NowTime > ATTACK1_NEXT_INPUT_START_TIME)
+			if (InputAtk && CInfo->AnimInfo.NowTime > ATTACK1_NEXT_INPUT_START_TIME)
 			{
-				PInfo->NextAttackRequest = true;
+				PInfo->NextAtkRequest = true;
 			}
 
 			// アニメーションのキャンセルイベントが発生していて、且つキャンセルイベントの
@@ -316,17 +316,17 @@ STATE_PROCESS:
 				PInfo->AnimCancelCheck = true;
 
 				// 攻撃２コンボ目を発動させる予約がされていたら攻撃２コンボ目を開始する
-				if (PInfo->NextAttackRequest)
+				if (PInfo->NextAtkRequest)
 				{
 					PInfo->AnimCancelCheck = false;
-					PInfo->NextAttackRequest = false;
-					if (!Chara_ChangeAnim(CInfo, ECharaAnim_Attack2,
+					PInfo->NextAtkRequest = false;
+					if (!Chara_ChangeAnim(CInfo, ECharaAnim_Atk2,
 						CHARA_DEFAULT_ATTACK_CHANGE_ANIM_SPEED))
 					{
 						return false;
 					}
 
-					PInfo->PlayerState = EChara_PlayerState_Attack2;
+					PInfo->PlayerState = EChara_PlayerState_Atk2;
 				}
 			}
 			else
@@ -341,12 +341,12 @@ STATE_PROCESS:
 				}
 			break;
 
-		case EChara_PlayerState_Attack2:	// 攻撃２コンボ目
+		case EChara_PlayerState_Atk2:	// 攻撃２コンボ目
 											// 攻撃３コンボ目の入力が可能になる時間を経過している状態で攻撃入力が
 											// されたら、『次の攻撃が予約済みかどうかのフラグ』を立てる
-			if (InputAttack && CInfo->AnimInfo.NowTime > ATTACK2_NEXT_INPUT_START_TIME)
+			if (InputAtk && CInfo->AnimInfo.NowTime > ATTACK2_NEXT_INPUT_START_TIME)
 			{
-				PInfo->NextAttackRequest = true;
+				PInfo->NextAtkRequest = true;
 			}
 
 			// アニメーションのキャンセルイベントが発生していて、且つキャンセルイベントの
@@ -357,17 +357,17 @@ STATE_PROCESS:
 				PInfo->AnimCancelCheck = true;
 
 				// 攻撃３コンボ目を発動させる予約がされていたら攻撃３コンボ目を開始する
-				if (PInfo->NextAttackRequest)
+				if (PInfo->NextAtkRequest)
 				{
 					PInfo->AnimCancelCheck = false;
-					PInfo->NextAttackRequest = false;
-					if (!Chara_ChangeAnim(CInfo, ECharaAnim_Attack3,
+					PInfo->NextAtkRequest = false;
+					if (!Chara_ChangeAnim(CInfo, ECharaAnim_Atk3,
 						CHARA_DEFAULT_ATTACK_CHANGE_ANIM_SPEED))
 					{
 						return false;
 					}
 
-					PInfo->PlayerState = EChara_PlayerState_Attack3;
+					PInfo->PlayerState = EChara_PlayerState_Atk3;
 				}
 			}
 			else
@@ -382,7 +382,7 @@ STATE_PROCESS:
 				}
 			break;
 
-		case EChara_PlayerState_Attack3:	// 攻撃３コンボ目
+		case EChara_PlayerState_Atk3:	// 攻撃３コンボ目
 											// アニメーションが終了していたら移動状態に移行する
 			if (CInfo->AnimInfo.End)
 			{
@@ -527,7 +527,7 @@ bool Chara_Player_Damage(
 	SCharaInfo *CInfo,
 
 	// ダメージタイプ
-	ECharaAttack_DamageType DamageType,
+	ECharaAtk_DamageType DamageType,
 
 	// ダメージ
 	int DamagePoint,
@@ -536,7 +536,7 @@ bool Chara_Player_Damage(
 	VECTOR HitPosition,
 
 	// 攻撃の方向
-	VECTOR AttackDirection,
+	VECTOR AtkDirection,
 
 	// 攻撃を防御したかどうかを代入する変数のアドレス
 	bool *Defence,
@@ -568,7 +568,7 @@ bool Chara_Player_Damage(
 	}
 
 	// ガードをしている場合でも背後側から攻撃されたらダメージを受ける
-	ACos = VDot(AttackDirection, CInfo->AngleInfo.FrontDirection);
+	ACos = VDot(AtkDirection, CInfo->AngleInfo.FrontDirection);
 	if (ACos >= 0.0f)
 	{
 		*Defence = false;
@@ -621,8 +621,8 @@ bool Chara_Player_Landed(
 	}
 
 	// 横方向の移動速度を０にする
-	CInfo->MoveSpeed.x = 0.0f;
-	CInfo->MoveSpeed.z = 0.0f;
+	CInfo->Spd.x = 0.0f;
+	CInfo->Spd.z = 0.0f;
 
 	// ジャンプ終了状態に移行する
 	CInfo->State = ECharaState_Jump;
@@ -651,16 +651,16 @@ bool Chara_Player_AnimOtherEvent(
 	SChara_PlayerBaseInfo *PBInfo = (SChara_PlayerBaseInfo *)CInfo->BaseInfo->SubData;
 
 	// ジャンプ中の速度をセット
-	CInfo->MoveSpeed = PInfo->JumpMoveSpeed;
+	CInfo->Spd = PInfo->JumpSpd;
 
 	// デバッグ機能が有効な場合は大ジャンプをする
 	if (System_GetDispDebugInfo())
 	{
-		CInfo->MoveSpeed.y = DEBUG_JUMP_POWER;
+		CInfo->Spd.y = DEBUG_JUMP_POWER;
 	}
 	else
 	{
-		CInfo->MoveSpeed.y = JUMP_POWER;
+		CInfo->Spd.y = JUMP_POWER;
 	}
 
 	// ジャンプ状態かどうかのフラグを立てる

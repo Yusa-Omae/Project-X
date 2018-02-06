@@ -29,12 +29,12 @@
 #define GAMEOVER_WAIT			(0.1f)
 
 // プレイヤーの体力ゲージを表示する座標
-#define PC_HEALTH_X				(140)
-#define PC_HEALTH_Y				(32)
+#define PC_HP_X				(140)
+#define PC_HP_Y				(32)
 
 // プレイヤーの体力ゲージの幅と高さ
-#define PC_HEALTH_SIZE_X		(400)
-#define PC_HEALTH_SIZE_Y		(16)
+#define PC_HP_SIZE_X		(400)
+#define PC_HP_SIZE_Y		(16)
 
 // プレイヤーの体力ゲージの『PLAYER』と表示する座標
 #define PC_NAME_X				(32)
@@ -633,8 +633,8 @@ static void Task_GameMain_Render(
 
 	// プレイヤーの体力表示の枠部分を描画する
 	DrawBox(
-		PC_HEALTH_X - 4,                    PC_HEALTH_Y - 4,
-		PC_HEALTH_X + PC_HEALTH_SIZE_X + 4, PC_HEALTH_Y + PC_HEALTH_SIZE_Y + 4,
+		PC_HP_X - 4,                    PC_HP_Y - 4,
+		PC_HP_X + PC_HP_SIZE_X + 4, PC_HP_Y + PC_HP_SIZE_Y + 4,
 		GetColor( 200,200,200 ),
 		TRUE
 	);
@@ -644,10 +644,10 @@ static void Task_GameMain_Render(
 
 	// プレイヤーが居る場合はプレイヤーの体力を描画する
 	// プレイヤーが居ない場合はプレイヤーの体力は０として描画する
-	CharaHealthGaugeDraw(
-		PCInfo != NULL ? &PCInfo->HealthGauge : NULL,
-		PC_HEALTH_X,      PC_HEALTH_Y,
-		PC_HEALTH_SIZE_X, PC_HEALTH_SIZE_Y
+	CharaHpGaugeDraw(
+		PCInfo != NULL ? &PCInfo->HpGauge : NULL,
+		PC_HP_X,      PC_HP_Y,
+		PC_HP_SIZE_X, PC_HP_SIZE_Y
 	);
 
 	// デバッグ情報を表示するかどうかのフラグが立っていたらデバッグ表示を行う
