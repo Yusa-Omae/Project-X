@@ -15,7 +15,7 @@
 #ifndef __ITEM_DATA_H__
 #define __ITEM_DATA_H__
 
-typedef struct _ITEM_PARAM {
+typedef struct {
 
 	int		id;					//管理番号
 	int		Level;				//レベル
