@@ -189,6 +189,10 @@ static void Task_Adventure_Terminate(STaskInfo* stask) {
 
 	delete (task->script);
 	task->script = NULL;
+
+	//読み込ん画像リスト削除
+	ScriptGraphicsList_AllDelete();
+
 }
 
 #if false

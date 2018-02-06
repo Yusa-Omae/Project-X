@@ -21,19 +21,20 @@ typedef struct {
 }SCRIPT_GRAPHICS_t;
 
 /*
-画像を追加する
-const char* fileName	:画像パス
-...						:
+	画像を追加する
+	const char* fileName	:画像パス
+	...						:
 */
 void ScriptGraphicsList_AddGraphic(const char* fileName, ...);
 
 /*
-指定のIDの画像を取得する
+	指定のIDの画像を取得する
 */
 const SCRIPT_GRAPHICS_t* ScriptGraphicsList_GetGraphics(int id);
 
 /*
-登録した画像をすべて削除する
+	登録した画像をすべて削除する
+	IDも0からスタートになる
 */
 void ScriptGraphicsList_AllDelete();
 

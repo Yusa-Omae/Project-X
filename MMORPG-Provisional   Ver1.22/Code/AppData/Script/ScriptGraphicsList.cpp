@@ -59,7 +59,15 @@ const SCRIPT_GRAPHICS_t* ScriptGraphicsList_GetGraphics(int id) {
 
 /*
 	登録した画像をすべて削除する
+	IDも0からスタートになる
 */
 void ScriptGraphicsList_AllDelete() {
+	for each (SCRIPT_GRAPHICS_t graph in s_GraphicsList)
+	{
+		
+		DeleteGraph(graph.image);
+		
+	}
 	s_GraphicsList.clear();
+	s_Counter = 0;
 }
