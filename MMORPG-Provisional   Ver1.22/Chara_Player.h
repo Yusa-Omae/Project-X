@@ -87,7 +87,7 @@ int Chara_Player_GetItem(int haveId);
 /*
 キャラクターのお金を設定する
 */
-void Chara_Player_SetMoney(int gold;
+void Chara_Player_SetMoney(int gold);
 
 /*
 キャラクターのお金を返却する

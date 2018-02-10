@@ -358,7 +358,12 @@ static void MessageWindowPopupProc(TASK_SHOP_t* task) {
 			ITEM_PARAM_DATA_t item;
 			ItemData_GetItemData(task->select, &item);
 			
-			task->stringBase->SetString(item.Description);
+			char str[1024] = "";
+
+			sprintf_s(str, "Atk:%d Def:%d Spd:%d\n", item.Attack, item.Def, item.Spd);
+			strcat(str, item.Description);
+
+			task->stringBase->SetString(str);
 		}
 
 		break;
