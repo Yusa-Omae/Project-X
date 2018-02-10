@@ -26,6 +26,7 @@
 #include "../Code/Common/String/StringBase.h"
 #include "../Code/AppData/Item/ItemData.h"
 #include "../Input.h"
+#include "../Chara_Player.h"
 
 #define STRING_LINE_LENGTH_MAX (30)								//一行に表示する最大文字数
 #define ONELETTER_DISP_INTERVAL (5)								//一文字表示するまでの間隔
@@ -66,6 +67,7 @@ enum eSystemToke {
 	eSystemToke_Aisatu,		//最初の挨拶
 	eSystemToke_kau,		//購入する
 	eSystemToke_yameru,		//購入をやめる
+	eSystemToke_tarinai,		//お金が足りない
 	eSystemToke_Exit,		//店を出る
 
 	eSystemToke_Num,
@@ -134,6 +136,7 @@ static const char SYSTEM_TOKE_TBL[eSystemToke_Num][256] = {
 	{"いらっしゃい！\n今回はどうするんだい？"},	//最初の挨拶
 	{ "ありがとうよ！" },					//購入する
 	{ "なんだ、やめるのか" },					//購入をやめる
+	{"おいおい、たりねぇじゃねーか"},			//お金が足りない
 	{ "また来いよな！" },						//店を出る
 };
 
@@ -287,13 +290,27 @@ static void BuyCheckProc(TASK_SHOP_t* task) {
 		}
 		break;
 	case eBuyCheckState_Buy:
+	{
 
-		/*
-				購入時の処理
-		*/
-		task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_kau]);
+		int select = ScrollWindow_GetValue(task->scrollWindow);
+		ITEM_PARAM_DATA_t item;
+		ItemData_GetItemData(select, &item);
+
+		int price = Chara_Player_GetMoney();
+
+		if (price < item.Price) {
+			task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_tarinai]);
+		}
+		else {
+			price -= item.Price;
+			Chara_Player_SetMoney(price);
+			Chara_Player_SetItem(0, item.id);
+			task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_kau]);
+		}
+
 		task->buyCheckState = eBuyCheckState_Select;
 		task->state = eState_BuySelect;
+	}
 		break;
 	case eBuyCheckState_Return:
 
@@ -360,7 +377,7 @@ static void MessageWindowPopupProc(TASK_SHOP_t* task) {
 			
 			char str[1024] = "";
 
-			sprintf_s(str, "Atk:%d Def:%d Spd:%d\n", item.Attack, item.Def, item.Spd);
+			sprintf_s(str, "Atk:%d Def:%d Spd:%0.04f\n", item.Attack, item.Def, item.Spd);
 			strcat(str, item.Description);
 
 			task->stringBase->SetString(str);
@@ -515,6 +532,7 @@ static void Task_Shop_Render(STaskInfo* stask) {
 		s_ShopFunc[state].draw(task);
 	}
 
+	DrawFormatString(GAME_SCREEN_WIDTH - 200, 10, GetColor(0, 0, 0), "Money:%5d Golde", Chara_Player_GetMoney());
 	
 }
 

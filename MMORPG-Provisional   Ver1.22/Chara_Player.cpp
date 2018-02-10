@@ -715,7 +715,7 @@ void Chara_Player_SetMoney(int gold) {
 ƒLƒƒƒ‰ƒNƒ^[‚Ì‚¨‹à‚ð•Ô‹p‚·‚é
 return ŠŽ‹àŠz
 */
-int Chara_Player_GetMoney(int gold) {
+int Chara_Player_GetMoney() {
 	if (s_PlayerInfo == NULL) return 0;
 
 	return s_PlayerInfo->Gold;

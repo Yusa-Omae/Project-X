@@ -21,6 +21,7 @@
 
 enum eData {
 
+	eData_Id,
 	eData_Level,
 	eData_Price,
 	eData_Durable,
@@ -160,66 +161,71 @@ bool ItemData_ReadData() {
 
 		int pos = 0;
 		int continueNum = 0;
+		int input = 0;
+		char str[256] = "";
 		for (int i = 0; i < 256; i++) {
 
 			char ch = buffer[i];
 
 			if (ch == '\0') break;
-			if (ch == ',') {
-				continueNum++;
-				if (continueNum >= 2) {
-					printfDx("ファイルのデータが不正です.\n");
-					fclose(fp);
-					return false;
-				}
+			if (ch != ',' && ch != '\n') {
+				str[input] = ch;
+				input++;
 				continue;
+			}
+			else if (ch == ',' || ch == '\n') {
+				str[input] = '\0';
+				input = 0;
 			}
 
 			switch (pos) {
+			case eData_Id:
+				item->id = atoi(str);
+				break;
 			case eData_Level:
-				item->Level = atoi(&ch);
+				item->Level = atoi(str);
 				break;
 			case eData_Price:
-				item->Price = atoi(&ch);
+				item->Price = atoi(str);
 				break;
 			case eData_Durable:
-				item->Durable = atoi(&ch);
+				item->Durable = atoi(str);
 				break;
 			case eData_Health:
-				item->Health = atoi(&ch);
+				item->Health = atoi(str);
 				break;
 			case eData_Attack:
-				item->Attack = atoi(&ch);
+				item->Attack = atoi(str);
 				break;
 			case eData_Def:
-				item->Def = atoi(&ch);
+				item->Def = atoi(str);
 				break;
 			case eData_Critical:
-				item->Critical = atof(&ch);
+				item->Critical = atof(str);
 				break;
 			case eData_Spd:
-				item->Spd = atof(&ch);
+				item->Spd = atof(str);
 				break;
 			case eData_Absorption:
-				item->Absorption = atof(&ch);
+				item->Absorption = atof(str);
 				break;
 			case eData_AutoHeal:
-				item->AutoHeal = atoi(&ch);
+				item->AutoHeal = atoi(str);
 				break;
 			case eData_GoldPrice:
-				item->GoldPrice = atof(&ch);
+				item->GoldPrice = atof(str);
 				break;
 			case eData_Evol1:
-				item->Evol[0] = atoi(&ch);
+				item->Evol[0] = atoi(str);
 				break;
 			case eData_Evol2:
-				item->Evol[1] = atoi(&ch);
+				item->Evol[1] = atoi(str);
 				break;
 			case eData_Evol3:
-				item->Evol[2] = atoi(&ch);
+				item->Evol[2] = atoi(str);
 				break;
 			case eData_Evol4:
-				item->Evol[3] = atoi(&ch);
+				item->Evol[3] = atoi(str);
 				break;
 			}
 
@@ -227,8 +233,7 @@ bool ItemData_ReadData() {
 			continueNum = 0;
 
 			if (pos == eData_Num) {
-				//sprintf_s(item->name, "アイテム%d", num);
-				item->id = num;
+				
 				break;
 			}
 

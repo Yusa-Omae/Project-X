@@ -93,7 +93,7 @@ void Chara_Player_SetMoney(int gold);
 キャラクターのお金を返却する
 return 所持金額
 */
-int Chara_Player_GetMoney(int gold);
+int Chara_Player_GetMoney();
 
 
 #endif
