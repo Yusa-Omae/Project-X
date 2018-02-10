@@ -3930,20 +3930,6 @@ static bool Chara_AttackInfo_Check(
 }
 
 
-int GetItem(int X) {
-	SCharaInfo *CInfo;
-	CInfo = g_CharaInfo;
-
-	return CInfo->ItemHav[X];
-}
-
-void SetItem(int X, int ITEM_Num) {
-	SCharaInfo *CInfo;
-	CInfo = g_CharaInfo;
-	CInfo->ItemHav[X] = ITEM_Num;
-}
-
-
 /*
 //戦闘データのやり取りなど。
 #include"Chara.h"

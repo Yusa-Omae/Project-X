@@ -231,7 +231,7 @@ static bool Task_Title_Step(
 			TTData->SelectPosition++;
 		}
 
-		if( ( EdgeInput & ( 1 << EInputType_Atk ) ) != 0 )
+		if( ( EdgeInput & ( 1 << EInputType_Attack ) ) != 0 )
 		{
 			// 決定ボタンが押されたら選択音を鳴らし、フェードアウトを開始する
 			if( TTData->SelectPosition == ETask_TitleMenu_Exit )
