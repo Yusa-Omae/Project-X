@@ -95,7 +95,7 @@ static SInputTypeInfo g_DefaultInputTypeInfo[ EInputType_Num ] =
 	0, EDInputType_Rx,      1, 0, KEY_INPUT_N,		// EInputType_Camera_Right
 	0, EDInputType_Ry,     -1, 0, KEY_INPUT_G,		// EInputType_Camera_Up
 	0, EDInputType_Ry,      1, 0, KEY_INPUT_B,		// EInputType_Camera_Down
-	0, EDInputType_Button,  1, 0, KEY_INPUT_Z,		// EInputType_Atk
+	0, EDInputType_Button,  1, 0, KEY_INPUT_Z,		// EInputType_Attack
 	0, EDInputType_Button,  2, 0, KEY_INPUT_X,		// EInputType_Defence
 	0, EDInputType_Button,  0, 0, KEY_INPUT_C,		// EInputType_Jump
 	0, EDInputType_Button,  7, 0, KEY_INPUT_SPACE,	// EInputType_Pause

@@ -3930,8 +3930,11 @@ static bool Chara_AttackInfo_Check(
 }
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 74943e043a43939a66a5d569b8ef805a678b78e9
 /*
 //戦闘データのやり取りなど。
 #include"Chara.h"

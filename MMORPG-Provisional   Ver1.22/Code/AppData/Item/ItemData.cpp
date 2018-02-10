@@ -25,7 +25,7 @@ enum eData {
 	eData_Price,
 	eData_Durable,
 	eData_Health,
-	eData_Atk,
+	eData_Attack,
 	eData_Def,
 	eData_Critical,
 	eData_Spd,
@@ -188,8 +188,8 @@ bool ItemData_ReadData() {
 			case eData_Health:
 				item->Health = atoi(&ch);
 				break;
-			case eData_Atk:
-				item->Atk = atoi(&ch);
+			case eData_Attack:
+				item->Attack = atoi(&ch);
 				break;
 			case eData_Def:
 				item->Def = atoi(&ch);

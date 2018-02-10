@@ -158,7 +158,7 @@ static bool Task_PauseMenu_Step(
 			PTData->SelectPosition++;
 		}
 
-		if( ( EdgeInput & ( 1 << EInputType_Atk ) ) != 0 ||
+		if( ( EdgeInput & ( 1 << EInputType_Attack ) ) != 0 ||
 			( EdgeInput & ( 1 << EInputType_Pause  ) ) != 0 )
 		{
 			// 決定ボタンかポーズボタンが押されたら選択音を鳴らし、

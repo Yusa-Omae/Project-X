@@ -12,7 +12,7 @@ bool Chara_EnemyBase_Initialize(
 )
 {
 	SChara_EnemyBaseInfo       *EBInfo;
-	SChara_EnemyBaseAtkInfo *AInfo;
+	SChara_EnemyBaseAttackInfo *AInfo;
 	int                         i;
 
 	// “G‚ÌŠî–{î•ñ‚ğŠi”[‚·‚éƒƒ‚ƒŠ—Ìˆæ‚ÌŠm•Û
@@ -37,8 +37,8 @@ bool Chara_EnemyBase_Initialize(
 	EBInfo->NoticeDistance				=
 		GetTextParamFloat( TextParam, "Enemy_NoticeDistance" );
 
-	EBInfo->NoticeDistance_AtkMode	=
-		GetTextParamFloat( TextParam, "Enemy_NoticeDistance_AtkMode" );
+	EBInfo->NoticeDistance_AttackMode	=
+		GetTextParamFloat( TextParam, "Enemy_NoticeDistance_AttackMode" );
 
 	EBInfo->NoticeTime_See				=
 		GetTextParamFloat( TextParam, "Enemy_NoticeTime_See" );
@@ -46,17 +46,17 @@ bool Chara_EnemyBase_Initialize(
 	EBInfo->NoticeTime_Distance			=
 		GetTextParamFloat( TextParam, "Enemy_NoticeTime_Distance" );
 
-	EBInfo->SeeAtkMoveStartWait.MaxF	=
-		GetTextParamFloat( TextParam, "Enemy_SeeAtkMoveStartWait_Max" );
+	EBInfo->SeeAttackMoveStartWait.MaxF	=
+		GetTextParamFloat( TextParam, "Enemy_SeeAttackMoveStartWait_Max" );
 
-	EBInfo->SeeAtkMoveStartWait.MinF	=
-		GetTextParamFloat( TextParam, "Enemy_SeeAtkMoveStartWait_Min" );
+	EBInfo->SeeAttackMoveStartWait.MinF	=
+		GetTextParamFloat( TextParam, "Enemy_SeeAttackMoveStartWait_Min" );
 
-	EBInfo->AtkRepeatWait.MaxF		=
-		GetTextParamFloat( TextParam, "Enemy_AtkRepeatWait_Max" );
+	EBInfo->AttackRepeatWait.MaxF		=
+		GetTextParamFloat( TextParam, "Enemy_AttackRepeatWait_Max" );
 
-	EBInfo->AtkRepeatWait.MinF		=
-		GetTextParamFloat( TextParam, "Enemy_AtkRepeatWait_Min" );
+	EBInfo->AttackRepeatWait.MinF		=
+		GetTextParamFloat( TextParam, "Enemy_AttackRepeatWait_Min" );
 
 	EBInfo->DamageAfterMoveWait.MaxF	=
 		GetTextParamFloat( TextParam, "Enemy_DamageAfterMoveWait_Max" );
@@ -86,31 +86,31 @@ bool Chara_EnemyBase_Initialize(
 		GetTextParamBool(  TextParam, "Enemy_ProgramMove" );
 
 	// “G‚ÌUŒ‚‚ÉŠÖ‚·‚éî•ñ‚ğæ“¾
-	EBInfo->AtkNum = 0;
-	AInfo = EBInfo->AtkInfo;
+	EBInfo->AttackNum = 0;
+	AInfo = EBInfo->AttackInfo;
 	for( i = 0; i < ENEMY_ATTACK_MAX_NUM; i++, AInfo++ )
 	{
-		if( SearchTextParam( TextParam, "Enemy_Atk%d_AtkDistance", i ) < 0 )
+		if( SearchTextParam( TextParam, "Enemy_Attack%d_AttackDistance", i ) < 0 )
 		{
 			break;
 		}
 
-		AInfo->AtkDistance      =
-			GetTextParamFloat( TextParam, "Enemy_Atk%d_AtkDistance",      i );
+		AInfo->AttackDistance      =
+			GetTextParamFloat( TextParam, "Enemy_Attack%d_AttackDistance",      i );
 
-		AInfo->AtkAngleRange    =
-			GetTextParamFloat( TextParam, "Enemy_Atk%d_AtkAngleRange",    i );
+		AInfo->AttackAngleRange    =
+			GetTextParamFloat( TextParam, "Enemy_Attack%d_AttackAngleRange",    i );
 
-		AInfo->Atk         =
-			GetTextParamInt(   TextParam, "Enemy_Atk%d_Atk",         i );
+		AInfo->Attack         =
+			GetTextParamInt(   TextParam, "Enemy_Attack%d_Attack",         i );
 
-		AInfo->IsAtkMoveWalk    =
-			GetTextParamBool(  TextParam, "Enemy_Atk%d_IsAtkMoveWalk",    i );
+		AInfo->IsAttackMoveWalk    =
+			GetTextParamBool(  TextParam, "Enemy_Attack%d_IsAttackMoveWalk",    i );
 
-		AInfo->IsAtkAngleChange =
-			GetTextParamBool(  TextParam, "Enemy_Atk%d_IsAtkAngleChange", i );
+		AInfo->IsAttackAngleChange =
+			GetTextParamBool(  TextParam, "Enemy_Attack%d_IsAttackAngleChange", i );
 
-		EBInfo->AtkNum++;
+		EBInfo->AttackNum++;
 	}
 
 	// ¬Œ÷I—¹
