@@ -26,6 +26,7 @@
 #include "../Code/Common/String/StringBase.h"
 #include "../Code/AppData/Item/ItemData.h"
 #include "../Input.h"
+#include "../Chara_Player.h"
 
 #define STRING_LINE_LENGTH_MAX (30)								//一行に表示する最大文字数
 #define ONELETTER_DISP_INTERVAL (5)								//一文字表示するまでの間隔
@@ -358,7 +359,11 @@ static void MessageWindowPopupProc(TASK_SHOP_t* task) {
 			ITEM_PARAM_DATA_t item;
 			ItemData_GetItemData(task->select, &item);
 			
-			task->stringBase->SetString(item.Description);
+			char str[2049] = "";
+			sprintf(str,"Atk:%d Def:%d Spd:%d\n", item.Attack,item.Def,item.Spd);
+			strcat_s(str, item.Description);
+
+			task->stringBase->SetString(str);
 		}
 
 		break;

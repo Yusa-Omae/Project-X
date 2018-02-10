@@ -71,6 +71,8 @@ typedef struct _SChara_PlayerInfo
 	VECTOR             JumpSpd;
 } SChara_PlayerInfo;
 
+static SCharaInfo* s_PlayerInfo;
+
 
 // プレイヤーが作成された際に呼ばれる関数
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
@@ -106,6 +108,9 @@ bool Chara_Player_Create(
 
 	// 攻撃力をセット
 	CInfo->Atk = ATTACK_POWER;
+
+	//キャラクター構造体を設定
+	s_PlayerInfo = CInfo;
 
 	// 正常終了
 	return true;
@@ -670,6 +675,51 @@ bool Chara_Player_AnimOtherEvent(
 	return true;
 }
 
+
+
+/*
+	キャラクターにアイテムを設定する
+*/
+void Chara_Player_SetItem(int haveId,int itmeIdex) {
+	if (s_PlayerInfo == NULL) return;
+	if (haveId < 0 || haveId >= 10) return;
+
+	s_PlayerInfo->ItemHav[haveId] = itmeIdex;
+
+}
+
+
+/*
+キャラクターにアイテムを設定する
+return -1でエラー　0以上でアイテム
+*/
+int Chara_Player_GetItem(int haveId) {
+	if (s_PlayerInfo == NULL) return -1;
+	if (haveId < 0 || haveId >= 10) return -1;
+
+	return s_PlayerInfo->ItemHav[haveId];
+
+}
+
+
+/*
+キャラクターのお金を設定する
+*/
+void Chara_Player_SetMoney(int gold) {
+	if (s_PlayerInfo == NULL) return;
+
+	s_PlayerInfo->Gold = gold;
+}
+
+/*
+キャラクターのお金を返却する
+return 所持金額
+*/
+int Chara_Player_GetMoney(int gold) {
+	if (s_PlayerInfo == NULL) return 0;
+
+	return s_PlayerInfo->Gold;
+}
 
 #if false
 #include"DxLib.h"
