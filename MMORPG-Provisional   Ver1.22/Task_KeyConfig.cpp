@@ -56,7 +56,7 @@ typedef enum _ETask_KeyConfigState
 // キーコンフィグの項目
 typedef enum _ETask_KeyConfigMenu
 {
-	ETask_KeyConfigMenu_Attack,			// 攻撃ボタン
+	ETask_KeyConfigMenu_Atk,			// 攻撃ボタン
 	ETask_KeyConfigMenu_Defence,		// 防御ボタン
 	ETask_KeyConfigMenu_Jump,			// ジャンプボタン
 	ETask_KeyConfigMenu_Pause,			// ポーズボタン
@@ -149,7 +149,7 @@ static const char *g_KeyConfigMenuTable[] =
 // 各メニュー項目と入力情報との対応テーブル
 static EInputType g_InputTypeTable[] =
 {
-	EInputType_Attack,
+	EInputType_Atk,
 	EInputType_Defence,
 	EInputType_Jump,
 	EInputType_Pause,
@@ -257,7 +257,7 @@ static bool Task_KeyConfig_Step(
 		{
 			// 選択項目が「設定をデフォルトに戻す」かそれより下にある場合
 
-			if( ( EdgeInput & ( 1 << EInputType_Attack ) ) != 0 )
+			if( ( EdgeInput & ( 1 << EInputType_Atk ) ) != 0 )
 			{
 				// 決定ボタンが押されたらカーソルの位置に応じて処理を分岐
 				switch( KCData->SelectPosition )

@@ -11,8 +11,8 @@ static const char *g_AnimEventTypeName[EAnimEventType_Num] =
 	"Sound",			// EAnimEventType_Sound
 	"PhysicsSound",		// EAnimEventType_PhysicsSound
 	"AnimCancel",		// EAnimEventType_AnimCancel
-	"AttackStart",		// EAnimEventType_AttackStart,
-	"AttackEnd",		// EAnimEventType_AttackEnd,
+	"AtkStart",		// EAnimEventType_AtkStart,
+	"AtkEnd",		// EAnimEventType_AtkEnd,
 	"Other",			// EAnimEventType_Other,
 };
 
@@ -72,8 +72,8 @@ bool LoadAnimInfoFile(
 
 			// その他の情報の初期化
 			Event->SoundHandle = -1;
-			Event->AttackPosIndex = 0;
-			Event->AttackNo = 0;
+			Event->AtkPosIndex = 0;
+			Event->AtkNo = 0;
 			Event->PhysicsSound = (EAnimPhysicsSound)0;
 			memset(Event->SoundPath, 0, sizeof(Event->SoundPath));
 
@@ -91,15 +91,15 @@ bool LoadAnimInfoFile(
 				Event->PhysicsSound = (EAnimPhysicsSound)ParamInt;
 				break;
 
-			case EAnimEventType_AttackStart:
+			case EAnimEventType_AtkStart:
 				// 攻撃判定開始イベントの場合は攻撃番号と攻撃位置番号を読み込み
-				ReadBinFile_Int(&BinFileData, &Event->AttackNo);
-				ReadBinFile_Int(&BinFileData, &Event->AttackPosIndex);
+				ReadBinFile_Int(&BinFileData, &Event->AtkNo);
+				ReadBinFile_Int(&BinFileData, &Event->AtkPosIndex);
 				break;
 
-			case EAnimEventType_AttackEnd:
+			case EAnimEventType_AtkEnd:
 				// 攻撃判定終了イベントの場合は攻撃番号を読み込み
-				ReadBinFile_Int(&BinFileData, &Event->AttackNo);
+				ReadBinFile_Int(&BinFileData, &Event->AtkNo);
 				break;
 			}
 		}
@@ -144,8 +144,8 @@ bool LoadAnimInfoFile(
 
 			// その他の情報の初期化
 			Event->SoundHandle = -1;
-			Event->AttackPosIndex = 0;
-			Event->AttackNo = 0;
+			Event->AtkPosIndex = 0;
+			Event->AtkNo = 0;
 			Event->PhysicsSound = (EAnimPhysicsSound)0;
 			memset(Event->SoundPath, 0, sizeof(Event->SoundPath));
 
@@ -175,15 +175,15 @@ bool LoadAnimInfoFile(
 				Event->PhysicsSound = (EAnimPhysicsSound)j;
 				break;
 
-			case EAnimEventType_AttackStart:
+			case EAnimEventType_AtkStart:
 				// 攻撃判定開始イベントの場合は攻撃番号と攻撃位置番号を読み込み
-				Event->AttackNo = GetTextParamInt(&TextParam, "Event%d_AttackNo", i);
-				Event->AttackPosIndex = GetTextParamInt(&TextParam, "Event%d_AttackPosIndex", i);
+				Event->AtkNo = GetTextParamInt(&TextParam, "Event%d_AtkNo", i);
+				Event->AtkPosIndex = GetTextParamInt(&TextParam, "Event%d_AtkPosIndex", i);
 				break;
 
-			case EAnimEventType_AttackEnd:
+			case EAnimEventType_AtkEnd:
 				// 攻撃判定終了イベントの場合は攻撃番号を読み込み
-				Event->AttackNo = GetTextParamInt(&TextParam, "Event%d_AttackNo", i);
+				Event->AtkNo = GetTextParamInt(&TextParam, "Event%d_AtkNo", i);
 				break;
 			}
 		}
@@ -254,15 +254,15 @@ bool SaveAnimInfoFile(
 			WriteBinFile_Int(&BinFileData, Event->PhysicsSound);
 			break;
 
-		case EAnimEventType_AttackStart:
+		case EAnimEventType_AtkStart:
 			// 攻撃判定開始イベントの場合は攻撃番号と攻撃位置番号を書き出し
-			WriteBinFile_Int(&BinFileData, Event->AttackNo);
-			WriteBinFile_Int(&BinFileData, Event->AttackPosIndex);
+			WriteBinFile_Int(&BinFileData, Event->AtkNo);
+			WriteBinFile_Int(&BinFileData, Event->AtkPosIndex);
 			break;
 
-		case EAnimEventType_AttackEnd:
+		case EAnimEventType_AtkEnd:
 			// 攻撃判定終了イベントの場合は攻撃番号を書き出し
-			WriteBinFile_Int(&BinFileData, Event->AttackNo);
+			WriteBinFile_Int(&BinFileData, Event->AtkNo);
 			break;
 		}
 	}
@@ -315,15 +315,15 @@ bool SaveAnimInfoFile(
 				g_AnimPhysicsSoundName[Event->PhysicsSound]);
 			break;
 
-		case EAnimEventType_AttackStart:
+		case EAnimEventType_AtkStart:
 			// 攻撃判定開始イベントの場合は攻撃番号と攻撃位置番号を書き出し
-			fprintf(fp, "int Event%d_AttackNo = %d\n", i, Event->AttackNo);
-			fprintf(fp, "int Event%d_AttackPosIndex = %d\n", i, Event->AttackPosIndex);
+			fprintf(fp, "int Event%d_AtkNo = %d\n", i, Event->AtkNo);
+			fprintf(fp, "int Event%d_AtkPosIndex = %d\n", i, Event->AtkPosIndex);
 			break;
 
-		case EAnimEventType_AttackEnd:
+		case EAnimEventType_AtkEnd:
 			// 攻撃判定終了イベントの場合は攻撃番号を書き出し
-			fprintf(fp, "int Event%d_AttackNo = %d\n", i, Event->AttackNo);
+			fprintf(fp, "int Event%d_AtkNo = %d\n", i, Event->AtkNo);
 			break;
 		}
 

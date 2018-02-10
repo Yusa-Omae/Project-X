@@ -21,8 +21,8 @@ typedef enum _EAnimEventType
 	EAnimEventType_Sound,			// 音を再生
 	EAnimEventType_PhysicsSound,	// 物理音を再生
 	EAnimEventType_AnimCancel,		// アニメーションキャンセル
-	EAnimEventType_AttackStart,		// 攻撃判定開始
-	EAnimEventType_AttackEnd,		// 攻撃判定終了
+	EAnimEventType_AtkStart,		// 攻撃判定開始
+	EAnimEventType_AtkEnd,		// 攻撃判定終了
 	EAnimEventType_Other,			// その他
 
 	EAnimEventType_Num				// アニメーションイベントのタイプの数
@@ -50,12 +50,12 @@ typedef struct _SAnimEventInfo
 	int                    TimeI;
 
 	// 攻撃番号
-	// ( Type が EAnimEventType_AttackStart 又は EAnimEventType_AttackEnd の場合に使用 )
-	int                    AttackNo;
+	// ( Type が EAnimEventType_AtkStart 又は EAnimEventType_AtkEnd の場合に使用 )
+	int                    AtkNo;
 
 	// 攻撃位置番号
-	// ( Type が EAnimEventType_AttackStart の場合に使用 )
-	int                    AttackPosIndex;
+	// ( Type が EAnimEventType_AtkStart の場合に使用 )
+	int                    AtkPosIndex;
 
 	// アニメーション物理音タイプ
 	// ( Type が EAnimEventType_PhysicsSound の場合に使用 )

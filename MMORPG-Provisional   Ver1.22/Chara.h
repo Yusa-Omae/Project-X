@@ -463,4 +463,9 @@ extern bool Chara_ChangeAnim(
 	float ChangeSpeed
 );
 
+int GetItem(int X);
+
+void SetItem(int X, int ITEM_Num);
+
+
 #endif
