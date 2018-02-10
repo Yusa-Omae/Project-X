@@ -271,7 +271,7 @@ extern bool StageData_Load(
 			ReadBinFile_Int(&BinFileData, &Header->KillCharaNum);
 			ReadBinFile_Int(&BinFileData, &Header->KillTargetChara);
 
-#if false
+#if true
 #ifdef __MY_DEBUG__
 
 			Header->KillCharaNum = 0;
