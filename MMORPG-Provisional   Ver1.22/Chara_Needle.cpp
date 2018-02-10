@@ -24,8 +24,8 @@ bool Chara_Needle_Create(
 	CInfo->JumpState                      = true;
 
 	// 攻撃情報をセットする
-	CInfo->AtkInfo[ 0 ].Enable         = true;
-	CInfo->AtkInfo[ 0 ].AtkPosIndex = 0;
+	CInfo->AttackInfo[ 0 ].Enable         = true;
+	CInfo->AttackInfo[ 0 ].AttackPosIndex = 0;
 
 	// 攻撃力をセットする
 	CInfo->Atk                    = ATTACK_POWER;

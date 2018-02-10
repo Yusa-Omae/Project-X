@@ -13,9 +13,9 @@ typedef struct _ITEM_PARAM{
 	//アイテムの耐久値
 	int Db;
 	//装備した際の追加HP
-	int Hp;
+	int Health;
 	//装備した際の追加攻撃力
-	int Atk;
+	int Attack;
 	//装備した際の追加防御力
 	int Def;
 	//装備した際の追加クリティカル率
@@ -25,7 +25,7 @@ typedef struct _ITEM_PARAM{
 	//攻撃した際の追加HP吸収率
 	float Abp;
 	//装備した際の追加リジェネ
-	int Ah;
+	float Ah;
 	//敵を倒した際のドロップ金増加率
 	float Gp;
 	//進化先

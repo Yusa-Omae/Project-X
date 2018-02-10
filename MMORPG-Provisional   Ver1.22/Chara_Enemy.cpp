@@ -24,23 +24,23 @@ typedef enum _EChara_EnemyState
 	EChara_EnemyState_IdleAngleMove_BeginWait,	// 特に何もせず向き変更開始前
 	EChara_EnemyState_IdleAngleMove_AngleMove,	// 特に何もせず向き変更中
 	EChara_EnemyState_IdleAngleMove_AfterWait,	// 特に何もせず向き変更後
-	EChara_EnemyState_AtkMoveWait,			// 攻撃移動開始前
-	EChara_EnemyState_AtkMove,				// 攻撃移動中
-	EChara_EnemyState_Atk,					// 攻撃中
-	EChara_EnemyState_AtkAfter,				// 攻撃後
+	EChara_EnemyState_AttackMoveWait,			// 攻撃移動開始前
+	EChara_EnemyState_AttackMove,				// 攻撃移動中
+	EChara_EnemyState_Attack,					// 攻撃中
+	EChara_EnemyState_AttackAfter,				// 攻撃後
 	EChara_EnemyState_Damage,					// ダメージリアクション中
 	EChara_EnemyState_DamageAfter,				// ダメージリアクション後
 } EChara_EnemyState;
 
 // 敵の攻撃情報
-typedef struct _SChara_EnemyAtkInfo
+typedef struct _SChara_EnemyAttackInfo
 {
 	// 攻撃を行う距離の範囲にプレイヤーが居るかどうか
-	bool                   AtkDistance;
+	bool                   AttackDistance;
 
 	// 攻撃を行う距離の範囲にプレイヤーが居るかどうか( 水平方向のみ考慮 )
-	bool                   AtkDistance_XZ;
-} SChara_EnemyAtkInfo;
+	bool                   AttackDistance_XZ;
+} SChara_EnemyAttackInfo;
 
 // 敵の情報
 typedef struct _SChara_EnemyInfo
@@ -67,7 +67,7 @@ typedef struct _SChara_EnemyInfo
 	bool                   NoticePlayer;
 
 	// プレイヤーに気付いているかどうか( 攻撃中用 )
-	bool                   NoticePlayer_AtkMode;
+	bool                   NoticePlayer_AttackMode;
 
 	// プレイヤーの居る方向
 	VECTOR                 PlayerDirection;
@@ -76,10 +76,10 @@ typedef struct _SChara_EnemyInfo
 	VECTOR                 PlayerDirection_XZ;
 
 	// 攻撃タイプ
-	int                    AtkType;
+	int                    AttackType;
 
 	// 各攻撃タイプの情報
-	SChara_EnemyAtkInfo AtkInfo[ENEMY_ATTACK_MAX_NUM];
+	SChara_EnemyAttackInfo AttackInfo[ENEMY_ATTACK_MAX_NUM];
 
 	// 敵の状態
 	EChara_EnemyState      EnemyState;
@@ -125,7 +125,7 @@ static bool Chara_Enemy_State_Idle_Common(
 // 敵の「攻撃移動状態」の共通処理を行う
 //     戻り値 : 状態変更が発生したかどうか
 //              ( true : 状態変更が発生した  false : 状態変更は発生していない )
-static bool Chara_Enemy_State_AtkMove_Common(
+static bool Chara_Enemy_State_AttackMove_Common(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -137,7 +137,7 @@ static bool Chara_Enemy_State_AtkMove_Common(
 );
 
 // 敵の「攻撃状態」の共通処理を行う
-static void Chara_Enemy_State_Atk_Common(
+static void Chara_Enemy_State_Attack_Common(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -177,7 +177,7 @@ static bool Chara_Enemy_State_IdleAngleMove_Setup(
 
 // 敵を「攻撃移動開始前状態」に移行する
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_Enemy_State_AtkMoveWait_Setup(
+static bool Chara_Enemy_State_AttackMoveWait_Setup(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -187,7 +187,7 @@ static bool Chara_Enemy_State_AtkMoveWait_Setup(
 
 // 敵を「攻撃移動中状態」に移行する
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_Enemy_State_AtkMove_Setup(
+static bool Chara_Enemy_State_AttackMove_Setup(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -197,7 +197,7 @@ static bool Chara_Enemy_State_AtkMove_Setup(
 
 // 敵を「攻撃中状態」に移行する
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_Enemy_State_Atk_Setup(
+static bool Chara_Enemy_State_Attack_Setup(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -207,7 +207,7 @@ static bool Chara_Enemy_State_Atk_Setup(
 
 // 敵を「攻撃後状態」に移行する
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_Enemy_State_AtkAfter_Setup(
+static bool Chara_Enemy_State_AttackAfter_Setup(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -306,7 +306,7 @@ static void Chara_Enemy_Info_Setup(
 		EInfo->SeePlayer = false;
 		EInfo->SeePlayerCounter = 0.0f;
 		EInfo->NoticePlayer = false;
-		EInfo->NoticePlayer_AtkMode = false;
+		EInfo->NoticePlayer_AttackMode = false;
 	}
 	else
 	{
@@ -419,15 +419,15 @@ static void Chara_Enemy_Info_Setup(
 
 		// 戦闘モードでプレイヤーの存在に気付く条件が揃っているかをチェック
 		if (EInfo->SeePlayer ||
-			PlayerDistance    < EInfo->BaseInfo->NoticeDistance_AtkMode ||
-			PlayerDistance_XZ < EInfo->BaseInfo->NoticeDistance_AtkMode)
+			PlayerDistance    < EInfo->BaseInfo->NoticeDistance_AttackMode ||
+			PlayerDistance_XZ < EInfo->BaseInfo->NoticeDistance_AttackMode)
 		{
 			// 揃っている場合はプレイヤーに気付いているかどうかのフラグを立てる
-			EInfo->NoticePlayer_AtkMode = true;
+			EInfo->NoticePlayer_AttackMode = true;
 		}
 		else
 		{
-			EInfo->NoticePlayer_AtkMode = false;
+			EInfo->NoticePlayer_AttackMode = false;
 		}
 
 		// プレイヤーが周囲に居るというメッセージが届いていたら無条件で
@@ -435,20 +435,20 @@ static void Chara_Enemy_Info_Setup(
 		if (EInfo->PlayerNearDistanceMessage)
 		{
 			EInfo->NoticePlayer = true;
-			EInfo->NoticePlayer_AtkMode = true;
+			EInfo->NoticePlayer_AttackMode = true;
 
 			// メッセージが届いたことを示すフラグを倒す
 			EInfo->PlayerNearDistanceMessage = false;
 		}
 
 		// 各攻撃タイプの「攻撃を行う距離に居るかどうか」のフラグを更新
-		for (i = 0; i < EInfo->BaseInfo->AtkNum; i++)
+		for (i = 0; i < EInfo->BaseInfo->AttackNum; i++)
 		{
-			EInfo->AtkInfo[i].AtkDistance =
-				PlayerDistance    < EInfo->BaseInfo->AtkInfo[i].AtkDistance;
+			EInfo->AttackInfo[i].AttackDistance =
+				PlayerDistance    < EInfo->BaseInfo->AttackInfo[i].AttackDistance;
 
-			EInfo->AtkInfo[i].AtkDistance_XZ =
-				PlayerDistance_XZ < EInfo->BaseInfo->AtkInfo[i].AtkDistance;
+			EInfo->AttackInfo[i].AttackDistance_XZ =
+				PlayerDistance_XZ < EInfo->BaseInfo->AttackInfo[i].AttackDistance;
 		}
 	}
 }
@@ -611,9 +611,9 @@ bool Chara_Enemy_Step(
 			}
 			break;
 
-		case EChara_EnemyState_AtkMoveWait:		// 攻撃移動開始前
+		case EChara_EnemyState_AttackMoveWait:		// 攻撃移動開始前
 													// 戦闘移動状態の共通処理を行う
-			if (!Chara_Enemy_State_AtkMove_Common(CInfo, EInfo, &ChangeState))
+			if (!Chara_Enemy_State_AttackMove_Common(CInfo, EInfo, &ChangeState))
 			{
 				return false;
 			}
@@ -625,16 +625,16 @@ bool Chara_Enemy_Step(
 			// 一定時間経過したら「攻撃移動中」に移行する
 			if (EInfo->TimeCounter > EInfo->WaitTime)
 			{
-				if (!Chara_Enemy_State_AtkMove_Setup(CInfo, EInfo))
+				if (!Chara_Enemy_State_AttackMove_Setup(CInfo, EInfo))
 				{
 					return false;
 				}
 			}
 			break;
 
-		case EChara_EnemyState_AtkMove:			// 攻撃移動中
+		case EChara_EnemyState_AttackMove:			// 攻撃移動中
 													// 戦闘移動状態の共通処理を行う
-			if (!Chara_Enemy_State_AtkMove_Common(CInfo, EInfo, &ChangeState))
+			if (!Chara_Enemy_State_AttackMove_Common(CInfo, EInfo, &ChangeState))
 			{
 				return false;
 			}
@@ -644,41 +644,41 @@ bool Chara_Enemy_Step(
 			}
 
 			// プレイヤーが攻撃できる距離に来たら「攻撃中」に移行する
-			if (EInfo->AtkInfo[EInfo->AtkType].AtkDistance_XZ)
+			if (EInfo->AttackInfo[EInfo->AttackType].AttackDistance_XZ)
 			{
-				if (!Chara_Enemy_State_Atk_Setup(CInfo, EInfo))
+				if (!Chara_Enemy_State_Attack_Setup(CInfo, EInfo))
 				{
 					return false;
 				}
 			}
 			break;
 
-		case EChara_EnemyState_Atk:				// 攻撃中
+		case EChara_EnemyState_Attack:				// 攻撃中
 													// 攻撃状態の共通処理を行う
-			Chara_Enemy_State_Atk_Common(CInfo, EInfo);
+			Chara_Enemy_State_Attack_Common(CInfo, EInfo);
 
 			// 攻撃アニメーションが終了したら「攻撃後」に移行する
 			if (CInfo->AnimInfo.End)
 			{
-				if (!Chara_Enemy_State_AtkAfter_Setup(CInfo, EInfo))
+				if (!Chara_Enemy_State_AttackAfter_Setup(CInfo, EInfo))
 				{
 					return false;
 				}
 			}
 			break;
 
-		case EChara_EnemyState_AtkAfter:			// 攻撃後
+		case EChara_EnemyState_AttackAfter:			// 攻撃後
 													// 攻撃状態の共通処理を行う
-			Chara_Enemy_State_Atk_Common(CInfo, EInfo);
+			Chara_Enemy_State_Attack_Common(CInfo, EInfo);
 
 			// 一定時間が経過したら処理を分岐
 			if (EInfo->TimeCounter > EInfo->WaitTime)
 			{
 				// プレイヤーが敵の気付く位置に居る場合は「攻撃移動中」に、
 				// 居ない場合は「特に何もしていない状態」に移行する
-				if (EInfo->NoticePlayer_AtkMode)
+				if (EInfo->NoticePlayer_AttackMode)
 				{
-					if (!Chara_Enemy_State_AtkMove_Setup(CInfo, EInfo))
+					if (!Chara_Enemy_State_AttackMove_Setup(CInfo, EInfo))
 					{
 						return false;
 					}
@@ -704,12 +704,12 @@ bool Chara_Enemy_Step(
 
 		case EChara_EnemyState_DamageAfter:			// ダメージリアクション後
 													// 攻撃状態の共通処理を行う
-			Chara_Enemy_State_Atk_Common(CInfo, EInfo);
+			Chara_Enemy_State_Attack_Common(CInfo, EInfo);
 
 			// 一定時間経過していたら「攻撃移動中」に移行する
 			if (EInfo->TimeCounter > EInfo->WaitTime)
 			{
-				if (!Chara_Enemy_State_AtkMove_Setup(CInfo, EInfo))
+				if (!Chara_Enemy_State_AttackMove_Setup(CInfo, EInfo))
 				{
 					return false;
 				}
@@ -723,7 +723,7 @@ bool Chara_Enemy_Step(
 	{
 		// 「特に何もせず移動中」又は「攻撃移動中」の場合はプログラムによる移動を行う
 		if (EInfo->EnemyState == EChara_EnemyState_IdleMove ||
-			EInfo->EnemyState == EChara_EnemyState_AtkMove)
+			EInfo->EnemyState == EChara_EnemyState_AttackMove)
 		{
 			CInfo->ProgramMove = true;
 		}
@@ -747,7 +747,7 @@ bool Chara_Enemy_Damage(
 	SCharaInfo *CInfo,
 
 	// ダメージタイプ
-	ECharaAtk_DamageType DamageType,
+	ECharaAttack_DamageType DamageType,
 
 	// ダメージ
 	int DamagePoint,
@@ -756,7 +756,7 @@ bool Chara_Enemy_Damage(
 	VECTOR HitPosition,
 
 	// 攻撃の方向
-	VECTOR AtkDirection,
+	VECTOR AttackDirection,
 
 	// 攻撃を防御したかどうかを代入する変数のアドレス
 	bool *Defence,
@@ -821,7 +821,7 @@ static bool Chara_Enemy_State_Idle_Common(
 	// プレイヤーに気付いたら「攻撃移動開始前」に移行する
 	if (EInfo->NoticePlayer)
 	{
-		if (!Chara_Enemy_State_AtkMoveWait_Setup(CInfo, EInfo))
+		if (!Chara_Enemy_State_AttackMoveWait_Setup(CInfo, EInfo))
 		{
 			return false;
 		}
@@ -841,7 +841,7 @@ static bool Chara_Enemy_State_Idle_Common(
 
 // 敵の「攻撃移動状態」の共通処理を行う
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_Enemy_State_AtkMove_Common(
+static bool Chara_Enemy_State_AttackMove_Common(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -853,7 +853,7 @@ static bool Chara_Enemy_State_AtkMove_Common(
 )
 {
 	// プレイヤーを見失ったら「特に何もしていない状態」に移行する
-	if (!EInfo->NoticePlayer_AtkMode)
+	if (!EInfo->NoticePlayer_AttackMode)
 	{
 		if (!Chara_Enemy_State_Idle_Setup(CInfo, EInfo))
 		{
@@ -878,7 +878,7 @@ static bool Chara_Enemy_State_AtkMove_Common(
 }
 
 // 敵の「攻撃状態」の共通処理を行う
-static void Chara_Enemy_State_Atk_Common(
+static void Chara_Enemy_State_Attack_Common(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -887,7 +887,7 @@ static void Chara_Enemy_State_Atk_Common(
 )
 {
 	// 「攻撃中も向いている方向を変化させるかどうか」のフラグが倒れている場合は何もしない
-	if (!EInfo->BaseInfo->AtkInfo[EInfo->AtkType].IsAtkAngleChange)
+	if (!EInfo->BaseInfo->AttackInfo[EInfo->AttackType].IsAttackAngleChange)
 	{
 		return;
 	}
@@ -979,7 +979,7 @@ static bool Chara_Enemy_State_IdleAngleMove_Setup(
 
 // 敵を「攻撃移動開始前状態」に移行する
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_Enemy_State_AtkMoveWait_Setup(
+static bool Chara_Enemy_State_AttackMoveWait_Setup(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -987,9 +987,9 @@ static bool Chara_Enemy_State_AtkMoveWait_Setup(
 	SChara_EnemyInfo *EInfo
 )
 {
-	EInfo->EnemyState = EChara_EnemyState_AtkMoveWait;
+	EInfo->EnemyState = EChara_EnemyState_AttackMoveWait;
 	EInfo->TimeCounter = 0.0f;
-	EInfo->WaitTime = GetRandomFloatS(&EInfo->BaseInfo->SeeAtkMoveStartWait);
+	EInfo->WaitTime = GetRandomFloatS(&EInfo->BaseInfo->SeeAttackMoveStartWait);
 
 	if (!Chara_ChangeAnim(CInfo, ECharaAnim_Neutral, DEFAULT_CHANGE_ANIM_SPEED))
 	{
@@ -1002,7 +1002,7 @@ static bool Chara_Enemy_State_AtkMoveWait_Setup(
 
 // 敵を「攻撃移動中状態」に移行する
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_Enemy_State_AtkMove_Setup(
+static bool Chara_Enemy_State_AttackMove_Setup(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -1010,17 +1010,17 @@ static bool Chara_Enemy_State_AtkMove_Setup(
 	SChara_EnemyInfo *EInfo
 )
 {
-	EInfo->EnemyState = EChara_EnemyState_AtkMove;
+	EInfo->EnemyState = EChara_EnemyState_AttackMove;
 	EInfo->TimeCounter = 0.0f;
 
 	// どの攻撃タイプになるかはランダム
-	EInfo->AtkType = GetRand(EInfo->BaseInfo->AtkNum - 1);
+	EInfo->AttackType = GetRand(EInfo->BaseInfo->AttackNum - 1);
 
 	// 攻撃力は攻撃タイプ毎に設定されている値にする
-	CInfo->Atk = EInfo->BaseInfo->AtkInfo[EInfo->AtkType].Atk;
+	CInfo->Atk = EInfo->BaseInfo->AttackInfo[EInfo->AttackType].Attack;
 
 	if (!Chara_ChangeAnim(
-		CInfo, EInfo->BaseInfo->AtkInfo[EInfo->AtkType].IsAtkMoveWalk ?
+		CInfo, EInfo->BaseInfo->AttackInfo[EInfo->AttackType].IsAttackMoveWalk ?
 		ECharaAnim_Walk : ECharaAnim_Run, DEFAULT_CHANGE_ANIM_SPEED))
 	{
 		return false;
@@ -1032,7 +1032,7 @@ static bool Chara_Enemy_State_AtkMove_Setup(
 
 // 敵を「攻撃中状態」に移行する
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_Enemy_State_Atk_Setup(
+static bool Chara_Enemy_State_Attack_Setup(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -1040,17 +1040,17 @@ static bool Chara_Enemy_State_Atk_Setup(
 	SChara_EnemyInfo *EInfo
 )
 {
-	static ECharaAnim AtkAnimTable[] =
+	static ECharaAnim AttackAnimTable[] =
 	{
-		ECharaAnim_Atk1,
-		ECharaAnim_Atk2,
-		ECharaAnim_Atk3
+		ECharaAnim_Attack1,
+		ECharaAnim_Attack2,
+		ECharaAnim_Attack3
 	};
 
-	EInfo->EnemyState = EChara_EnemyState_Atk;
+	EInfo->EnemyState = EChara_EnemyState_Attack;
 
 	// 攻撃タイプによって再生するアニメーションを変更
-	if (!Chara_ChangeAnim(CInfo, AtkAnimTable[EInfo->AtkType],
+	if (!Chara_ChangeAnim(CInfo, AttackAnimTable[EInfo->AttackType],
 		DEFAULT_CHANGE_ANIM_SPEED))
 	{
 		return false;
@@ -1062,7 +1062,7 @@ static bool Chara_Enemy_State_Atk_Setup(
 
 // 敵を「攻撃後状態」に移行する
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_Enemy_State_AtkAfter_Setup(
+static bool Chara_Enemy_State_AttackAfter_Setup(
 	// キャラクター情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -1070,9 +1070,9 @@ static bool Chara_Enemy_State_AtkAfter_Setup(
 	SChara_EnemyInfo *EInfo
 )
 {
-	EInfo->EnemyState = EChara_EnemyState_AtkAfter;
+	EInfo->EnemyState = EChara_EnemyState_AttackAfter;
 	EInfo->TimeCounter = 0.0f;
-	EInfo->WaitTime = GetRandomFloatS(&EInfo->BaseInfo->AtkRepeatWait);
+	EInfo->WaitTime = GetRandomFloatS(&EInfo->BaseInfo->AttackRepeatWait);
 
 	if (!Chara_ChangeAnim(CInfo, ECharaAnim_Neutral, DEFAULT_CHANGE_ANIM_SPEED))
 	{

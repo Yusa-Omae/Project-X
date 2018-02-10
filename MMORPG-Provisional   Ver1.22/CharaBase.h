@@ -56,9 +56,9 @@ typedef enum _ECharaAnim
 	ECharaAnim_Jump_Loop,			// ジャンプループ
 	ECharaAnim_Jump_Out,			// ジャンプ終了
 	ECharaAnim_Landed,				// 着地
-	ECharaAnim_Atk1,				// 攻撃アニメーション１
-	ECharaAnim_Atk2,				// 攻撃アニメーション２
-	ECharaAnim_Atk3,				// 攻撃アニメーション３
+	ECharaAnim_Attack1,				// 攻撃アニメーション１
+	ECharaAnim_Attack2,				// 攻撃アニメーション２
+	ECharaAnim_Attack3,				// 攻撃アニメーション３
 	ECharaAnim_Guard_In,			// ガード開始
 	ECharaAnim_Guard_Loop,			// ガードループ
 	ECharaAnim_Guard_Impact,		// 攻撃をガード
@@ -95,13 +95,13 @@ typedef enum _ECharaWeapon
 } ECharaWeapon;
 
 // キャラクターの攻撃判定の形状
-typedef enum _ECharaAtkFormType
+typedef enum _ECharaAttackFormType
 {
-	ECharaAtkFormType_Poly,		// ポリゴン
-	ECharaAtkFormType_Sphere,	// 球
+	ECharaAttackFormType_Poly,		// ポリゴン
+	ECharaAttackFormType_Sphere,	// 球
 
-	ECharaAtkFormType_Num		// 攻撃判定の形状の数
-} ECharaAtkFormType;
+	ECharaAttackFormType_Num		// 攻撃判定の形状の数
+} ECharaAttackFormType;
 
 // キャラクター共通効果音
 typedef enum _ECharaCommonSE
@@ -142,25 +142,25 @@ typedef struct _SCharaAnimBaseInfo
 } SCharaAnimBaseInfo;
 
 // キャラクターの攻撃位置情報
-typedef struct _SCharaAtkPositionInfo
+typedef struct _SCharaAttackPositionInfo
 {
 	// 起点となる３Ｄモデルフレームの番号
 	int                   StartFrameIndex;
 
 	// 攻撃判定の形状
-	ECharaAtkFormType  FormType;
+	ECharaAttackFormType  FormType;
 
 	// 攻撃判定の形成に使用される起点からの相対座標
-	// ( FormType が ECharaAtkFormType_Poly の場合に使用 )
+	// ( FormType が ECharaAttackFormType_Poly の場合に使用 )
 	VECTOR                EndLocalPosition;
 
 	// 球の半径
-	// ( FormType が ECharaAtkFormType_Sphere の場合に使用 )
+	// ( FormType が ECharaAttackFormType_Sphere の場合に使用 )
 	float                 SphereSize;
 
 	// 攻撃の軌跡エフェクトの色
 	COLOR_U8              EffectColor;
-} SCharaAtkPositionInfo;
+} SCharaAttackPositionInfo;
 
 // キャラクターの武器の基本情報
 typedef struct _SCharaWeaponBaseInfo
@@ -207,11 +207,11 @@ typedef struct _SCharaBaseInfo
 	ECharaType            Type;
 
 	// 体力
-	int                   Hp;
+	int                   Health;
 	/*
 
-	Hp=基本体力値
-	Atk=基本攻撃値
+	Health=基本体力値
+	Attack=基本攻撃値
 	Def=基本防御値
 	Crt=基本クリティカル率
 	Speed=基本移動スピード
@@ -221,19 +221,19 @@ typedef struct _SCharaBaseInfo
 	ItemHav[10]=アイテムは何を持っているかの確認
 	Item_Db[10]=アイテム欄の耐久値
 	
-	Add_Hp=所持アイテムの最大HPアップ合計値
-	Add_Atk=装備武器アイテムの攻撃力
+	Add_Health=所持アイテムの最大HPアップ合計値
+	Add_Attack=装備武器アイテムの攻撃力
 	Add_Def=所持アイテムの防御力合計値
 	Add_Crt=所持アイテムのクリティカル率合計値
 	Add_Spd=所持アイテムの移動スピード値合計
-	Abp_Hp=攻撃を与えた際のHp吸収率(ダメージ*吸収率(%))
+	Abp_Health=攻撃を与えた際のHealth吸収率(ダメージ*吸収率(%))
 	Auto_Heal=リジェネ(1秒間に回復する量(微量))
 	Gold_Per=敵を倒した際にもらえるお金の量が増える。
 
 	*/
 
 	// 武器による攻撃を受けたときに鳴らす音の登録番号
-	int                   WeaponAtkDamageSound[ECharaWeapon_Num];
+	int                   WeaponAttackDamageSound[ECharaWeapon_Num];
 
 	// 素材別のアニメーション物理音の登録番号
 	int                   AnimPhysicsSound[EAnimPhysicsSound_Num][EMaterialType_Num];
@@ -263,10 +263,10 @@ typedef struct _SCharaBaseInfo
 	SCharaHitInfo         DamageHitInfo;
 
 	// 体力ゲージを表示する座標
-	VECTOR                HpGaugePosition;
+	VECTOR                HealthGaugePosition;
 
 	// 攻撃判定位置情報
-	SCharaAtkPositionInfo AtkPosInfo[CHARA_ATTACK_POS_MAX_NUM];
+	SCharaAttackPositionInfo AttackPosInfo[CHARA_ATTACK_POS_MAX_NUM];
 
 	// 移動タイプが ECharaMoveType_Program の場合の移動速度
 	float                 ProgramSpd;

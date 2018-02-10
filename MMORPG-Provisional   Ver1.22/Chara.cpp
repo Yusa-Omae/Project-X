@@ -92,8 +92,8 @@ typedef struct _SCharaFunction
 	bool(*Step)(SCharaInfo *CInfo, float StepTime, bool *DefaultProcess);
 
 	// ダメージを受けた際に呼ばれる関数へのポインタ
-	bool(*Damage)(SCharaInfo *CInfo, ECharaAtk_DamageType DamageType,
-		int DamagePoint, VECTOR HitPosition, VECTOR AtkDirection,
+	bool(*Damage)(SCharaInfo *CInfo, ECharaAttack_DamageType DamageType,
+		int DamagePoint, VECTOR HitPosition, VECTOR AttackDirection,
 		bool *Defence, bool *DefaultProcess);
 
 	// 着地時に呼ばれる関数へのポインタ
@@ -165,7 +165,7 @@ static bool Chara_Step(
 
 // キャラの攻撃処理を推移させる
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_AtkStep(
+static bool Chara_AttackStep(
 	// 状態推移を行うキャラの情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -295,26 +295,26 @@ static bool Chara_AnimStep(
 );
 
 // 「攻撃に当たったキャラやステージの情報」をリセットする
-static void Chara_AtkHitInfo_Reset(
+static void Chara_AttackHitInfo_Reset(
 	// リセットする攻撃に当たったキャラの情報構造体のアドレス
-	SCharaAtkHitInfo *AHInfo
+	SCharaAttackHitInfo *AHInfo
 );
 
 // 「攻撃に当たったキャラやステージの情報」に新たに攻撃に当たったキャラを追加する
 //     戻り値 : 追加しようとしたキャラが既に追加されていたかどうか
 //              ( false : 既に追加されていた   true : 新たに追加した )
-static bool Chara_AtkHitInfo_AddChara(
+static bool Chara_AttackHitInfo_AddChara(
 	// 情報を追加する「攻撃に当たったキャラやステージの情報」構造体のアドレス
-	SCharaAtkHitInfo *AHInfo,
+	SCharaAttackHitInfo *AHInfo,
 
 	// 情報に追加するキャラの情報構造体のアドレス
 	SCharaInfo *NewHitCInfo
 );
 
 // 「攻撃に当たったキャラやステージの情報」のステージと当たった場合の処理を行う
-static void Chara_AtkHitInfo_ProcessStageHit(
+static void Chara_AttackHitInfo_ProcessStageHit(
 	// 処理を行う「攻撃に当たったキャラやステージの情報」構造体のアドレス
-	SCharaAtkHitInfo *AHInfo,
+	SCharaAttackHitInfo *AHInfo,
 
 	// 攻撃が当たった箇所のマテリアルタイプ
 	EMaterialType MaterialType,
@@ -328,9 +328,9 @@ static void Chara_AtkHitInfo_ProcessStageHit(
 
 // 「攻撃に当たったキャラやステージの情報」のキャラと当たった場合の処理を行う
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_AtkHitInfo_ProcessCharaHit(
+static bool Chara_AttackHitInfo_ProcessCharaHit(
 	// 処理を行う「攻撃に当たったキャラやステージの情報」構造体のアドレス
-	SCharaAtkHitInfo *AHInfo,
+	SCharaAttackHitInfo *AHInfo,
 
 	// 攻撃が当たったキャラの情報構造体のアドレス
 	SCharaInfo *HitCInfo,
@@ -339,10 +339,10 @@ static bool Chara_AtkHitInfo_ProcessCharaHit(
 	VECTOR HitPosition,
 
 	// 攻撃の方向
-	VECTOR AtkDirection,
+	VECTOR AttackDirection,
 
 	// 攻撃のダメージタイプ
-	ECharaAtk_DamageType DamageType,
+	ECharaAttack_DamageType DamageType,
 
 	// 攻撃に使用された武器
 	ECharaWeapon Weapon,
@@ -352,15 +352,15 @@ static bool Chara_AtkHitInfo_ProcessCharaHit(
 );
 
 // キャラの攻撃情報をリセットする
-static void Chara_AtkInfo_Reset(
+static void Chara_AttackInfo_Reset(
 	// リセットするキャラの攻撃情報構造体のアドレス
-	SCharaAtkInfo *AInfo
+	SCharaAttackInfo *AInfo
 );
 
 // キャラの攻撃情報に攻撃判定用の座標を追加する
-static void Chara_AtkInfo_AddPosition(
+static void Chara_AttackInfo_AddPosition(
 	// 座標を追加する攻撃情報構造体のアドレス
-	SCharaAtkInfo *AInfo,
+	SCharaAttackInfo *AInfo,
 
 	// 新たに追加する起点となるフレームに近い頂点の座標
 	VECTOR NewNearPos,
@@ -371,21 +371,21 @@ static void Chara_AtkInfo_AddPosition(
 
 // キャラの攻撃情報による攻撃判定を行う
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_AtkInfo_Check(
+static bool Chara_AttackInfo_Check(
 	// 判定に使用するキャラの攻撃情報構造体のアドレス
-	SCharaAtkInfo *AInfo,
+	SCharaAttackInfo *AInfo,
 
 	// 当たり判定の形状
-	ECharaAtkFormType FormType,
+	ECharaAttackFormType FormType,
 
 	// 攻撃を行っているキャラの情報構造体のアドレス
-	SCharaInfo *AtkCInfo,
+	SCharaInfo *AttackCInfo,
 
 	// 攻撃対象のキャラタイプ
 	ECharaType TargetType,
 
 	// 攻撃が当たった場合のダメージタイプ
-	ECharaAtk_DamageType DamageType,
+	ECharaAttack_DamageType DamageType,
 
 	// 攻撃に使用される武器
 	ECharaWeapon Weapon,
@@ -393,7 +393,7 @@ static bool Chara_AtkInfo_Check(
 	// 攻撃が当たった場合のダメージ
 	int DamagePoint,
 
-	// 当たり判定の形状が ECharaAtkFormType_Sphere だった場合の球の大きさ
+	// 当たり判定の形状が ECharaAttackFormType_Sphere だった場合の球の大きさ
 	float SphereSize
 );
 
@@ -512,7 +512,7 @@ bool Chara_Create(
 	CInfo->PrevSpd = VGet(0.0f, 0.0f, 0.0f);
 	CInfo->PrevAnimSpd = VGet(0.0f, 0.0f, 0.0f);
 	CInfo->PrevFixSpd = VGet(0.0f, 0.0f, 0.0f);
-	CInfo->Hp = CBInfo->Hp;
+	CInfo->Health = CBInfo->Health;
 
 	// 向き処理の初期化
 	Chara_InitializeAngle(CInfo, Angle);
@@ -524,14 +524,14 @@ bool Chara_Create(
 	}
 
 	// 体力ゲージの表示設定を初期化
-	CInfo->HpGaugeVisible = false;
-	CInfo->HpGaugeHideDelay = 0.0f;
-	CharaHpGaugeSetup(&CInfo->HpGauge, false, 1.0f);
+	CInfo->HealthGaugeVisible = false;
+	CInfo->HealthGaugeHideDelay = 0.0f;
+	CharaHealthGaugeSetup(&CInfo->HealthGauge, false, 1.0f);
 
 	// 攻撃情報を初期化
 	for (j = 0; j < CHARA_ATTACK_MAX_NUM; j++)
 	{
-		Chara_AtkInfo_Reset(&CInfo->AtkInfo[j]);
+		Chara_AttackInfo_Reset(&CInfo->AttackInfo[j]);
 	}
 
 	// キャラ別の情報へのポインタを初期化
@@ -580,12 +580,12 @@ void Chara_Delete(
 	// 攻撃情報を初期化
 	for (i = 0; i < CHARA_ATTACK_MAX_NUM; i++)
 	{
-		if (!CInfo->AtkInfo[i].Enable)
+		if (!CInfo->AttackInfo[i].Enable)
 		{
 			continue;
 		}
 
-		Chara_AtkInfo_Reset(&CInfo->AtkInfo[i]);
+		Chara_AttackInfo_Reset(&CInfo->AttackInfo[i]);
 	}
 
 	// ３Ｄモデルハンドルを削除する
@@ -921,7 +921,7 @@ static void Chara_2D_Render(
 
 	// 体力ゲージを描画する座標を取得
 	ScreenPosition = ConvWorldPosToScreenPos(
-		VAdd(CInfo->Position, CInfo->BaseInfo->HpGaugePosition));
+		VAdd(CInfo->Position, CInfo->BaseInfo->HealthGaugePosition));
 
 	// 画面の中に映っていなかったら何もせずに終了
 	if (ScreenPosition.z < 0.0f || ScreenPosition.z > 1.0f)
@@ -932,8 +932,8 @@ static void Chara_2D_Render(
 	// 体力ゲージの描画
 	DrawX = (int)(ScreenPosition.x - HP_GAUGE_WIDTH / 2);
 	DrawY = (int)(ScreenPosition.y - HP_GAUGE_HEIGHT / 2);
-	CharaHpGaugeDraw(
-		&CInfo->HpGauge, DrawX, DrawY, HP_GAUGE_WIDTH, HP_GAUGE_HEIGHT);
+	CharaHealthGaugeDraw(
+		&CInfo->HealthGauge, DrawX, DrawY, HP_GAUGE_WIDTH, HP_GAUGE_HEIGHT);
 }
 
 // 全てのキャラの状態推移処理を実行する
@@ -1199,7 +1199,7 @@ bool Chara_TagetTypeKill(
 		}
 
 		// 体力を０にする
-		CInfo->Hp = 0;
+		CInfo->Health = 0;
 
 		// 仮にダメージを受けた方向をセット
 		CInfo->DamageDirection = VScale(CInfo->AngleInfo.FrontDirection, -1.0f);
@@ -1211,7 +1211,7 @@ bool Chara_TagetTypeKill(
 		}
 
 		// 体力ゲージを非表示にする
-		CInfo->HpGaugeHideDelay = 0.0f;
+		CInfo->HealthGaugeHideDelay = 0.0f;
 	}
 
 	// 正常終了
@@ -1270,7 +1270,7 @@ SCharaInfo * Chara_SearchTarget(
 		}
 
 		// 既に死んでいたら次のループへ
-		if (TCInfo->Hp <= 0)
+		if (TCInfo->Health <= 0)
 		{
 			continue;
 		}
@@ -1338,7 +1338,7 @@ void Chara_SendMessage(
 		}
 
 		// 既に死んでいたら次のループへ
-		if (TCInfo->Hp <= 0)
+		if (TCInfo->Health <= 0)
 		{
 			continue;
 		}
@@ -1493,23 +1493,23 @@ static bool Chara_Step(
 	}
 
 	// 攻撃情報の状態推移処理を行う
-	if (!Chara_AtkStep(CInfo, StepTime))
+	if (!Chara_AttackStep(CInfo, StepTime))
 	{
 		return false;
 	}
 
 	// 体力ゲージ表示フラグが倒れている場合は『非表示にするのを待つ時間』を減らす
-	if (!CInfo->HpGaugeVisible)
+	if (!CInfo->HealthGaugeVisible)
 	{
-		ParamChangeFloat(&CInfo->HpGaugeHideDelay, 0.0f, StepTime, 1.0f);
+		ParamChangeFloat(&CInfo->HealthGaugeHideDelay, 0.0f, StepTime, 1.0f);
 	}
 
 	// 体力ゲージの状態推移処理を行う
-	CharaHpGaugeStep(
-		&CInfo->HpGauge,
+	CharaHealthGaugeStep(
+		&CInfo->HealthGauge,
 		StepTime,
-		CInfo->HpGaugeVisible || CInfo->HpGaugeHideDelay > 0.0f,
-		(float)CInfo->Hp / CInfo->BaseInfo->Hp
+		CInfo->HealthGaugeVisible || CInfo->HealthGaugeHideDelay > 0.0f,
+		(float)CInfo->Health / CInfo->BaseInfo->Health
 	);
 
 	// 正常終了
@@ -1518,7 +1518,7 @@ static bool Chara_Step(
 
 // キャラの攻撃処理を推移させる
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_AtkStep(
+static bool Chara_AttackStep(
 	// 状態推移を行うキャラの情報構造体のアドレス
 	SCharaInfo *CInfo,
 
@@ -1526,15 +1526,15 @@ static bool Chara_AtkStep(
 	float StepTime
 )
 {
-	SCharaAtkInfo               *AInfo;
-	const SCharaAtkPositionInfo *AFInfo;
+	SCharaAttackInfo               *AInfo;
+	const SCharaAttackPositionInfo *AFInfo;
 	int                             i;
 	VECTOR                          NewNearPos;
 	VECTOR                          NewFarPos;
-	MATRIX                          AtkPosMatrix;
+	MATRIX                          AttackPosMatrix;
 
 	// 攻撃情報構造体の数だけループ
-	AInfo = CInfo->AtkInfo;
+	AInfo = CInfo->AttackInfo;
 	for (i = 0; i < CHARA_ATTACK_MAX_NUM; i++, AInfo++)
 	{
 		// 構造体が使用されていなかったら何もせずに次のループへ
@@ -1544,25 +1544,25 @@ static bool Chara_AtkStep(
 		}
 
 		// 攻撃位置情報の取得
-		AFInfo = &CInfo->BaseInfo->AtkPosInfo[AInfo->AtkPosIndex];
+		AFInfo = &CInfo->BaseInfo->AttackPosInfo[AInfo->AttackPosIndex];
 
 		// 攻撃判定の起点となる３Ｄモデル中のフレームのローカル→ワールド変換行列を取得
-		AtkPosMatrix =
+		AttackPosMatrix =
 			MV1GetFrameLocalWorldMatrix(CInfo->ModelHandle, AFInfo->StartFrameIndex);
 
 		// 攻撃判定で使用する２点を算出
-		NewNearPos = VTransform(VGet(0.0f, 0.0f, 0.0f), AtkPosMatrix);
-		NewFarPos = VTransform(AFInfo->EndLocalPosition, AtkPosMatrix);
+		NewNearPos = VTransform(VGet(0.0f, 0.0f, 0.0f), AttackPosMatrix);
+		NewFarPos = VTransform(AFInfo->EndLocalPosition, AttackPosMatrix);
 
 		// 攻撃情報に新しい２点を追加する
-		Chara_AtkInfo_AddPosition(AInfo, NewNearPos, NewFarPos);
+		Chara_AttackInfo_AddPosition(AInfo, NewNearPos, NewFarPos);
 
 		// 攻撃判定の実行
-		if (!Chara_AtkInfo_Check(
+		if (!Chara_AttackInfo_Check(
 			AInfo, AFInfo->FormType, CInfo,
 			CInfo->BaseInfo->Type == ECharaType_Player ?
 			ECharaType_Enemy : ECharaType_Player,
-			ECharaAtk_DamageType_Cut,
+			ECharaAttack_DamageType_Cut,
 			CInfo->BaseInfo->EquipWeapon,
 			CInfo->Atk,
 			AFInfo->SphereSize
@@ -1577,7 +1577,7 @@ static bool Chara_AtkStep(
 			// 攻撃判定の形状によって処理を分岐
 			switch (AFInfo->FormType)
 			{
-			case ECharaAtkFormType_Poly:		// ポリゴン
+			case ECharaAttackFormType_Poly:		// ポリゴン
 												// ポリゴン軌跡エフェクトを作成
 				AInfo->LocusEffect = Effect_Create(EEffect_SlashLocus);
 				if (AInfo->LocusEffect == NULL)
@@ -1587,7 +1587,7 @@ static bool Chara_AtkStep(
 				Effect_SlashLocus_Setup(AInfo->LocusEffect, AFInfo->EffectColor);
 				break;
 
-			case ECharaAtkFormType_Sphere:	// 球
+			case ECharaAttackFormType_Sphere:	// 球
 												// 球軌跡エフェクトを作成
 				AInfo->LocusEffect = Effect_Create(EEffect_SphereLocus);
 				if (AInfo->LocusEffect == NULL)
@@ -1603,18 +1603,18 @@ static bool Chara_AtkStep(
 		// 攻撃判定の形状に応じた軌跡用座標の追加を行う
 		switch (AFInfo->FormType)
 		{
-		case ECharaAtkFormType_Poly:
+		case ECharaAttackFormType_Poly:
 			Effect_SlashLocus_AddPosition(AInfo->LocusEffect, NewNearPos, NewFarPos);
 			break;
 
-		case ECharaAtkFormType_Sphere:
+		case ECharaAttackFormType_Sphere:
 			Effect_SphereLocus_AddPosition(AInfo->LocusEffect, NewNearPos, NewFarPos);
 			break;
 		}
 	}
 
 	// 無効になった攻撃情報の後始末を行う
-	AInfo = CInfo->AtkInfo;
+	AInfo = CInfo->AttackInfo;
 	for (i = 0; i < CHARA_ATTACK_MAX_NUM; i++, AInfo++)
 	{
 		// 構造体が有効だった場合は何もせず次のループへ
@@ -1624,7 +1624,7 @@ static bool Chara_AtkStep(
 		}
 
 		// 攻撃情報をリセットする
-		Chara_AtkInfo_Reset(AInfo);
+		Chara_AttackInfo_Reset(AInfo);
 	}
 
 	// 正常終了
@@ -2891,16 +2891,16 @@ static bool Chara_AnimStep(
 				CAInfo->Cancel = true;
 				break;
 
-			case EAnimEventType_AtkStart:	// 攻撃判定開始
+			case EAnimEventType_AttackStart:	// 攻撃判定開始
 												// 攻撃情報を有効にする
-				CInfo->AtkInfo[AEInfo->AtkNo].Enable = true;
-				CInfo->AtkInfo[AEInfo->AtkNo].AtkPosIndex =
-					AEInfo->AtkPosIndex;
+				CInfo->AttackInfo[AEInfo->AttackNo].Enable = true;
+				CInfo->AttackInfo[AEInfo->AttackNo].AttackPosIndex =
+					AEInfo->AttackPosIndex;
 				break;
 
-			case EAnimEventType_AtkEnd:		// 攻撃判定終了
+			case EAnimEventType_AttackEnd:		// 攻撃判定終了
 												// 攻撃情報を無効にする
-				CInfo->AtkInfo[AEInfo->AtkNo].Enable = false;
+				CInfo->AttackInfo[AEInfo->AttackNo].Enable = false;
 				break;
 
 			case EAnimEventType_Other:			// その他
@@ -3053,7 +3053,7 @@ bool Chara_ChangeAnim(
 	// 攻撃情報をリセット
 	for (i = 0; i < CHARA_ATTACK_MAX_NUM; i++)
 	{
-		CInfo->AtkInfo[i].Enable = false;
+		CInfo->AttackInfo[i].Enable = false;
 	}
 
 	// アニメーションに付随する情報を更新するために推移時間０で状態推移処理を行う
@@ -3143,7 +3143,7 @@ extern bool Chara_Damage(
 	SCharaInfo *CInfo,
 
 	// ダメージタイプ
-	ECharaAtk_DamageType DamageType,
+	ECharaAttack_DamageType DamageType,
 
 	// 受けるダメージ
 	int DamagePoint,
@@ -3152,7 +3152,7 @@ extern bool Chara_Damage(
 	VECTOR HitPosition,
 
 	// 攻撃の方向
-	VECTOR AtkDirection,
+	VECTOR AttackDirection,
 
 	// キャラにダメージを与えられたかどうかを代入する変数のアドレス
 	bool *Result
@@ -3175,7 +3175,7 @@ extern bool Chara_Damage(
 	// ダメージを受けた際に実行する関数を実行する
 	if (!g_CharaFunctionTable[CInfo->Chara].Damage(
 		CInfo, DamageType, DamagePoint,
-		HitPosition, AtkDirection, &Defence, &DefaultProcess))
+		HitPosition, AttackDirection, &Defence, &DefaultProcess))
 	{
 		return false;
 	}
@@ -3185,7 +3185,7 @@ extern bool Chara_Damage(
 	if (!Defence && DefaultProcess)
 	{
 		// 斬り攻撃だった場合はダメージエフェクトを発生させる
-		if (DamageType == ECharaAtk_DamageType_Cut)
+		if (DamageType == ECharaAttack_DamageType_Cut)
 		{
 			EInfo = Effect_Create(EEffect_Damage);
 			if (EInfo == NULL)
@@ -3196,18 +3196,18 @@ extern bool Chara_Damage(
 		}
 
 		// ダメージを受けた方向を保存
-		CInfo->DamageDirection = AtkDirection;
+		CInfo->DamageDirection = AttackDirection;
 
 		// 体力を減らす
-		CInfo->Hp -= DamagePoint;
+		CInfo->Health -= DamagePoint;
 
 		// 体力がなくなったかどうかで処理を分岐
-		if (CInfo->Hp <= 0)
+		if (CInfo->Health <= 0)
 		{
 			// 体力がなくなったときの処理
 
 			// 体力を０にする
-			CInfo->Hp = 0;
+			CInfo->Health = 0;
 
 			// 吹っ飛びアニメーションがある場合は吹っ飛び状態に、
 			// 無い場合はダウン状態にする
@@ -3227,7 +3227,7 @@ extern bool Chara_Damage(
 			}
 
 			// 体力ゲージを非表示にする
-			CInfo->HpGaugeHideDelay = 0.0f;
+			CInfo->HealthGaugeHideDelay = 0.0f;
 		}
 		else
 		{
@@ -3236,7 +3236,7 @@ extern bool Chara_Damage(
 			// ダメージアニメーションがある場合はダメージ状態にする
 			if (CInfo->BaseInfo->AnimInfo[ECharaAnim_Damage].Handle > 0)
 			{
-				Chara_SetTargetDirection(CInfo, AtkDirection, false, true);
+				Chara_SetTargetDirection(CInfo, AttackDirection, false, true);
 
 				if (!Chara_ChangeAnim(
 					CInfo, ECharaAnim_Damage, CHARA_DEFAULT_CHANGE_ANIM_SPEED))
@@ -3247,7 +3247,7 @@ extern bool Chara_Damage(
 			}
 
 			// ダメージを受けたら体力ゲージを表示する
-			CInfo->HpGaugeHideDelay = CHARA_HPGAUGE_HIDE_DELAY;
+			CInfo->HealthGaugeHideDelay = CHARA_HPGAUGE_HIDE_DELAY;
 		}
 	}
 
@@ -3352,9 +3352,9 @@ static bool Chara_Landed(
 }
 
 // 「攻撃に当たったキャラやステージの情報」をリセットする
-static void Chara_AtkHitInfo_Reset(
+static void Chara_AttackHitInfo_Reset(
 	// リセットする攻撃に当たったキャラの情報構造体のアドレス
-	SCharaAtkHitInfo *AHInfo
+	SCharaAttackHitInfo *AHInfo
 )
 {
 	AHInfo->HitCharaNum = 0;
@@ -3364,9 +3364,9 @@ static void Chara_AtkHitInfo_Reset(
 // 「攻撃に当たったキャラやステージの情報」に新たに攻撃に当たったキャラを追加する
 //     戻り値 : 追加しようとしたキャラが既に追加されていたかどうか
 //              ( false : 既に追加されていた   true : 新たに追加した )
-static bool Chara_AtkHitInfo_AddChara(
+static bool Chara_AttackHitInfo_AddChara(
 	// 情報を追加する「攻撃に当たったキャラやステージの情報」構造体のアドレス
-	SCharaAtkHitInfo *AHInfo,
+	SCharaAttackHitInfo *AHInfo,
 
 	// 情報に追加するキャラの情報構造体のアドレス
 	SCharaInfo *NewHitCInfo
@@ -3399,9 +3399,9 @@ static bool Chara_AtkHitInfo_AddChara(
 }
 
 // 「攻撃に当たったキャラやステージの情報」のステージと当たった場合の処理を行う
-static void Chara_AtkHitInfo_ProcessStageHit(
+static void Chara_AttackHitInfo_ProcessStageHit(
 	// 処理を行う「攻撃に当たったキャラやステージの情報」構造体のアドレス
-	SCharaAtkHitInfo *AHInfo,
+	SCharaAttackHitInfo *AHInfo,
 
 	// 攻撃が当たった箇所のマテリアルタイプ
 	EMaterialType MaterialType,
@@ -3452,9 +3452,9 @@ static void Chara_AtkHitInfo_ProcessStageHit(
 
 // 「攻撃に当たったキャラやステージの情報」のキャラと当たった場合の処理を行う
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_AtkHitInfo_ProcessCharaHit(
+static bool Chara_AttackHitInfo_ProcessCharaHit(
 	// 処理を行う「攻撃に当たったキャラやステージの情報」構造体のアドレス
-	SCharaAtkHitInfo *AHInfo,
+	SCharaAttackHitInfo *AHInfo,
 
 	// 攻撃が当たったキャラの情報構造体のアドレス
 	SCharaInfo *HitCInfo,
@@ -3463,10 +3463,10 @@ static bool Chara_AtkHitInfo_ProcessCharaHit(
 	VECTOR HitPosition,
 
 	// 攻撃の方向
-	VECTOR AtkDirection,
+	VECTOR AttackDirection,
 
 	// 攻撃のダメージタイプ
-	ECharaAtk_DamageType DamageType,
+	ECharaAttack_DamageType DamageType,
 
 	// 攻撃に使用された武器
 	ECharaWeapon Weapon,
@@ -3479,7 +3479,7 @@ static bool Chara_AtkHitInfo_ProcessCharaHit(
 
 	// キャラにダメージを与える
 	if (!Chara_Damage(HitCInfo, DamageType, DamagePoint, HitPosition,
-		AtkDirection, &DamageResult))
+		AttackDirection, &DamageResult))
 	{
 		return false;
 	}
@@ -3488,10 +3488,10 @@ static bool Chara_AtkHitInfo_ProcessCharaHit(
 	if (DamageResult)
 	{
 		if (Weapon != ECharaWeapon_Num &&
-			HitCInfo->BaseInfo->WeaponAtkDamageSound[Weapon] != -1)
+			HitCInfo->BaseInfo->WeaponAttackDamageSound[Weapon] != -1)
 		{
 			Sound_PlaySound3D(HitPosition,
-				HitCInfo->BaseInfo->WeaponAtkDamageSound[Weapon], DX_PLAYTYPE_BACK);
+				HitCInfo->BaseInfo->WeaponAttackDamageSound[Weapon], DX_PLAYTYPE_BACK);
 		}
 	}
 
@@ -3500,19 +3500,19 @@ static bool Chara_AtkHitInfo_ProcessCharaHit(
 }
 
 // キャラの攻撃情報をリセットする
-static void Chara_AtkInfo_Reset(
+static void Chara_AttackInfo_Reset(
 	// リセットするキャラの攻撃情報構造体のアドレス
-	SCharaAtkInfo *AInfo
+	SCharaAttackInfo *AInfo
 )
 {
 	// 情報が有効かどうかのフラグを倒す
 	AInfo->Enable = false;
 
-	// 判定の起点となるSCharaBaseInfo構造体のメンバー変数AtkPosInfoの要素番号を初期化
-	AInfo->AtkPosIndex = 0;
+	// 判定の起点となるSCharaBaseInfo構造体のメンバー変数AttackPosInfoの要素番号を初期化
+	AInfo->AttackPosIndex = 0;
 
 	// 「攻撃が当たったキャラやステージの情報」をリセット
-	Chara_AtkHitInfo_Reset(&AInfo->HitInfo);
+	Chara_AttackHitInfo_Reset(&AInfo->HitInfo);
 
 	// 攻撃判定用の座標の有効数も初期化
 	AInfo->ValidPositionNum = 0;
@@ -3526,9 +3526,9 @@ static void Chara_AtkInfo_Reset(
 }
 
 // キャラの攻撃情報に攻撃判定用の座標を追加する
-static void Chara_AtkInfo_AddPosition(
+static void Chara_AttackInfo_AddPosition(
 	// 座標を追加する攻撃情報構造体のアドレス
-	SCharaAtkInfo *AInfo,
+	SCharaAttackInfo *AInfo,
 
 	// 新たに追加する起点となるフレームに近い頂点の座標
 	VECTOR NewNearPos,
@@ -3562,21 +3562,21 @@ static void Chara_AtkInfo_AddPosition(
 
 // キャラの攻撃情報による攻撃判定を行う
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
-static bool Chara_AtkInfo_Check(
+static bool Chara_AttackInfo_Check(
 	// 判定に使用するキャラの攻撃情報構造体のアドレス
-	SCharaAtkInfo *AInfo,
+	SCharaAttackInfo *AInfo,
 
 	// 当たり判定の形状
-	ECharaAtkFormType FormType,
+	ECharaAttackFormType FormType,
 
 	// 攻撃を行っているキャラの情報構造体のアドレス
-	SCharaInfo *AtkCInfo,
+	SCharaInfo *AttackCInfo,
 
 	// 攻撃対象のキャラタイプ
 	ECharaType TargetType,
 
 	// 攻撃が当たった場合のダメージタイプ
-	ECharaAtk_DamageType DamageType,
+	ECharaAttack_DamageType DamageType,
 
 	// 攻撃に使用される武器
 	ECharaWeapon Weapon,
@@ -3584,7 +3584,7 @@ static bool Chara_AtkInfo_Check(
 	// 攻撃が当たった場合のダメージ
 	int DamagePoint,
 
-	// 当たり判定の形状が ECharaAtkFormType_Sphere だった場合の球の大きさ
+	// 当たり判定の形状が ECharaAttackFormType_Sphere だった場合の球の大きさ
 	float SphereSize
 )
 {
@@ -3592,7 +3592,7 @@ static bool Chara_AtkInfo_Check(
 	VECTOR                   CapsulePos1;
 	VECTOR                   CapsulePos2;
 	VECTOR                   HitPosition;
-	VECTOR                   AtkDirection;
+	VECTOR                   AttackDirection;
 	int                      HitResult;
 	SCharaInfo              *CInfo;
 	MV1_COLL_RESULT_POLY_DIM HitDim;
@@ -3618,7 +3618,7 @@ static bool Chara_AtkInfo_Check(
 		// 当たり判定の形状によって処理を分岐
 		switch (FormType)
 		{
-		case ECharaAtkFormType_Poly:		// ポリゴン
+		case ECharaAttackFormType_Poly:		// ポリゴン
 											// 攻撃判定用座標を使用したポリゴンとステージとの当たり判定を行う
 			HitDim = MV1CollCheck_Triangle(
 				CollisionModelHandle,
@@ -3713,7 +3713,7 @@ static bool Chara_AtkInfo_Check(
 			}
 			break;
 
-		case ECharaAtkFormType_Sphere:	// 球
+		case ECharaAttackFormType_Sphere:	// 球
 											// 攻撃判定用座標を使用したカプセル形状とステージとの当たり判定を行う
 			HitDim = MV1CollCheck_Capsule(
 				CollisionModelHandle,
@@ -3783,7 +3783,7 @@ static bool Chara_AtkInfo_Check(
 		// ステージと当たっていたら、ステージと当たった場合の処理を実行する
 		if (HitDim.HitNum != 0)
 		{
-			Chara_AtkHitInfo_ProcessStageHit(
+			Chara_AttackHitInfo_ProcessStageHit(
 				&AInfo->HitInfo, HitMaterialType, HitPosition, Weapon);
 		}
 
@@ -3797,7 +3797,7 @@ static bool Chara_AtkInfo_Check(
 	{
 		// 攻撃しているキャラか、構造体が使用されていないか、
 		// 既に死んでいる場合は次のループへ
-		if (AtkCInfo == CInfo || !CInfo->UseFlag || CInfo->Hp <= 0)
+		if (AttackCInfo == CInfo || !CInfo->UseFlag || CInfo->Health <= 0)
 		{
 			continue;
 		}
@@ -3815,7 +3815,7 @@ static bool Chara_AtkInfo_Check(
 		// 当たり判定の形状によって処理を分岐
 		switch (FormType)
 		{
-		case ECharaAtkFormType_Poly:		// ポリゴン
+		case ECharaAttackFormType_Poly:		// ポリゴン
 											// 攻撃判定用座標を使用したポリゴンとキャラとの当たり判定を行う
 			HitResult = HitCheck_Capsule_Triangle(
 				CapsulePos1,
@@ -3839,7 +3839,7 @@ static bool Chara_AtkInfo_Check(
 			}
 			break;
 
-		case ECharaAtkFormType_Sphere:	// 球
+		case ECharaAttackFormType_Sphere:	// 球
 											// 攻撃判定用座標を使用した球とキャラとの当たり判定を行う
 			HitResult = HitCheck_Capsule_Capsule(
 				CapsulePos1,
@@ -3859,35 +3859,35 @@ static bool Chara_AtkInfo_Check(
 		}
 
 		// 既に当たっていたら次のループへ
-		if (!Chara_AtkHitInfo_AddChara(&AInfo->HitInfo, CInfo))
+		if (!Chara_AttackHitInfo_AddChara(&AInfo->HitInfo, CInfo))
 		{
 			continue;
 		}
 
 		// 攻撃の方向を算出
-		AtkDirection = VSub(CInfo->Position, AtkCInfo->Position);
-		AtkDirection.y = 0.0f;
-		AtkDirection = VNorm(AtkDirection);
+		AttackDirection = VSub(CInfo->Position, AttackCInfo->Position);
+		AttackDirection.y = 0.0f;
+		AttackDirection = VNorm(AttackDirection);
 
 		// 攻撃が当たった座標を算出
 		switch (FormType)
 		{
-		case ECharaAtkFormType_Poly:		// ポリゴン
+		case ECharaAttackFormType_Poly:		// ポリゴン
 			HitPosition = VAdd(AInfo->NearPosition[0], AInfo->NearPosition[1]);
 			HitPosition = VAdd(HitPosition, AInfo->FarPosition[0]);
 			HitPosition = VAdd(HitPosition, AInfo->FarPosition[1]);
 			HitPosition = VScale(HitPosition, 1.0f / 4.0f);
 			break;
 
-		case ECharaAtkFormType_Sphere:	// 球
+		case ECharaAttackFormType_Sphere:	// 球
 			HitPosition = VAdd(AInfo->NearPosition[0], AInfo->NearPosition[1]);
 			HitPosition = VScale(HitPosition, 1.0f / 2.0f);
 			break;
 		}
 
 		// キャラに攻撃が当たった場合の処理を行う
-		if (!Chara_AtkHitInfo_ProcessCharaHit(&AInfo->HitInfo, CInfo, HitPosition,
-			AtkDirection, DamageType, Weapon, DamagePoint))
+		if (!Chara_AttackHitInfo_ProcessCharaHit(&AInfo->HitInfo, CInfo, HitPosition,
+			AttackDirection, DamageType, Weapon, DamagePoint))
 		{
 			return false;
 		}
@@ -3906,14 +3906,14 @@ static bool Chara_AtkInfo_Check(
 		// 当たり判定の形状を描画
 		switch (FormType)
 		{
-		case ECharaAtkFormType_Poly:
+		case ECharaAttackFormType_Poly:
 			DrawTriangle3D(AInfo->FarPosition[0], AInfo->FarPosition[1],
 				AInfo->NearPosition[0], GetColor(0, 255, 0), TRUE);
 			DrawTriangle3D(AInfo->NearPosition[0], AInfo->FarPosition[1],
 				AInfo->NearPosition[1], GetColor(0, 255, 0), TRUE);
 			break;
 
-		case ECharaAtkFormType_Sphere:
+		case ECharaAttackFormType_Sphere:
 			DrawCapsule3D(AInfo->NearPosition[0], AInfo->NearPosition[1],
 				SphereSize, 12, GetColor(0, 255, 0), GetColor(0, 0, 0), FALSE);
 			break;
@@ -3991,7 +3991,7 @@ void Chara_Initialize(){
 	//プレイヤーアニメーション
 	Model_Anim[model_Player][anim_Neutral] = MV1LoadModel("Data/Charactor/Player/Anim_Neutral.mv1");
 	Model_Anim[model_Player][anim_Run] = MV1LoadModel("Data/Charactor/Player/Anim_Run.mv1");
-	Model_Anim[model_Player][anim_Atk] = MV1LoadModel("Data/Charactor/Player/Anim_Atk1.mv1");
+	Model_Anim[model_Player][anim_Attack] = MV1LoadModel("Data/Charactor/Player/Anim_Attack1.mv1");
 	//エネミーアニメーション
 	Model_Anim[model_Goblin][anim_Neutral] = MV1LoadModel("Data/Charactor/Goblin/Anim_Neutral.mv1");
 	Model_Anim[model_Goblin][anim_Run] = MV1LoadModel("Data/Charactor/Goblin/Anim_Run.mv1");

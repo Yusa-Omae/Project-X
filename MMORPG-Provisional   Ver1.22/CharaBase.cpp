@@ -39,9 +39,9 @@ static SCharaAnimFileInfo g_CharaAnimBaseInfoTable[ECharaAnim_Num] =
 	false,	"Anim_Jump_Loop",		// ECharaAnim_Jump_Loop,
 	false,	"Anim_Jump_Out",		// ECharaAnim_Jump_Out,
 	false,	"Anim_Landed",			// ECharaAnim_Landed,
-	false,	"Anim_Atk1",			// ECharaAnim_Atk1,
-	false,	"Anim_Atk2",			// ECharaAnim_Atk2,
-	false,	"Anim_Atk3",			// ECharaAnim_Atk3,
+	false,	"Anim_Attack1",			// ECharaAnim_Attack1,
+	false,	"Anim_Attack2",			// ECharaAnim_Attack2,
+	false,	"Anim_Attack3",			// ECharaAnim_Attack3,
 	false,	"Anim_Guard_In",		// ECharaAnim_Guard_In,
 	true,	"Anim_Guard_Loop",		// ECharaAnim_Guard_Loop,
 	false,	"Anim_Guard_Impact",	// ECharaAnim_Guard_Impact,
@@ -73,10 +73,10 @@ static const char *g_CharaTypeName[ECharaType_Num] =
 };
 
 // キャラクターの攻撃判定形状タイプの名前
-static const char *g_CharaAtkFormTypeName[ECharaAtkFormType_Num] =
+static const char *g_CharaAttackFormTypeName[ECharaAttackFormType_Num] =
 {
-	"Poly",				// ECharaAtkFormType_Poly = 0,
-	"Sphere",			// ECharaAtkFormType_Sphere.
+	"Poly",				// ECharaAttackFormType_Poly = 0,
+	"Sphere",			// ECharaAttackFormType_Sphere.
 };
 
 // 全キャラクターが共通で使用する効果音の名前
@@ -234,7 +234,7 @@ bool CharaBase_Initialize(void)
 		CBInfo->Type = (ECharaType)j;
 
 		// キャラクターの体力を取得
-		CBInfo->Hp = GetTextParamInt(&TextParam, "Hp");
+		CBInfo->Health = GetTextParamInt(&TextParam, "Health");
 
 		// キャラクターの３Ｄモデルファイル名を取得＋ファイルの読み込み
 		ParamString = GetTextParamString(&TextParam, "MainModelPath");
@@ -250,7 +250,7 @@ bool CharaBase_Initialize(void)
 		for (j = 0; j < ECharaWeapon_Num; j++, WBInfo++)
 		{
 			sprintf(String, "SE\\%s\\dmg_by%s", DirectoryName, WBInfo->DirectoryName);
-			CBInfo->WeaponAtkDamageSound[j] = Sound_AddSound(String, true);
+			CBInfo->WeaponAttackDamageSound[j] = Sound_AddSound(String, true);
 		}
 
 		// 素材別のアニメーション物理音の読み込み
@@ -358,54 +358,54 @@ bool CharaBase_Initialize(void)
 		}
 
 		// 体力ゲージを描画する相対座標を取得
-		CBInfo->HpGaugePosition =
-			GetTextParamVector(&TextParam, "HpGaugePosition");
+		CBInfo->HealthGaugePosition =
+			GetTextParamVector(&TextParam, "HealthGaugePosition");
 
 		// 攻撃位置情報の取得
 		for (j = 0; j < CHARA_ATTACK_POS_MAX_NUM; j++)
 		{
 			// 起点となる３Ｄモデルのフレーム名を取得
 			ParamString = GetTextParamString(&TextParam,
-				"AtkPosInfo%d_StartFrameName", j);
+				"AttackPosInfo%d_StartFrameName", j);
 			if (ParamString != NULL)
 			{
 				// フレーム名からフレーム番号を取得
-				CBInfo->AtkPosInfo[j].StartFrameIndex =
+				CBInfo->AttackPosInfo[j].StartFrameIndex =
 					MV1SearchFrame(CBInfo->ModelHandle, ParamString);
 
 				// 攻撃判定の形成に使用される起点からの相対座標の取得
-				CBInfo->AtkPosInfo[j].EndLocalPosition =
+				CBInfo->AttackPosInfo[j].EndLocalPosition =
 					GetTextParamVector(&TextParam,
-						"AtkPosInfo%d_EndLocalPosition", j);
+						"AttackPosInfo%d_EndLocalPosition", j);
 
 				// 攻撃判定の球の半径を取得
-				CBInfo->AtkPosInfo[j].SphereSize =
-					GetTextParamFloat(&TextParam, "AtkPosInfo%d_SphereSize", j);
+				CBInfo->AttackPosInfo[j].SphereSize =
+					GetTextParamFloat(&TextParam, "AttackPosInfo%d_SphereSize", j);
 
 				// 攻撃の軌跡エフェクトの色を取得
-				CBInfo->AtkPosInfo[j].EffectColor =
-					GetTextParamColor(&TextParam, "AtkPosInfo%d_EffectColor", j);
+				CBInfo->AttackPosInfo[j].EffectColor =
+					GetTextParamColor(&TextParam, "AttackPosInfo%d_EffectColor", j);
 
 				// 攻撃判定の形状を取得
 				ParamString =
-					GetTextParamString(&TextParam, "AtkPosInfo%d_FormType", j);
+					GetTextParamString(&TextParam, "AttackPosInfo%d_FormType", j);
 				for (k = 0; k < ECharaType_Num; k++)
 				{
-					if (strcmp(ParamString, g_CharaAtkFormTypeName[k]) == 0)
+					if (strcmp(ParamString, g_CharaAttackFormTypeName[k]) == 0)
 					{
 						break;
 					}
 				}
-				CBInfo->AtkPosInfo[j].FormType = (ECharaAtkFormType)k;
+				CBInfo->AttackPosInfo[j].FormType = (ECharaAttackFormType)k;
 			}
 			else
 			{
 				// 無い場合はデフォルト値で初期化
-				CBInfo->AtkPosInfo[j].StartFrameIndex = -1;
-				CBInfo->AtkPosInfo[j].EndLocalPosition = VGet(0.0f, 0.0f, 0.0f);
-				CBInfo->AtkPosInfo[j].EffectColor = GetColorU8(0, 0, 0, 0);
-				CBInfo->AtkPosInfo[j].FormType = ECharaAtkFormType_Poly;
-				CBInfo->AtkPosInfo[j].SphereSize = 1.0f;
+				CBInfo->AttackPosInfo[j].StartFrameIndex = -1;
+				CBInfo->AttackPosInfo[j].EndLocalPosition = VGet(0.0f, 0.0f, 0.0f);
+				CBInfo->AttackPosInfo[j].EffectColor = GetColorU8(0, 0, 0, 0);
+				CBInfo->AttackPosInfo[j].FormType = ECharaAttackFormType_Poly;
+				CBInfo->AttackPosInfo[j].SphereSize = 1.0f;
 			}
 		}
 

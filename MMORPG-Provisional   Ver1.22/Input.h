@@ -16,7 +16,7 @@ typedef enum _EInputType
 	EInputType_Camera_Up,			// カメラ用方向入力上
 	EInputType_Camera_Down,			// カメラ用方向入力下
 
-	EInputType_Atk,				// 攻撃ボタン
+	EInputType_Attack,				// 攻撃ボタン
 	EInputType_Defence,				// 防御ボタン
 	EInputType_Jump,				// ジャンプボタン
 	EInputType_Pause,				// ポーズボタン

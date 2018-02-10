@@ -391,7 +391,7 @@ void Script::YesNoFlag(const char* Yes,const char* No){
 	}
 
 	//キー入力待ちじゃなければ
-	if(Input(EInputType_Atk) == true){
+	if(Input(EInputType_Attack) == true){
 		if(select == 0){
 			SetOnFlag(name);	//trueでセット
 		}else{
@@ -465,7 +465,7 @@ void Script::updata(){
 	mNextPage = mStringBase->Update(true, 40, 5);
 
 	//スクリプト読み込みを先に進める
-	if (Input(EInputType_Atk) == true) {
+	if (Input(EInputType_Attack) == true) {
 		WaitKeyOff();
 	}
 	

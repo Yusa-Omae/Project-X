@@ -30,7 +30,7 @@ extern bool Chara_Enemy_Damage(
 	SCharaInfo *CInfo,
 
 	// ダメージタイプ
-	ECharaAtk_DamageType DamageType,
+	ECharaAttack_DamageType DamageType,
 
 	// ダメージ
 	int DamagePoint,
@@ -39,7 +39,7 @@ extern bool Chara_Enemy_Damage(
 	VECTOR HitPosition,
 
 	// 攻撃の方向
-	VECTOR AtkDirection,
+	VECTOR AttackDirection,
 
 	// 攻撃を防御したかどうかを代入する変数のアドレス
 	bool *Defence,

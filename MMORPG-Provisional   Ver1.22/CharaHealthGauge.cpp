@@ -1,4 +1,4 @@
-#include "CharaHpGauge.h"
+#include "CharaHealthGauge.h"
 #include "DxLib.h"
 #include "Mathematics.h"
 
@@ -24,29 +24,29 @@
 #define GAUGE_DELAY_COLOR_B		(0)
 
 // キャラクターの体力ゲージの処理の準備を行う
-void CharaHpGaugeSetup(
+void CharaHealthGaugeSetup(
 	// キャラクターの体力ゲージの情報構造体のアドレス
-	SCharaHpGauge *GInfo,
+	SCharaHealthGauge *GInfo,
 
 	// 初期状態で表示するかどうか( true:表示する  false:非表示 )
 	bool Visible,
 
 	// 初期の体力値( 0.0f ～ 1.0f )
-	float Hp
+	float Health
 )
 {
 	// 不透明度は初期の表示状態によって１００％又は０％
 	GInfo->Alpha       = Visible ? 1.0f : 0.0f;
 
 	// 初期の体力値を保存
-	GInfo->Hp      = Hp;
-	GInfo->DelayHp = GInfo->Hp;
+	GInfo->Health      = Health;
+	GInfo->DelayHealth = GInfo->Health;
 }
 
 // キャラクターの体力ゲージの状態推移処理を行う
-void CharaHpGaugeStep(
+void CharaHealthGaugeStep(
 	// キャラクターの体力ゲージの情報構造体のアドレス
-	SCharaHpGauge *GInfo,
+	SCharaHealthGauge *GInfo,
 	
 	// 推移させる時間( 単位 : 秒 )
 	float StepTime,
@@ -55,22 +55,22 @@ void CharaHpGaugeStep(
 	bool Visible,
 	
 	// 体力値( 0.0f ～ 1.0f )
-	float Hp_flow
+	float Health_flow
 )
 {
 	bool MoveEnd;
 
 	// 体力が減る場合は減る前の体力値を減る表現で使用する変数に代入する
-	if( GInfo->Hp < Hp_flow)
+	if( GInfo->Health < Health_flow)
 	{
-		GInfo->DelayHp = GInfo->Hp;
+		GInfo->DelayHealth = GInfo->Health;
 	}
 
 	// 体力値の保存
-	GInfo->Hp = Hp_flow;
+	GInfo->Health = Health_flow;
 
 	// 体力が減った際の減る前の体力の値を本来の体力の値に近づける
-	MoveEnd = ParamChangeFloat( &GInfo->DelayHp, GInfo->Hp,
+	MoveEnd = ParamChangeFloat( &GInfo->DelayHealth, GInfo->Health,
 									StepTime, DELAY_PARAM_SPEED );
 
 	// 体力の減る表現が終わっているか、表示する指定になっている場合は不透明度を変化させる
@@ -81,9 +81,9 @@ void CharaHpGaugeStep(
 }
 
 // キャラクターの体力ゲージの描画処理を行う
-void CharaHpGaugeDraw(
+void CharaHealthGaugeDraw(
 	// キャラクターの体力ゲージの情報構造体のアドレス
-	SCharaHpGauge *GInfo,
+	SCharaHealthGauge *GInfo,
 
 	// 描画Ｘ座標
 	int DrawX,
@@ -121,10 +121,10 @@ void CharaHpGaugeDraw(
 		}
 
 		// 体力の描画幅を算出
-		Param = ( int )( DrawWidth * GInfo->Hp );
+		Param = ( int )( DrawWidth * GInfo->Health );
 
 		// 以前の体力の描画幅を算出
-		Delay = ( int )( DrawWidth * GInfo->DelayHp );
+		Delay = ( int )( DrawWidth * GInfo->DelayHealth );
 	}
 
 	// アルファブレンドモードに設定

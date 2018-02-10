@@ -2,7 +2,7 @@
 #define CHARA_H
 
 #include "CharaBase.h"
-#include "CharaHpGauge.h"
+#include "CharaHealthGauge.h"
 #include "Effect.h"
 #include "Item.h"
 
@@ -28,7 +28,7 @@
 typedef enum _ECharaState
 {
 	ECharaState_Move = 0,						// 通常移動中
-	ECharaState_Atk,							// 攻撃中
+	ECharaState_Attack,							// 攻撃中
 	ECharaState_Defence,						// 防御中
 	ECharaState_Jump,							// ジャンプ中
 	ECharaState_Damage,							// ダメージ中
@@ -38,11 +38,11 @@ typedef enum _ECharaState
 } ECharaState;
 
 // ダメージタイプ
-typedef enum _ECharaAtk_DamageType
+typedef enum _ECharaAttack_DamageType
 {
-	ECharaAtk_DamageType_Cut,				// 斬り攻撃によるダメージ
-	ECharaAtk_DamageType_Earthquake,			// 地震によるダメージ
-} ECharaAtk_DamageType;
+	ECharaAttack_DamageType_Cut,				// 斬り攻撃によるダメージ
+	ECharaAttack_DamageType_Earthquake,			// 地震によるダメージ
+} ECharaAttack_DamageType;
 
 // キャラの吹っ飛び状態
 typedef enum _ECharaBlowState
@@ -61,7 +61,7 @@ typedef enum _ECharaRenderMode
 } ECharaRenderMode;
 
 // 攻撃に当たったキャラやステージの情報
-typedef struct _SCharaAtkHitInfo
+typedef struct _SCharaAttackHitInfo
 {
 	// 攻撃が当たったキャラの数
 	int                   HitCharaNum;
@@ -74,16 +74,16 @@ typedef struct _SCharaAtkHitInfo
 
 	// ステージに対して当たった場合に、当たった箇所の素材タイプ
 	EMaterialType         StageHitMaterialType;
-} SCharaAtkHitInfo;
+} SCharaAttackHitInfo;
 
 // キャラの攻撃情報
-typedef struct _SCharaAtkInfo
+typedef struct _SCharaAttackInfo
 {
 	// 情報が有効かどうかのフラグ( true:有効  false:無効 )
 	bool                  Enable;
 
-	// 攻撃判定に使用する SCharaBaseInfo 構造体のメンバー変数 AtkPosInfo の要素番号
-	int                   AtkPosIndex;
+	// 攻撃判定に使用する SCharaBaseInfo 構造体のメンバー変数 AttackPosInfo の要素番号
+	int                   AttackPosIndex;
 
 	// 攻撃の軌跡エフェクトへのポインタ
 	SEffectInfo *         LocusEffect;
@@ -98,8 +98,8 @@ typedef struct _SCharaAtkInfo
 	VECTOR                FarPosition[ CHARA_ATTACK_POS_NUM ];
 
 	// 攻撃に当たったキャラやステージの情報
-	SCharaAtkHitInfo   HitInfo;
-} SCharaAtkInfo;
+	SCharaAttackHitInfo   HitInfo;
+} SCharaAttackInfo;
 
 // キャラのアニメーション情報
 typedef struct _SCharaAnimInfo
@@ -206,16 +206,16 @@ typedef struct _SCharaInfo
 	bool                  ProgramMove;
 
 	//基礎体力
-	int                   Hp;
+	int                   Health;
 
 	//体力ゲージ情報
-	SCharaHpGauge     HpGauge;
+	SCharaHealthGauge     HealthGauge;
 
 	//体力ゲージを表示するかどうかのフラグ
-	bool                  HpGaugeVisible;
+	bool                  HealthGaugeVisible;
 
 	//体力ゲージを非表示にするまでの時間
-	float                 HpGaugeHideDelay;	
+	float                 HealthGaugeHideDelay;	
 
 	//ダメージを受けた方向
 	VECTOR                DamageDirection;
@@ -224,7 +224,7 @@ typedef struct _SCharaInfo
 	int                   Atk;
 
 	//攻撃情報
-	SCharaAtkInfo		  AtkInfo[ CHARA_ATTACK_MAX_NUM ];
+	SCharaAttackInfo	  AttackInfo[ CHARA_ATTACK_MAX_NUM ];
 
 	//基礎防御力
 	int					  Def;
@@ -255,10 +255,10 @@ typedef struct _SCharaInfo
 	int					  Item_Db[10];
 
 	//アイテムでの追加最大HP合計値
-	int					  Add_Hp;
+	int					  Add_Health;
 
 	//アイテムでの追加攻撃力合計値
-	int					  Add_Atk;
+	int					  Add_Attack;
 
 	//アイテムでの追加防御力合計値
 	int					  Add_Def;
@@ -390,7 +390,7 @@ extern bool Chara_Damage(
 	SCharaInfo *CInfo,
 
 	// ダメージタイプ
-	ECharaAtk_DamageType DamageType,
+	ECharaAttack_DamageType DamageType,
 
 	// 受けるダメージ
 	int DamagePoint,
@@ -399,7 +399,7 @@ extern bool Chara_Damage(
 	VECTOR HitPosition,
 
 	// 攻撃の方向
-	VECTOR AtkDirection,
+	VECTOR AttackDirection,
 
 	// キャラにダメージを与えられたかどうかを代入する変数のアドレス
 	bool *Result

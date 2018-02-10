@@ -21,8 +21,8 @@ typedef struct {
 	int		Level;				//レベル
 	int		Price;				//値段
 	int		Durable;			//耐久値
-	int		Hp ;				//体力
-	int		Atk;				//攻撃力
+	int		Health ;				//体力
+	int		Attack;				//攻撃力
 	int		Def;				//防御力
 	float	Critical;			//クリティカル率
 	float	Spd;				//速度

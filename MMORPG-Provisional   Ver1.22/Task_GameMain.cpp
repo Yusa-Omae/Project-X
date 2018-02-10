@@ -644,8 +644,8 @@ static void Task_GameMain_Render(
 
 	// プレイヤーが居る場合はプレイヤーの体力を描画する
 	// プレイヤーが居ない場合はプレイヤーの体力は０として描画する
-	CharaHpGaugeDraw(
-		PCInfo != NULL ? &PCInfo->HpGauge : NULL,
+	CharaHealthGaugeDraw(
+		PCInfo != NULL ? &PCInfo->HealthGauge : NULL,
 		PC_HP_X,      PC_HP_Y,
 		PC_HP_SIZE_X, PC_HP_SIZE_Y
 	);

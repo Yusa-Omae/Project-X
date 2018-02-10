@@ -10,25 +10,25 @@
 #define ENEMY_ATTACK_MAX_NUM			(3)
 
 // 攻撃パターン情報
-typedef struct _SChara_EnemyBaseAtkInfo
+typedef struct _SChara_EnemyBaseAttackInfo
 {
 	// 攻撃アニメーションを開始する距離
-	float    AtkDistance;
+	float    AttackDistance;
 
 	// 攻撃アニメーションを開始する相手と自分の向いている方向との角度範囲
-	float    AtkAngleRange;
+	float    AttackAngleRange;
 
 	// 攻撃力
-	int      Atk;
+	int      Attack;
 
 	// 攻撃の為に相手に接近する際に歩くかどうか
 	// ( true : 歩く  false : 走る )
-	bool     IsAtkMoveWalk;
+	bool     IsAttackMoveWalk;
 
 	// 攻撃中も向いている方向を変化させるかどうか
 	// ( true : 変化させる  false : 変化させない )
-	bool     IsAtkAngleChange;
-} SChara_EnemyBaseAtkInfo;
+	bool     IsAttackAngleChange;
+} SChara_EnemyBaseAttackInfo;
 
 // 敵の基本情報
 typedef struct _SChara_EnemyBaseInfo
@@ -46,7 +46,7 @@ typedef struct _SChara_EnemyBaseInfo
 	float    NoticeDistance;
 
 	// 相手が視界に入っていなくても存在に気付く距離( 臨戦態勢時 )
-	float    NoticeDistance_AtkMode;
+	float    NoticeDistance_AttackMode;
 
 	// 相手が視界に入っている場合に相手の存在に気付くまで時間
 	float    NoticeTime_See;
@@ -55,10 +55,10 @@ typedef struct _SChara_EnemyBaseInfo
 	float    NoticeTime_Distance;
 
 	// 相手が視界に入っている場合に実際に攻撃行動に移るまでの時間
-	SMaxMinF SeeAtkMoveStartWait;
+	SMaxMinF SeeAttackMoveStartWait;
 
 	// 一度攻撃をしてから再度攻撃行動に移るまでの時間
-	SMaxMinF AtkRepeatWait;
+	SMaxMinF AttackRepeatWait;
 
 	// ダメージを受けてから再度行動を開始するまでの時間
 	SMaxMinF DamageAfterMoveWait;
@@ -79,10 +79,10 @@ typedef struct _SChara_EnemyBaseInfo
 	bool     ProgramMove;
 
 	// 攻撃情報の数
-	int      AtkNum;
+	int      AttackNum;
 
 	// 攻撃情報
-	SChara_EnemyBaseAtkInfo AtkInfo[ ENEMY_ATTACK_MAX_NUM ];
+	SChara_EnemyBaseAttackInfo AttackInfo[ ENEMY_ATTACK_MAX_NUM ];
 } SChara_EnemyBaseInfo;
 
 // 敵の基本情報の初期化関数

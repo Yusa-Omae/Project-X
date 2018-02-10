@@ -315,9 +315,6 @@
     <ClCompile Include="Item.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CharaHpGauge.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Code\AppData\Script\Script.cpp">
       <Filter>ソース ファイル\Code\AppData\Script</Filter>
     </ClCompile>
@@ -326,6 +323,9 @@
     </ClCompile>
     <ClCompile Include="Code\AppData\Script\ScriptGraphicsList.cpp">
       <Filter>ソース ファイル\Code\AppData\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CharaHealthGauge.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -515,9 +515,6 @@
     <ClInclude Include="Item.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CharaHpGauge.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Code\AppData\Script\Script.h">
       <Filter>ヘッダー ファイル\Code\AppData\Script</Filter>
     </ClInclude>
@@ -526,6 +523,9 @@
     </ClInclude>
     <ClInclude Include="Code\AppData\Script\ScriptGraphicsList.h">
       <Filter>ヘッダー ファイル\Code\AppData\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CharaHealthGauge.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
