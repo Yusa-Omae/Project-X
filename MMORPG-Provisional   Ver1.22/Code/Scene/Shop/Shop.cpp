@@ -358,7 +358,7 @@ static void MessageWindowPopupProc(TASK_SHOP_t* task) {
 			ITEM_PARAM_DATA_t item;
 			ItemData_GetItemData(task->select, &item);
 			
-			task->stringBase->SetString(item.name);
+			task->stringBase->SetString(item.Description);
 		}
 
 		break;

@@ -99,7 +99,9 @@ STaskInfo* Task_Adventure_Start() {
 		ScriptGraphicsList_AddGraphics関数は　登録するたびにインクリメントしていく
 		画像のIDは0～となる
 	*/
-	ScriptGraphicsList_AddGraphic("Data/2D/KeyConfigBack.png");
+	for (int i = 0; i < 4; i++) {
+		ScriptGraphicsList_AddGraphic("Data/Script/Adventure_%02d.png",i);
+	}
 
 	return &task->task;
 }

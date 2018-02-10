@@ -3,23 +3,24 @@
 				作成者			:Syara
 				作成日時		:2018/01/24
 				ソース説明		:
-				
+
 					アイテムデータ
-				
+
 				備考
-				
-				
-				
+
+
+
 !*/
 
 #include "DxLib.h"
 #include "ItemData.h"
 
 #define FILE_NAME ("Data/ItemData/ItemData.csv")
+#define ITEM_NAME_FILE_NAME ("Data/ItemData/Item_Char.csv")
 #define ITEM_PARAM_DATA_NUM (38)
 
 enum eData {
-	
+
 	eData_Level,
 	eData_Price,
 	eData_Durable,
@@ -38,7 +39,90 @@ enum eData {
 	eData_Num,
 };
 
+enum eNameData {
+	eNameData_Id,
+	eNameData_Name,
+	eNameData_Description,
+	eNameData_Num,
+};
+
 static ITEM_PARAM_DATA_t s_ItemParam[ITEM_PARAM_DATA_NUM];
+
+static bool Item_ReadImteName() {
+
+	FILE *fp;
+
+	fopen_s(&fp, ITEM_NAME_FILE_NAME, "r");
+
+	if (fp == NULL) {
+		printfDx("ファイルの読み込みに失敗しました.(%s)\n", FILE_NAME);
+		return false;
+	}
+
+	int num = 0;
+	while (1) {
+
+		if (num >= ITEM_PARAM_DATA_NUM) break;
+
+		//ファイル読み込み処理
+		char buffer[256] = "";
+		fgets(buffer, 256, fp);
+
+		//データがなければ終了する
+		if (buffer[0] == EOF) break;
+
+		//一文字目がスラッシュまたは改行なら読み飛ばす
+		if (buffer[0] == '/' || buffer[0] == '\n' ||
+			buffer[0] == ' ') continue;
+
+		ITEM_PARAM_DATA_t* item = &s_ItemParam[num];
+
+		int pos = 0;
+		int continueNum = 0;
+		int input = 0;
+		char str[256] = "";
+		for (int i = 0; i < 256; i++) {
+
+			char ch = buffer[i];
+
+			if (ch == '\0') break;
+			if (ch != ',' && ch != '\n') {
+				str[input] = ch;
+				input++;
+				continue;
+			}
+			else if (ch == ',' || ch == '\n') {
+				str[input] = '\0';
+				input = 0;
+			}
+
+			switch (pos) {
+			case eNameData_Id:
+				//item->Level = atoi(&ch);
+				break;
+			case eNameData_Name:
+				strcpy(item->name, str);
+				break;
+			case eNameData_Description:
+				strcpy(item->Description, str);
+				break;
+			}
+
+			pos++;
+			continueNum = 0;
+
+			if (pos == eNameData_Num) {
+				break;
+			}
+
+		}
+
+		num++;
+	}
+
+	fclose(fp);
+	return true;
+}
 
 /*
 	データファイルを読み込む
@@ -143,7 +227,7 @@ bool ItemData_ReadData() {
 			continueNum = 0;
 
 			if (pos == eData_Num) {
-				sprintf_s(item->name, "アイテム%d", num);
+				//sprintf_s(item->name, "アイテム%d", num);
 				item->id = num;
 				break;
 			}
@@ -159,7 +243,7 @@ bool ItemData_ReadData() {
 
 	fclose(fp);
 
-	return true;
+	return Item_ReadImteName();
 }
 
 /*

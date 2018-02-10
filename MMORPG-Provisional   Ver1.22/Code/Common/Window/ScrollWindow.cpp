@@ -42,14 +42,14 @@ void ScrollWindow_Initialize(SCROLL_WINDOW_DATA_t* window,int drawX,int drawY,in
 	/*
 	アイテムデータ一覧
 	*/
-#if false
+
 	int itemNum = ItemData_GetItemDataNum();
 	ITEM_PARAM_DATA_t itemData;
 	for (int i = 0; i < itemNum; i++) {
 		ItemData_GetItemData(i, &itemData);
 		DrawString(20, 60 + i * 20, itemData.name, GetColor(255, 255, 255));
 	}
-#endif
+
 
 }
 
@@ -153,8 +153,8 @@ void ScrollWindow_DrawGraph(SCROLL_WINDOW_DATA_t* window,int graphichandle,int s
 		}
 		
 
-		char str[256];
-		sprintf_s(str, "テスト%d", drawItem);
+		//char str[256];
+		//sprintf_s(str, "テスト%d", drawItem);
 		if (drawSelectItem >= 0 && drawSelectItem < window->scrollbar.valueMax) {
 			const int* imaage = (const int*)(window->imageHandles);
 			int alpha = 100;
@@ -173,13 +173,13 @@ void ScrollWindow_DrawGraph(SCROLL_WINDOW_DATA_t* window,int graphichandle,int s
 			WindowBase_Draw(window->itemWindow[i], alpha, GetColor(255, 255, 0), GetColor(255, 255, 255));
 
 			if (drawSelectItem < ItemData_GetItemDataNum()) {
-				//ItemData_GetItemData(drawItem, &itemData);
+				ItemData_GetItemData(drawItem, &itemData);
 				int DrawPosX = window->itemWindow[i].drawPosX + 5;
 				int DrawPosY = window->itemWindow[i].drawPosY + 2;
 				//DrawString(20, 60 + i * 181, itemData.name, GetColor(0, 0, 0));
 				DrawGraph(DrawPosX, DrawPosY, imaage[drawItem], TRUE);
 				DrawPosY = window->itemWindow[i].drawPosY + window->itemWindow[i].height / 2;
-				DrawString(DrawPosX + 53, DrawPosY, str, GetColor(0, 0, 0));
+				DrawString(DrawPosX + 53, DrawPosY, itemData.name, GetColor(0, 0, 0));
 			}
 		}
 
