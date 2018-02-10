@@ -167,7 +167,7 @@ bool Chara_Player_Step(
 	InputRight = (Input     & (1 << EInputType_Right)) != 0;
 	InputUp = (Input     & (1 << EInputType_Up)) != 0;
 	InputDown = (Input     & (1 << EInputType_Down)) != 0;
-	InputAttack = (EdgeInput & (1 << EInputType_Atk)) != 0;
+	InputAttack = (EdgeInput & (1 << EInputType_Attack)) != 0;
 	InputDefence = (Input     & (1 << EInputType_Defence)) != 0;
 	InputJump = (EdgeInput & (1 << EInputType_Jump)) != 0;
 
