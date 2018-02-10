@@ -323,6 +323,13 @@ bool Script::SetDrawGraph(int id, int drawX, int drawY) {
 	//‰æ‘œˆê——‚ðŽQÆ
 	const SCRIPT_GRAPHICS_t* graph = ScriptGraphicsList_GetGraphics(id);
 	
+	if (graph == NULL) {
+#ifdef __MY_DEBUG__
+		printfDx("Žw’è‚µ‚½”Ô†‚Ì‰æ‘œ‚Í‚ ‚è‚Ü‚¹‚ñ.\n(%d)",id);
+#endif
+		return false;
+	}
+
 	mGraphicHandle = graph->image;
 	mGraphicsDrawPosX = drawX;
 	mGraphicsDrawPosY = drawY;
