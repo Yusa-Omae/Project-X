@@ -72,4 +72,13 @@ extern bool Chara_Player_AnimOtherEvent(
 );
 
 
+int GetItem(int X);
+
+void SetItem(int X, int ITEM_Num);
+
+int GetGold();
+
+void SetGold(int Gold_Drop);
+
+
 #endif
