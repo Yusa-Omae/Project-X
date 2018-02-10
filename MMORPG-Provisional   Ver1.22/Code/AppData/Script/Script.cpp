@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "Script.h"
 #include "ScriptGraphicsList.h"
+#include "../System.h"
 #include "../Input.h"
 #include "../Code/Common/String/StringBase.h"
 #include <math.h>
@@ -27,6 +28,7 @@ static bool Input(int inputType) {
 #endif
 	return result;
 }
+
 Script::Script(const char* FileName){
 	
 	mFlag = new ScriptFlag[SCRIPT_FLAG_NUM];
@@ -49,6 +51,8 @@ Script::Script(const char* FileName){
 	BattleOff();
 	GameClearOff();
 
+	mMessageWindowHandle = LoadGraph("data/2D/Adventure_Box.png");
+
 	LoadScript(FileName);
 
 }
@@ -58,6 +62,9 @@ Script::~Script() {
 	mFlag = NULL;
 	delete mStringBase;
 	mStringBase = NULL;
+
+	DeleteGraph(mMessageWindowHandle);
+
 }
 
 void Script::WaitKeyOn(){
@@ -316,6 +323,13 @@ bool Script::SetDrawGraph(int id, int drawX, int drawY) {
 	//画像一覧を参照
 	const SCRIPT_GRAPHICS_t* graph = ScriptGraphicsList_GetGraphics(id);
 	
+	if (graph == NULL) {
+#ifdef __MY_DEBUG__
+		printfDx("指定した番号の画像はありません.\n(%d)",id);
+#endif
+		return false;
+	}
+
 	mGraphicHandle = graph->image;
 	mGraphicsDrawPosX = drawX;
 	mGraphicsDrawPosY = drawY;
@@ -448,7 +462,7 @@ void Script::updata(){
 	AddScriptLine();	
 	AnalysisString();
 	
-	mStringBase->Update(true, 40, 5);
+	mNextPage = mStringBase->Update(true, 40, 5);
 
 	//スクリプト読み込みを先に進める
 	if (Input(EInputType_Atk) == true) {
@@ -466,6 +480,9 @@ void Script::draw(int X,int Y){
 		DrawGraph(mGraphicsDrawPosX, mGraphicsDrawPosY, mGraphicHandle, TRUE);
 	}
 
+	DrawExtendGraph(0, Y, GAME_SCREEN_WIDTH,Y + 120, mMessageWindowHandle, TRUE);
+	
+
 	//スクリプトを読み終えているなら抜ける
 	if(GetScriptEnd()) return;
 
@@ -482,14 +499,15 @@ void Script::draw(int X,int Y){
 
 
 	//受け取った表示座標と文字列の長さと行数でサイズを設定し表示させる
-	DrawBox(X, Y, X + MESSAGE_WINDOW_WIDTH * length, Y + MESSAGE_WINDOW_HEIHGT * (mDrawLine + 1), GetColor(123, 123, 123), TRUE);
+	//DrawBox(X, Y, X + MESSAGE_WINDOW_WIDTH * length, Y + MESSAGE_WINDOW_HEIHGT * (mDrawLine + 1), GetColor(123, 123, 123), TRUE);
 
 	//文字列を表示する
-	mStringBase->DrawString(X,Y,true);
+	mStringBase->DrawString(X,Y + 20,true);
 
-
-	//次の行へ送ることができることを知らせる
-	DrawString(X+MESSAGE_WINDOW_WIDTH*(endLength-1),Y+(mDrawLine+1)*20+sin(DX_PI/2/60* mCouter)*5,"▼",GetColor(255,255,255));
+	if (mNextPage == 1) {
+		//次の行へ送ることができることを知らせる
+		DrawString(GAME_SCREEN_WIDTH - 80, (GAME_SCREEN_HEIGHT - 40) + sin(DX_PI / 2 / 60 * mCouter) * 5, "▼", GetColor(255, 255, 255));
+	}
 
 	//スクリプトの表示を行数
 	//DrawFormatString(0,Y-20,GetColor(255,255,255),"%d",mLineNum);

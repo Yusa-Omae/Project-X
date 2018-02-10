@@ -46,6 +46,8 @@ private:
 	int mGraphicsDrawPosX;
 	int mGraphicsDrawPosY;
 
+	int mMessageWindowHandle;	//メッセージウィンドウ用画像ハンドル
+	int mNextPage;				//次のページ送りをするか？
 
 	void LoadScript(const char*);	//スクリプトファイルの読み込み
 
