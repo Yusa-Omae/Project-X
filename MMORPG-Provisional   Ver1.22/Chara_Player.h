@@ -71,14 +71,29 @@ extern bool Chara_Player_AnimOtherEvent(
 	SCharaInfo *CInfo
 );
 
+/*
+キャラクターにアイテムを設定する
+*/
+void Chara_Player_SetItem(int haveId, int itmeIdex);
 
-int GetItem(int X);
 
-void SetItem(int X, int ITEM_Num);
+/*
+キャラクターにアイテムを設定する
+return -1でエラー　0以上でアイテム
+*/
+int Chara_Player_GetItem(int haveId);
 
-int GetGold();
 
-void SetGold(int Gold_Drop);
+/*
+キャラクターのお金を設定する
+*/
+void Chara_Player_SetMoney(int gold;
+
+/*
+キャラクターのお金を返却する
+return 所持金額
+*/
+int Chara_Player_GetMoney(int gold);
 
 
 #endif
