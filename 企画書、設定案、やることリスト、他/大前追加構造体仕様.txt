@@ -91,6 +91,7 @@ Gold_Per=敵を倒した際にもらえるお金の量が増える。
 構造体
 _ITEM_PARAM{
 
+char Name=アイテムの名前
 int Lv=アイテムのレベル段階
 int Pre=アイテムの値段
 int Db=アイテムの耐久値
@@ -100,7 +101,7 @@ int Def=装備した際の追加防御力
 float Crt=装備した際の追加クリティカル率
 float Spd=装備した際の追加移動速度
 float Abp=攻撃した際の追加HP吸収率
-int Ah=装備した際の追加リジェネ
+float Ah=装備した際の追加リジェネ
 float Gp=敵を倒した際のドロップ金増加率
 int Evol[4]=この武器の進化先(進化先がない場合、-1を入れる)
 

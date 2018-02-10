@@ -55,19 +55,19 @@ void CharaHpGaugeStep(
 	bool Visible,
 	
 	// 体力値( 0.0f ～ 1.0f )
-	float Hp
+	float Hp_flow
 )
 {
 	bool MoveEnd;
 
 	// 体力が減る場合は減る前の体力値を減る表現で使用する変数に代入する
-	if( GInfo->Hp < Hp )
+	if( GInfo->Hp < Hp_flow)
 	{
 		GInfo->DelayHp = GInfo->Hp;
 	}
 
 	// 体力値の保存
-	GInfo->Hp = Hp;
+	GInfo->Hp = Hp_flow;
 
 	// 体力が減った際の減る前の体力の値を本来の体力の値に近づける
 	MoveEnd = ParamChangeFloat( &GInfo->DelayHp, GInfo->Hp,
