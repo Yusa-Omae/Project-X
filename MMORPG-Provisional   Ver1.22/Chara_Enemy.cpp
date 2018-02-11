@@ -1,6 +1,7 @@
 #include "Chara_Enemy.h"
 #include "DxLib.h"
 #include "Chara_EnemyBase.h"
+#include "Chara_Player.h"
 #include "System.h"
 #include "Stage.h"
 #include "StageData.h"
@@ -236,6 +237,7 @@ bool Chara_Enemy_Create(
 {
 	SChara_EnemyInfo *EInfo;
 
+	CInfo->Gold = GetRand(100);
 	// “G‚Ìî•ñ\‘¢‘Ì‚ðŠi”[‚·‚éƒƒ‚ƒŠ—Ìˆæ‚ÌŠm•Û
 	CInfo->SubData = malloc(sizeof(SChara_EnemyInfo));
 	if (CInfo->SubData == NULL)
@@ -485,6 +487,7 @@ bool Chara_Enemy_Step(
 
 		case ECharaState_FadeOut:	// ƒtƒF[ƒhƒAƒEƒg’†
 									// ‚Ü‚¾ƒVƒXƒeƒ€‚É“|‚³‚ê‚½‚±‚Æ‚ð“`‚¦‚Ä‚¢‚È‚¢ê‡‚Í“`‚¦‚é
+			Chara_Player_AddMoney(CInfo->Gold*(1 + CInfo->Gold_Per));
 			if (!EInfo->KillCounterAdd)
 			{
 				EInfo->KillCounterAdd = true;

@@ -24,6 +24,9 @@
 // ƒLƒƒƒ‰‚Ì‘Ì—Í‚ª•\¦‚³‚ê‚Ä‚©‚çÁ‚¦‚é‚Ü‚Å‚ÌŠÔ
 #define CHARA_HPGAUGE_HIDE_DELAY				(10.0f)
 
+#define ITEM_DRAW_POS_X 990
+#define ITEM_DRAW_POS_Y 574
+
 // ƒLƒƒƒ‰‚Ìó‘Ô
 typedef enum _ECharaState
 {

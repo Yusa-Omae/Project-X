@@ -95,6 +95,8 @@ return 所持金額
 */
 int Chara_Player_GetMoney();
 
+//キャラクターのお金を加算する
+void Chara_Player_AddMoney(int gold);
 
 //アイテムのセット()
 int Set_Player_Item_Durable(int BuyItem);

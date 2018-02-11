@@ -3,6 +3,7 @@
 
 #include "Task.h"
 
+
 // ゲームメインの処理を開始する
 //     戻り値 : ゲームメインタスク情報構造体へのアドレス
 extern STaskInfo * Task_GameMain_Start( void );

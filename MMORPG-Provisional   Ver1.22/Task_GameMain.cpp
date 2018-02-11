@@ -14,6 +14,7 @@
 #include "Task_PauseMenu.h"
 #include "Code/Scene/Adventure/Adventure.h"
 #include "Code/Scene/Shop/Shop.h"
+#include "Code/AppData/Item/ItemData.h"
 #include <math.h>
 
 // ステージ開始をする前に待つ時間
@@ -119,6 +120,8 @@ typedef struct _STask_GameMainData
 
 } STask_GameMainData;
 
+
+
 // ゲームメインの状態推移処理を行う
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
 static bool Task_GameMain_Step(
@@ -193,6 +196,12 @@ static bool Task_GameMain_Step(
 				{
 					return false;
 				}
+				//アイテム画像の取り込み
+				for (int i = 0; i > ITEM_PARAM_DATA_NUM; i++) {
+
+					//Item[i] = LoadDivGraph();
+
+				}
 
 				System_FadeOut();
 
@@ -255,6 +264,7 @@ static bool Task_GameMain_Step(
 		}
 		else
 		{
+
 			// ステージのクリア条件によって処理を分岐
 			switch( StageData_GetStageClearCondition() )
 			{

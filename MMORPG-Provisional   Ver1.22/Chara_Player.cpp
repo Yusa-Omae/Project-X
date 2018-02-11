@@ -73,7 +73,7 @@ typedef struct _SChara_PlayerInfo
 	VECTOR             JumpSpd;
 } SChara_PlayerInfo;
 
-static SCharaInfo* s_PlayerInfo;
+SCharaInfo* s_PlayerInfo;
 
 
 

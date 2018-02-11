@@ -11,12 +11,14 @@
 #include "Effect_SphereLocus.h"
 #include <math.h>
 #include <stdlib.h>
+#include "Code/AppData/Item/ItemData.h"
 
 #include "Chara_Player.h"
 #include "Chara_Enemy.h"
 #include "Chara_Bee.h"
 #include "Chara_Golem.h"
 #include "Chara_Needle.h"
+
 
 // キャラの最大数
 #define CHARA_MAXNUM					(256)
@@ -68,6 +70,8 @@
 
 // 体力ゲージの高さ
 #define HP_GAUGE_HEIGHT				(4)
+
+int Item[ITEM_PARAM_DATA_NUM];
 
 // ステージコリジョンタイプ
 typedef enum _EStageCollType
@@ -406,7 +410,12 @@ bool Chara_Initialize(void)
 {
 	int         i;
 	SCharaInfo *CInfo;
+	//アイテム画像の取り込み
+	for (int i = 0; i > ITEM_PARAM_DATA_NUM; i++) {
 
+		//Item[i] = LoadDivGraph();
+
+	}
 	// キャラの基本情報の初期化
 	if (!CharaBase_Initialize())
 	{
@@ -1158,6 +1167,16 @@ void Chara_2D_RenderAll(void)
 {
 	int         i;
 	SCharaInfo *CInfo;
+
+	//所持アイテムの描画
+	for (int i = 0; i > 10; i++) {
+		int ItemHave = Chara_Player_GetItem(i);
+		DrawGraph(ITEM_DRAW_POS_X + ((i % 5) * 48), ITEM_DRAW_POS_Y + ((i / 5) * 48), Item[ItemHave], TRUE);
+	}
+	//所持金額の描画
+	int Gold = Chara_Player_GetMoney();
+	DrawFormatString(1200, 0,0xFFFFFF, "Gold = %d",Gold);
+
 
 	// 有効な全てのキャラの２Ｄ描画処理を行う
 	CInfo = g_CharaInfo;
