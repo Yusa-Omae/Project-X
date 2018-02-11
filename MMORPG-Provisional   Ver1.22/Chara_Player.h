@@ -96,4 +96,7 @@ return 所持金額
 int Chara_Player_GetMoney();
 
 
+//アイテムのセット()
+int Set_Player_Item_Durable(int BuyItem);
+
 #endif
