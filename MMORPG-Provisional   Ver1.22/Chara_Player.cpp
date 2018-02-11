@@ -28,7 +28,7 @@
 #define JUMPMOVE_SPEED						(460.0f)
 
 // 攻撃力
-#define ATTACK_POWER						(20)
+#define ATTACK_POWER						(15)
 
 // デバッグ機能が有効な場合の攻撃力
 #define DEBUG_ATTACK_POWER					(4000)
@@ -75,6 +75,8 @@ typedef struct _SChara_PlayerInfo
 
 static SCharaInfo* s_PlayerInfo;
 
+
+
 // プレイヤーが作成された際に呼ばれる関数
 //     戻り値 : 処理が正常に終了したかどうか(true:正常に終了した  false:エラーが発生した)
 bool Chara_Player_Create(
@@ -110,14 +112,7 @@ bool Chara_Player_Create(
 	// 攻撃力をセット
 	CInfo->Atk = ATTACK_POWER;
 
-	//アイテムの初期化処理
-	for (int i = 0; i > 9; i++) {
-		CInfo->Item_Db[i] = -1;
-		CInfo->ItemHav[i] = -1;
-	}
-	//パラメータの初期化処理
-
-
+	CInfo->Gold = 9999999999;
 
 	//キャラクター構造体を設定
 	s_PlayerInfo = CInfo;
