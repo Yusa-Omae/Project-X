@@ -34,7 +34,7 @@ vector StageHitTopCenterPosition    = 0.0 105.0 0.0
 
 float  Enemy_Attack0_AttackDistance      = 200.0
 float  Enemy_Attack0_AttackAngleRange    = 1.5
-int    Enemy_Attack0_AttackPower         = 10
+int    Enemy_Attack0_AttackPower         = 25
 bool   Enemy_Attack0_IsAttackMoveWalk    = false
 bool   Enemy_Attack0_IsAttackAngleChange = true
 
