@@ -19,7 +19,7 @@ typedef struct _SChara_EnemyBaseAttackInfo
 	float    AttackAngleRange;
 
 	// UŒ‚—Í
-	int      Attack;
+	int      Atk;
 
 	// UŒ‚‚Ìˆ×‚É‘Šè‚ÉÚ‹ß‚·‚éÛ‚É•à‚­‚©‚Ç‚¤‚©
 	// ( true : •à‚­  false : ‘–‚é )

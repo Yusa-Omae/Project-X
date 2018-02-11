@@ -222,7 +222,7 @@ typedef struct _SCharaBaseInfo
 	Item_Db[10]=アイテム欄の耐久値
 	
 	Add_Health=所持アイテムの最大HPアップ合計値
-	Add_Attack=装備武器アイテムの攻撃力
+	Add_Atk=装備武器アイテムの攻撃力
 	Add_Def=所持アイテムの防御力合計値
 	Add_Crt=所持アイテムのクリティカル率合計値
 	Add_Spd=所持アイテムの移動スピード値合計

@@ -101,8 +101,8 @@ bool Chara_EnemyBase_Initialize(
 		AInfo->AttackAngleRange    =
 			GetTextParamFloat( TextParam, "Enemy_Attack%d_AttackAngleRange",    i );
 
-		AInfo->Attack         =
-			GetTextParamInt(   TextParam, "Enemy_Attack%d_Attack",         i );
+		AInfo->Atk         =
+			GetTextParamInt(   TextParam, "Enemy_Attack%d_AttackPower",         i );
 
 		AInfo->IsAttackMoveWalk    =
 			GetTextParamBool(  TextParam, "Enemy_Attack%d_IsAttackMoveWalk",    i );

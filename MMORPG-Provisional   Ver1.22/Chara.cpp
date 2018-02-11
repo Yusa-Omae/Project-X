@@ -151,6 +151,7 @@ static SCharaFunction g_CharaFunctionTable[EChara_Num] =
 	{ Chara_Needle_Create, NULL,                NULL,
 	NULL,                NULL,                NULL,
 	NULL },
+
 };
 
 // ƒLƒƒƒ‰‚Ìó‘Ô„ˆÚˆ—‚ğÀs‚·‚é

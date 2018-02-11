@@ -30,13 +30,13 @@ extern void CharaHealthGaugeSetup(
 extern void CharaHealthGaugeStep(
 	// キャラクターの体力ゲージの情報構造体のアドレス
 	SCharaHealthGauge *GInfo,
-	
+
 	// 推移させる時間( 単位 : 秒 )
 	float StepTime,
 
 	// 表示するかどうか( true:表示する  false:非表示 )
 	bool Visible,
-	
+
 	// 体力値( 0.0f ～ 1.0f )
 	float Health
 );
@@ -48,13 +48,13 @@ extern void CharaHealthGaugeDraw(
 
 	// 描画Ｘ座標
 	int DrawX,
-	
+
 	// 描画Ｙ座標
 	int DrawY,
 
 	// 描画するゲージの幅
 	int DrawWidth,
-	
+
 	// 描画するゲージの高さ
 	int DrawHeight
 );

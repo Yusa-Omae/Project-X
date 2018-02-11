@@ -239,6 +239,7 @@ static void BuySelectProc(TASK_SHOP_t* task) {
 		task->state = eState_Exit;
 		System_PlayCommonSE(ECommonSE_Cancel);
 		task->isExit = true;
+		
 	}
 
 

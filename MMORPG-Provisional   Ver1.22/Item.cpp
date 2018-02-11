@@ -1,7 +1,7 @@
 #include"Item.h"
 
 
-_ITEM_PARAM ItemParam[38];
+_ITEM_PARAM ItemParam[68];
 
 //ƒAƒCƒeƒ€‚Ì“Ç‚İ‚İ
 bool Item_Load(){

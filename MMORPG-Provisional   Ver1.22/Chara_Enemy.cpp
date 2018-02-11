@@ -1017,7 +1017,7 @@ static bool Chara_Enemy_State_AttackMove_Setup(
 	EInfo->AttackType = GetRand(EInfo->BaseInfo->AttackNum - 1);
 
 	// 攻撃力は攻撃タイプ毎に設定されている値にする
-	CInfo->Atk = EInfo->BaseInfo->AttackInfo[EInfo->AttackType].Attack;
+	CInfo->Atk = EInfo->BaseInfo->AttackInfo[EInfo->AttackType].Atk;
 
 	if (!Chara_ChangeAnim(
 		CInfo, EInfo->BaseInfo->AttackInfo[EInfo->AttackType].IsAttackMoveWalk ?
@@ -1054,6 +1054,7 @@ static bool Chara_Enemy_State_Attack_Setup(
 		DEFAULT_CHANGE_ANIM_SPEED))
 	{
 		return false;
+
 	}
 
 	// 正常終了

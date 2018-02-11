@@ -258,7 +258,7 @@ typedef struct _SCharaInfo
 	int					  Add_Health;
 
 	//アイテムでの追加攻撃力合計値
-	int					  Add_Attack;
+	int					  Add_Atk;
 
 	//アイテムでの追加防御力合計値
 	int					  Add_Def;

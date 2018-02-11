@@ -117,15 +117,6 @@
 //ステージ描画位置
 #define STAGE_INIT VGet(600.0f,255.0f,-400.0f)
 
-// テキストパラメータの名前に使える最大文字数
-#define TEXTPARAM_NAME_MAXLENGTH 64
-
-// ファイル一つに含められるテキストパラメータの最大数
-#define TEXTPARAM_MAXNUM 1024
-
-// 文字列のパラメータの最大文字数
-#define TEXTPARAM_STRING_MAXLENGTH 64
-
 // ディレクショナルライトの方向
 #define DIRLIGHT_DIRECTION_X		( 0.57735026f)
 #define DIRLIGHT_DIRECTION_Y		(-0.57735026f)
