@@ -17,7 +17,7 @@
 
 #define FILE_NAME ("Data/ItemData/ItemData.csv")
 #define ITEM_NAME_FILE_NAME ("Data/ItemData/Item_Char.csv")
-#define ITEM_PARAM_DATA_NUM (38)
+#define ITEM_PARAM_DATA_NUM (69)
 
 enum eData {
 
