@@ -411,11 +411,8 @@ bool Chara_Initialize(void)
 	int         i;
 	SCharaInfo *CInfo;
 	//アイテム画像の取り込み
-	for (int i = 0; i > ITEM_PARAM_DATA_NUM; i++) {
+	LoadDivGraph("Data/Shop/Item_Pic.png", ITEM_PARAM_DATA_NUM, 10, 10, 48, 48,Item);
 
-		//Item[i] = LoadDivGraph();
-
-	}
 	// キャラの基本情報の初期化
 	if (!CharaBase_Initialize())
 	{

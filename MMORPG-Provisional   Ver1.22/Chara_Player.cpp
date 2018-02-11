@@ -33,6 +33,8 @@
 // デバッグ機能が有効な場合の攻撃力
 #define DEBUG_ATTACK_POWER					(4000)
 
+int Save_Item[10];
+int Save_Gold;
 
 
 // プレイヤーの状態
