@@ -799,15 +799,18 @@ int Set_Player_Item_Durable(int BuyItem) {
 			}
 
 		}
-		if (Item_Load_flg == false && ItemHave == -1){
+		if (Item_Load_flg == false){
 			//V‚µ‚­”ƒ‚Á‚½ê‡
 			s_PlayerInfo->Item_Db[i] = NewItemData.Durable;
 			s_PlayerInfo->ItemHav[i] = BuyItem;
 			Item_Load_flg = true;
 			break;
-		}
-		if (ItemHave == -1) {
+		}else if (ItemHave == -1) {
+			//V‚µ‚­”ƒ‚Á‚½ê‡
+			s_PlayerInfo->Item_Db[i] = NewItemData.Durable;
+			s_PlayerInfo->ItemHav[i] = BuyItem;
 			return -1;
+			break;
 		}
 	}
 
