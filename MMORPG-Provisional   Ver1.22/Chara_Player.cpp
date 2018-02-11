@@ -114,7 +114,7 @@ bool Chara_Player_Create(
 	// 攻撃力をセット
 	CInfo->Atk = ATTACK_POWER;
 
-	CInfo->Gold = 9999999999;
+	CInfo->Gold = 0;
 
 	//アイテムの初期化処理
 	for (int i = 0; i < 10; i++) {
@@ -814,6 +814,26 @@ int Set_Player_Item_Durable(int BuyItem) {
 			return -1;
 			break;
 		}
+	}
+
+}
+
+void Load_Gold_Item() {
+
+	s_PlayerInfo->Gold = Save_Gold;
+	for (int i = 0; i > 10; i++) {	
+
+		s_PlayerInfo->ItemHav[i] = Save_Item[i];
+
+	}
+
+}
+void Save_Gold_Item() {
+
+	Save_Gold = s_PlayerInfo->Gold;
+	for (int i = 0; i > 10; i++) {
+		Save_Item[i] = s_PlayerInfo->ItemHav[i];
+
 	}
 
 }

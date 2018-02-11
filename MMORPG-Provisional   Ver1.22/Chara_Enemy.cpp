@@ -242,8 +242,6 @@ bool Chara_Enemy_Create(
 
 	CInfo->Gold = GetRand(50)+ GET_MIN_Gold;
 
-	CInfo->Gold = GetRand(100);
-
 	// “G‚Ìî•ñ\‘¢‘Ì‚ðŠi”[‚·‚éƒƒ‚ƒŠ—Ìˆæ‚ÌŠm•Û
 	CInfo->SubData = malloc(sizeof(SChara_EnemyInfo));
 	if (CInfo->SubData == NULL)

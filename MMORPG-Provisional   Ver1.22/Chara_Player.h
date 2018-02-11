@@ -101,4 +101,8 @@ void Chara_Player_AddMoney(int gold);
 //アイテムのセット()
 int Set_Player_Item_Durable(int BuyItem);
 
+void Load_Gold_Item();
+
+void Save_Gold_Item();
+
 #endif

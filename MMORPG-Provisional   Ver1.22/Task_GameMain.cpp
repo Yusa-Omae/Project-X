@@ -196,12 +196,13 @@ static bool Task_GameMain_Step(
 				{
 					return false;
 				}
-				//アイテム画像の取り込み
-				for (int i = 0; i > ITEM_PARAM_DATA_NUM; i++) {
+				////アイテム画像の取り込み
+				//for (int i = 0; i > ITEM_PARAM_DATA_NUM; i++) {
 
-					//Item[i] = LoadDivGraph();
+				//	//Item[i] = LoadDivGraph();
 
-				}
+				//}
+
 
 				System_FadeOut();
 
@@ -211,6 +212,7 @@ static bool Task_GameMain_Step(
 		break;
 	case ETask_GameMainState_StageStart_Wait:	// ステージ開始待ち中
 		GMData->Counter += StepTime;
+		Load_Gold_Item();
 		if( GMData->Counter > STAGE_START_WAIT )
 		{
 			// フェードイン待ち時間が経過したらフェードインを開始する
@@ -354,6 +356,8 @@ static bool Task_GameMain_Step(
 				break;
 
 			case ETask_PauseMenu_GameEnd:		// ゲーム終了
+				Save_Gold_Item();
+
 				// ゲーム終了が選択されていたらゲームを終了する
 				System_ExitGame();
 
@@ -378,8 +382,10 @@ static bool Task_GameMain_Step(
 
 	case ETask_GameMainState_StageClear_Wait:	// ステージクリア処理開始待ち中
 		GMData->Counter += StepTime;
+
 		if( GMData->Counter > STAGE_CLEAR_WAIT )
 		{
+
 			// ステージクリア開始待ち時間が経過したらステージクリア表示を開始する
 			Sound_PlayBGM( EBGM_StageClear );
 			GMData->StageClearTaskInfo = Task_StageClear_Start();
