@@ -560,7 +560,7 @@ static void SellSelectProc(TASK_SHOP_t* task) {
 	{
 		int oldSelect = task->sellSelect;
 		if (Input(EInputType_Right)) {
-			if (task->sellSelect < 10) {
+			if (task->sellSelect < 9) {
 				task->sellSelect++;
 			}
 			System_PlayCommonSE(ECommonSE_Cursor);
