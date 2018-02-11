@@ -112,7 +112,7 @@ bool Chara_Player_Create(
 	// 攻撃力をセット
 	CInfo->Atk = ATTACK_POWER;
 
-	CInfo->Gold = 0;
+	CInfo->Gold = 9999999999;
 
 	//アイテムの初期化処理
 	for (int i = 0; i < 10; i++) {
@@ -265,7 +265,7 @@ STATE_PROCESS:
 
 				// ガード開始アニメーションを再生
 				if (!Chara_ChangeAnim(CInfo, ECharaAnim_Guard_In,
-					CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+					CHARA_DEFAULT_CHANGE_ANIM_SPEED  * (1 + CInfo->Add_Spd)))
 				{
 					return false;
 				}
@@ -282,7 +282,7 @@ STATE_PROCESS:
 
 					// ジャンプ開始アニメーションを再生
 					if (!Chara_ChangeAnim(CInfo, ECharaAnim_Jump_In,
-						CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+						CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 					{
 						return false;
 					}
@@ -310,7 +310,7 @@ STATE_PROCESS:
 						if (CInfo->AnimInfo.NowAnim != ECharaAnim_Neutral)
 						{
 							if (!Chara_ChangeAnim(CInfo, ECharaAnim_Neutral,
-								CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+								CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 							{
 								return false;
 							}

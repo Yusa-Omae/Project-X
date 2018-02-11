@@ -17,8 +17,6 @@
 // ダメージを受けた際に周囲に居る仲間にプレイヤーの存在を気付かせる距離
 #define PLAYER_NEAR_MESSAGE_SEND_DISTANCE	(2000.0f)
 
-#define GET_MIN_Gold 200
-
 // 敵の状態
 typedef enum _EChara_EnemyState
 {
@@ -239,7 +237,7 @@ bool Chara_Enemy_Create(
 {
 	SChara_EnemyInfo *EInfo;
 
-	CInfo->Gold = GetRand(250)+ GET_MIN_Gold;
+	CInfo->Gold = GetRand(100);
 	// 敵の情報構造体を格納するメモリ領域の確保
 	CInfo->SubData = malloc(sizeof(SChara_EnemyInfo));
 	if (CInfo->SubData == NULL)
