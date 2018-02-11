@@ -537,13 +537,21 @@ static void SellSelectProc(TASK_SHOP_t* task) {
 			task->sellSelectState = eSellSelectState_Select;
 		}
 
-		ITEM_PARAM_DATA_t item;
-		ItemData_GetItemData(task->sellSelect, &item);
-
+		int haveItem = Chara_Player_GetItem(task->sellSelect);
 		char str[1024] = "";
+		if (haveItem == -1) {
+			strcpy_s(str, "アイテムがありません.");
+		}
+		else {
+			ITEM_PARAM_DATA_t item;
+			ItemData_GetItemData(haveItem, &item);
 
-		int price = (float)item.Price * 0.7f;
-		sprintf_s(str, "%s\nLv:%d Atk:%d Def:%d Spd:%0.04f\n%s\nPrice:%d", item.name, item.Level, item.Attack, item.Def, item.Spd, item.Description, price);
+
+
+			int price = (float)item.Price * 0.7f;
+			sprintf_s(str, "%s\nLv:%d Atk:%d Def:%d Spd:%0.04f\n%s\nPrice:%d", item.name, item.Level, item.Attack, item.Def, item.Spd, item.Description, price);
+
+		}
 
 		task->stringBase->SetString(str);
 	}
@@ -579,9 +587,14 @@ static void SellSelectProc(TASK_SHOP_t* task) {
 		}
 
 		if (Input(EInputType_Attack)) {
-			
-			task->sellSelectState = eSellSelectState_PopDown;
-			System_PlayCommonSE(ECommonSE_Enter);
+			int haveItem = Chara_Player_GetItem(task->sellSelect);
+			if (haveItem == -1) {
+				System_PlayCommonSE(ECommonSE_Cancel);
+			}
+			else {
+				task->sellSelectState = eSellSelectState_PopDown;
+				System_PlayCommonSE(ECommonSE_Enter);
+			}
 			
 		}//選択に戻る
 		else if (Input(EInputType_Jump)) {
@@ -592,13 +605,19 @@ static void SellSelectProc(TASK_SHOP_t* task) {
 		}
 
 		if (oldSelect != task->sellSelect) {
-			ITEM_PARAM_DATA_t item;
-			ItemData_GetItemData(task->sellSelect, &item);
 
+			int haveItem = Chara_Player_GetItem(task->sellSelect);
 			char str[1024] = "";
-			int price = (float)item.Price * 0.7f;
-			sprintf_s(str, "%s\nLv:%d Atk:%d Def:%d Spd:%0.04f\n%s\nPrice%d", item.name,item.Level, item.Attack, item.Def, item.Spd,item.Description,price);
-			
+			if (haveItem == -1) {
+				strcpy_s(str, "アイテムがありません.");
+			}
+			else {
+				ITEM_PARAM_DATA_t item;
+				ItemData_GetItemData(task->sellSelect, &item);
+
+				int price = (float)item.Price * 0.7f;
+				sprintf_s(str, "%s\nLv:%d Atk:%d Def:%d Spd:%0.04f\n%s\nPrice%d", item.name, item.Level, item.Attack, item.Def, item.Spd, item.Description, price);
+			}
 
 			task->stringBase->SetString(str);
 		}
@@ -636,7 +655,7 @@ static void SellSelectDraw(TASK_SHOP_t* task) {
 
 	for (int i = 0; i < 10; i++) {
 
-		int haveItem = i;//Chara_Player_GetItem(i);
+		int haveItem = Chara_Player_GetItem(i);
 		
 		if (haveItem == -1)continue;
 
