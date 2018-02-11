@@ -767,8 +767,8 @@ void Player_Add_Item_sum() {
 }
 
 //アイテムの耐久値を設定(仮)
-void Set_Player_Item_Durable(int BuyItem) {
-	if (s_PlayerInfo == NULL) return;
+int Set_Player_Item_Durable(int BuyItem) {
+	if (s_PlayerInfo == NULL) return -1;
 
 	ITEM_PARAM_DATA_t ItemData,NewItemData;
 	bool Item_Load_flg = true;
@@ -776,28 +776,35 @@ void Set_Player_Item_Durable(int BuyItem) {
 	for (int i = 0; i < 10; i++) {
 
 		int ItemHave = s_PlayerInfo->ItemHav[i];
-		int ItemDablue = s_PlayerInfo->Item_Db[i];
+
 		ItemData_GetItemData(ItemHave, &ItemData);
 		ItemData_GetItemData(BuyItem, &NewItemData);
 		
 		if (ItemHave >= 0 && ItemHave < ITEM_PARAM_DATA_NUM) {
-
 			for (int j = 0; j < 4; j++) {
 				if (ItemData.Evol[j] == BuyItem) {
 					//既存の武器より進化した場合
-
 					s_PlayerInfo->Item_Db[i] = NewItemData.Durable - ItemData.Durable + s_PlayerInfo->Item_Db[i];
-					Item_Load_flg = false;
+					s_PlayerInfo->ItemHav[i] = BuyItem;
+					Item_Load_flg = true;
 					break;
 
+				}else{
+					Item_Load_flg = false;
 				}
 			}
-			if (Item_Load_flg == false){
-				//新しく買った場合
-				s_PlayerInfo->Item_Db[i] = NewItemData.Durable;
-				Item_Load_flg = true;
-				break;
-			}
+
+		}
+		if (Item_Load_flg == false || ItemHave == -1){
+			//新しく買った場合
+			s_PlayerInfo->Item_Db[i] = NewItemData.Durable;
+			s_PlayerInfo->ItemHav[i] = BuyItem;
+			Item_Load_flg = true;
+			break;
+		}
+		if (ItemHave == -1) {
+			return -1;
 		}
 	}
+
 }
