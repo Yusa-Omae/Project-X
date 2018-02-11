@@ -28,13 +28,10 @@
 #define JUMPMOVE_SPEED						(460.0f)
 
 // 攻撃力
-#define ATTACK_POWER						(40)
+#define ATTACK_POWER						(20)
 
 // デバッグ機能が有効な場合の攻撃力
 #define DEBUG_ATTACK_POWER					(4000)
-
-
-#define ITEM_PARAM_DATA_NUM (68)
 
 
 
@@ -174,7 +171,13 @@ bool Chara_Player_Step(
 	}
 	else
 	{
-		CInfo->Atk = ATTACK_POWER;
+		int Crt_Decision = GetRand(100);
+		//クリティカルが入れば1.25倍する
+		if (Crt_Decision <= (CInfo->Crt + CInfo->Add_Crt) * 100) {
+			CInfo->Atk = (ATTACK_POWER + CInfo->Add_Atk)*1.25;
+		}else{
+			CInfo->Atk = ATTACK_POWER + CInfo->Add_Atk;
+		}
 	}
 
 	// 入力状態を取得
@@ -261,7 +264,7 @@ STATE_PROCESS:
 
 				// ガード開始アニメーションを再生
 				if (!Chara_ChangeAnim(CInfo, ECharaAnim_Guard_In,
-					CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+					CHARA_DEFAULT_CHANGE_ANIM_SPEED  * (1 + CInfo->Add_Spd)))
 				{
 					return false;
 				}
@@ -278,7 +281,7 @@ STATE_PROCESS:
 
 					// ジャンプ開始アニメーションを再生
 					if (!Chara_ChangeAnim(CInfo, ECharaAnim_Jump_In,
-						CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+						CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 					{
 						return false;
 					}
@@ -294,7 +297,7 @@ STATE_PROCESS:
 						if (CInfo->AnimInfo.NowAnim != ECharaAnim_Run)
 						{
 							if (!Chara_ChangeAnim(CInfo, ECharaAnim_Run,
-								CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+								CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 							{
 								return false;
 							}
@@ -306,7 +309,7 @@ STATE_PROCESS:
 						if (CInfo->AnimInfo.NowAnim != ECharaAnim_Neutral)
 						{
 							if (!Chara_ChangeAnim(CInfo, ECharaAnim_Neutral,
-								CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+								CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 							{
 								return false;
 							}

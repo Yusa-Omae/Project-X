@@ -1413,7 +1413,7 @@ static bool Chara_Step(
 
 			// 通常移動中に移行
 			if (!Chara_ChangeAnim(CInfo, ECharaAnim_Neutral,
-				CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+				CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 			{
 				return false;
 			}
@@ -3076,7 +3076,7 @@ static bool Chara_Blow(
 {
 	Chara_SetTargetDirection(CInfo, CInfo->DamageDirection, false, true);
 
-	if (!Chara_ChangeAnim(CInfo, ECharaAnim_Blow_In, CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+	if (!Chara_ChangeAnim(CInfo, ECharaAnim_Blow_In, CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1+CInfo->Add_Spd)))
 	{
 		return false;
 	}
@@ -3096,7 +3096,7 @@ static bool Chara_Down(
 {
 	Chara_SetTargetDirection(CInfo, CInfo->DamageDirection, false, true);
 
-	if (!Chara_ChangeAnim(CInfo, ECharaAnim_Down, CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+	if (!Chara_ChangeAnim(CInfo, ECharaAnim_Down, CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 	{
 		return false;
 	}
@@ -3240,7 +3240,7 @@ extern bool Chara_Damage(
 				Chara_SetTargetDirection(CInfo, AttackDirection, false, true);
 
 				if (!Chara_ChangeAnim(
-					CInfo, ECharaAnim_Damage, CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+					CInfo, ECharaAnim_Damage, CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 				{
 					return false;
 				}
@@ -3278,7 +3278,7 @@ static bool Chara_Fall(
 	}
 
 	// ジャンプ状態に移行する
-	if (!Chara_ChangeAnim(CInfo, ECharaAnim_Jump_Loop, CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+	if (!Chara_ChangeAnim(CInfo, ECharaAnim_Jump_Loop, CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 	{
 		return false;
 	}
@@ -3324,7 +3324,7 @@ static bool Chara_Landed(
 		{
 			// 吹っ飛び中だった場合は吹っ飛び終了状態に移行する
 			if (!Chara_ChangeAnim(CInfo, ECharaAnim_Blow_Out,
-				CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+				CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 			{
 				return false;
 			}
@@ -3334,7 +3334,7 @@ static bool Chara_Landed(
 		{
 			// 吹っ飛び状態ではなかったらニュートラルアニメーションを再生
 			if (!Chara_ChangeAnim(CInfo, ECharaAnim_Neutral,
-				CHARA_DEFAULT_CHANGE_ANIM_SPEED))
+				CHARA_DEFAULT_CHANGE_ANIM_SPEED * (1 + CInfo->Add_Spd)))
 			{
 				return false;
 			}
