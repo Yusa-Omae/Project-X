@@ -36,7 +36,7 @@
 
 #define ITEM_PARAM_DATA_NUM (68)
 
-static ITEM_PARAM_DATA_t s_ItemParam[ITEM_PARAM_DATA_NUM];
+
 
 // プレイヤーの状態
 typedef enum _EChara_PlayerState
@@ -744,33 +744,60 @@ int Chara_Player_GetMoney() {
 void Player_Add_Item_sum() {
 	if (s_PlayerInfo == NULL) return;
 
-	for (int i = 0; i > 9; i++) {
-		s_PlayerInfo->Add_Health += s_ItemParam[s_PlayerInfo->ItemHav[i]].Health;
-		s_PlayerInfo->Add_Atk += s_ItemParam[s_PlayerInfo->ItemHav[i]].Attack;
-		s_PlayerInfo->Add_Def += s_ItemParam[s_PlayerInfo->ItemHav[i]].Def;
-		s_PlayerInfo->Add_Crt += s_ItemParam[s_PlayerInfo->ItemHav[i]].Critical;
-		s_PlayerInfo->Add_Spd += s_ItemParam[s_PlayerInfo->ItemHav[i]].Spd;
-		s_PlayerInfo->Abp_Heal += s_ItemParam[s_PlayerInfo->ItemHav[i]].Absorption;
-		s_PlayerInfo->Auto_Heal += s_ItemParam[s_PlayerInfo->ItemHav[i]].AutoHeal;
-		s_PlayerInfo->Gold_Per += s_ItemParam[s_PlayerInfo->ItemHav[i]].GoldPrice;
+	ITEM_PARAM_DATA_t ItemData;
 
+	for (int i = 0; i < 10; i++) {
+		int ItemHave = s_PlayerInfo->ItemHav[i];
+
+		ItemData_GetItemData(ItemHave, &ItemData);
+
+		if (ItemHave >= 0 && ItemHave < ITEM_PARAM_DATA_NUM){
+
+			s_PlayerInfo->Add_Health += ItemData.Health;
+			s_PlayerInfo->Add_Atk += ItemData.Attack;
+			s_PlayerInfo->Add_Def += ItemData.Def;
+			s_PlayerInfo->Add_Crt += ItemData.Critical;
+			s_PlayerInfo->Add_Spd += ItemData.Spd;
+			s_PlayerInfo->Abp_Heal += ItemData.Absorption;
+			s_PlayerInfo->Auto_Heal += ItemData.AutoHeal;
+			s_PlayerInfo->Gold_Per += ItemData.GoldPrice;
+
+		}
 	}
 }
 
 //アイテムの耐久値を設定(仮)
-void Set_Player_Item_Durable(bool WhatEvol,int bak_Item) {
+void Set_Player_Item_Durable(int BuyItem) {
 	if (s_PlayerInfo == NULL) return;
 
-	for (int i = 0; i > 9; i++) {
+	ITEM_PARAM_DATA_t ItemData,NewItemData;
+	bool Item_Load_flg = true;
+
+	for (int i = 0; i < 10; i++) {
+
+		int ItemHave = s_PlayerInfo->ItemHav[i];
+		int ItemDablue = s_PlayerInfo->Item_Db[i];
+		ItemData_GetItemData(ItemHave, &ItemData);
+		ItemData_GetItemData(BuyItem, &NewItemData);
 		
-		if (WhatEvol == false) {
-			//既存の武器より進化した場合
-			
+		if (ItemHave >= 0 && ItemHave < ITEM_PARAM_DATA_NUM) {
 
-		}else{
-			//新しく買った場合
-			s_PlayerInfo->Item_Db[i] = s_ItemParam[s_PlayerInfo->ItemHav[i]].Durable;
+			for (int j = 0; j < 4; j++) {
+				if (ItemData.Evol[j] == BuyItem) {
+					//既存の武器より進化した場合
 
+					s_PlayerInfo->Item_Db[i] = NewItemData.Durable - ItemData.Durable + s_PlayerInfo->Item_Db[i];
+					Item_Load_flg = false;
+					break;
+
+				}
+			}
+			if (Item_Load_flg == false){
+				//新しく買った場合
+				s_PlayerInfo->Item_Db[i] = NewItemData.Durable;
+				Item_Load_flg = true;
+				break;
+			}
 		}
 	}
 }

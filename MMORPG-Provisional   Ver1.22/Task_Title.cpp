@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "DxLib.h"
 #include "System.h"
+#include "Code\AppData\Item\ItemData.h"
 #include <math.h>
 
 // タイトル画面のデータがあるフォルダのパス
@@ -440,6 +441,12 @@ bool Task_Title_Start( void )
 
 	// 黒フェードの解除を開始
 	System_FadeIn();
+
+	//アイテムの読み込み処理
+	if (ItemData_ReadData() == false) {
+		return false;
+	}
+
 
 	// タスクを登録する
 	TTData->TaskInfo.Base     = &g_Task_TitleTaskBaseInfo;

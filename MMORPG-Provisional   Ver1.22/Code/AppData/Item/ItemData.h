@@ -15,6 +15,9 @@
 #ifndef __ITEM_DATA_H__
 #define __ITEM_DATA_H__
 
+#define ITEM_PARAM_DATA_NUM (69)
+
+
 typedef struct {
 
 	int		id;					//管理番号
@@ -34,6 +37,8 @@ typedef struct {
 	char	Description[1024];	//説明
 
 }ITEM_PARAM_DATA_t;
+
+
 
 /*
 データファイルを読み込む

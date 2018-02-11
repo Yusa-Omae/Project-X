@@ -472,9 +472,7 @@ STaskInfo* Task_Shop_Start() {
 
 	task->counter = 0.0f;
 
-	if (ItemData_ReadData() == false) {
-		return NULL;
-	}
+
 
 	ScrollWindow_Initialize(&task->scrollWindow, 0, 0, 640, 720, 600);
 	ScrollWindow_SetWindowPosition(&task->scrollWindow, -720, 0);
