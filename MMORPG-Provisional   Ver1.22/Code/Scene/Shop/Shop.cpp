@@ -68,6 +68,7 @@ enum eSystemToke {
 	eSystemToke_kau,		//購入する
 	eSystemToke_yameru,		//購入をやめる
 	eSystemToke_tarinai,		//お金が足りない
+	eSystemToke_akinai,		//アイテム欄の空きがない
 	eSystemToke_Exit,		//店を出る
 
 	eSystemToke_Num,
@@ -137,6 +138,7 @@ static const char SYSTEM_TOKE_TBL[eSystemToke_Num][256] = {
 	{ "ありがとうよ！" },					//購入する
 	{ "なんだ、やめるのか" },					//購入をやめる
 	{"おいおい、たりねぇじゃねーか"},			//お金が足りない
+	{ "おいおい、これ以上もてないじゃねーか！？" },			//アイテム欄の空きがない
 	{ "また来いよな！" },						//店を出る
 };
 
@@ -305,8 +307,25 @@ static void BuyCheckProc(TASK_SHOP_t* task) {
 		else {
 			price -= item.Price;
 			Chara_Player_SetMoney(price);
-			Chara_Player_SetItem(0, item.id);
-			task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_kau]);
+			
+			//空いているアイテム欄を検索
+			int haveItem = -1;
+			for (int i = 0; i < 10; i++) {
+				haveItem = Chara_Player_GetItem(i);
+				if (haveItem == -1) {
+					break;
+				}
+			}
+
+			if (haveItem != -1) {
+
+				Chara_Player_SetItem(haveItem, item.id);
+
+				task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_kau]);
+			}
+			else if (haveItem == -1) {
+				task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_akinai]);
+			}
 		}
 
 		task->buyCheckState = eBuyCheckState_Select;
