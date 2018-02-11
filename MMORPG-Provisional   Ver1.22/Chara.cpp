@@ -522,7 +522,7 @@ bool Chara_Create(
 	CInfo->PrevSpd = VGet(0.0f, 0.0f, 0.0f);
 	CInfo->PrevAnimSpd = VGet(0.0f, 0.0f, 0.0f);
 	CInfo->PrevFixSpd = VGet(0.0f, 0.0f, 0.0f);
-	CInfo->Health = CBInfo->Health;
+	CInfo->Health = CBInfo->Health+CInfo->Add_Health;
 
 	// Œü‚«ˆ—‚Ì‰Šú‰»
 	Chara_InitializeAngle(CInfo, Angle);
@@ -1529,7 +1529,7 @@ static bool Chara_Step(
 		&CInfo->HealthGauge,
 		StepTime,
 		CInfo->HealthGaugeVisible || CInfo->HealthGaugeHideDelay > 0.0f,
-		(float)CInfo->Health / CInfo->BaseInfo->Health
+		(float)CInfo->Health / CInfo->BaseInfo->Health + CInfo->Add_Health
 	);
 
 	// ³íI—¹
@@ -3219,7 +3219,11 @@ extern bool Chara_Damage(
 		CInfo->DamageDirection = AttackDirection;
 
 		// ‘Ì—Í‚ðŒ¸‚ç‚·
-		CInfo->Health -= DamagePoint;
+		if (DamagePoint - (CInfo->Def + CInfo->Add_Def) <= 0) {
+			CInfo->Health--;
+		}else{
+			CInfo->Health -= DamagePoint - CInfo->Def + CInfo->Add_Def;
+		}
 
 		// ‘Ì—Í‚ª‚È‚­‚È‚Á‚½‚©‚Ç‚¤‚©‚Åˆ—‚ð•ªŠò
 		if (CInfo->Health <= 0)
