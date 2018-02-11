@@ -35,6 +35,8 @@
 #define ITEM_GRAPHIC_NUM (69)
 #define MESSAGE_WINDOW_BASE_POSITION_X (STRING_DRAW_POSITION_X - 20)
 #define MESSAGE_WINDOW_BASE_POSITION_Y (STRING_DRAW_POSITION_Y - 10)
+#define SELL_WINDOW_POSITION_X (GAME_SCREEN_WIDTH - 480)
+#define SELL_WINDOW_POSITION_Y (GAME_SCREEN_HEIGHT/2 - 100)
 
 enum eImage {
 	eImage_BackImage,		//背景
@@ -54,11 +56,20 @@ enum eBuyCheckState {
 	eBuyCheckState_Return,
 };
 
+enum eSellSelectState {
+	eSellSelectState_Popup,		//一覧ポップアップ
+	eSellSelectState_Select,	//一覧選択
+	eSellSelectState_PopDown,	//一覧ポップダウン
+};
+
 enum eState{
 	eState_Init,			//初期化
+	eState_Trading,			//売買選択
 	eState_BuySelect,		//買い物の選択
 	eState_BuyChacek,		//購入確認
 	eState_WindowPopup,		//ウィンドウポップアップ
+	eState_SellSelect,		//売るアイテムの選択
+	eState_SellCheck,		//売るアイテムの確認
 	eState_Exit,			//終了処理
 	eState_Num,
 };		
@@ -66,11 +77,14 @@ enum eState{
 enum eSystemToke {
 	eSystemToke_Aisatu,		//最初の挨拶
 	eSystemToke_kau,		//購入する
+	eSystemToke_uru,		//売却する
 	eSystemToke_yameru,		//購入をやめる
 	eSystemToke_tarinai,		//お金が足りない
 	eSystemToke_akinai,		//アイテム欄の空きがない
 	eSystemToke_Exit,		//店を出る
-
+	eSystemToke_Bukiwokau,
+	eSystemToke_Bukiwouru,
+	eSystemToek_Misewoderu,
 	eSystemToke_Num,
 };
 
@@ -95,6 +109,14 @@ typedef struct {
 	int messageWindowWidth;				//メッセージウィンドウ横幅
 	int messageWindowHeight;			//メッセージウィンドウ縦幅
 	float counter;						//タイムカウンタ
+
+	eSellSelectState sellSelectState;	//売却アイテム選択ステート
+	int sellSelectWindowAlpah;			//売るアイテムウィンドウアルファ
+	int sellSelect;						//売るアイテムの選択
+	bool isBack;						//戻るか？
+
+	int tradingSelect;					//売買選択
+
 }TASK_SHOP_t;
 
 typedef struct {
@@ -107,19 +129,28 @@ static void Task_Shop_Render(STaskInfo* task);
 static void Task_Shop_Terminate(STaskInfo* task);
 
 static void InitProc(TASK_SHOP_t* task);
+static void TradingSelecrProc(TASK_SHOP_t* task);
+static void TradingSelecrDraw(TASK_SHOP_t* task);
 static void BuySelectProc(TASK_SHOP_t* task);
 static void BuySelectDraw(TASK_SHOP_t* task);
 static void BuyCheckProc(TASK_SHOP_t* task);
 static void BuyCheckDraw(TASK_SHOP_t* task);
+static void SellSelectProc(TASK_SHOP_t* task);	
+static void SellSelectDraw(TASK_SHOP_t* task);
+static void SellCheckProc(TASK_SHOP_t* task);
+static void SellCheckDraw(TASK_SHOP_t* task);
 static void MessageWindowPopupProc(TASK_SHOP_t* task);
 static void MessageWindowPopupDraw(TASK_SHOP_t* task);
 
 static SHOP_FUNC s_ShopFunc[eState_Num] = {
 	//更新						//描画
 	{ InitProc,					NULL					},	//初期化
+	{ TradingSelecrProc ,TradingSelecrDraw				},	//売買選択
 	{ BuySelectProc,			BuySelectDraw			},	//アイテム選択
 	{ BuyCheckProc,				BuyCheckDraw			},	//購入確認
 	{ MessageWindowPopupProc,	MessageWindowPopupDraw	},	//ウィンドウポップアップ
+	{ SellSelectProc ,			SellSelectDraw			},	//売るアイテムの選択
+	{ SellCheckProc ,			SellCheckDraw			},	//売るアイテムの確認
 	{ NULL,						NULL					},	//終了
 };
 
@@ -136,15 +167,33 @@ static STaskBaseInfo g_Task_ShopTaskBaseInfo =
 static const char SYSTEM_TOKE_TBL[eSystemToke_Num][256] = {
 	{"いらっしゃい！\n今回はどうするんだい？"},	//最初の挨拶
 	{ "ありがとうよ！" },					//購入する
+	{"ほらよ！\nまた売ってくれよ！"},		//売却する
 	{ "なんだ、やめるのか" },					//購入をやめる
 	{"おいおい、たりねぇじゃねーか"},			//お金が足りない
-	{ "おいおい、これ以上もてないじゃねーか！？" },			//アイテム欄の空きがない
+	{ "おいおい\nこれ以上もてないじゃねーか！？" },			//アイテム欄の空きがない
 	{ "また来いよな！" },						//店を出る
+	{"武器を購入してくれるのかい？"},			//
+	{"武器を売ってくれるのかい？"},			   //
+	{"もう、大丈夫なのかい？"},				 //
+
 };
 
 //選択
 static const char SYSTEM_SELECT_TBL[][256] = {
 	{ "購入する" },
+	{ "やめる" },
+};
+
+//選択
+static const char SYSTEM_SELECT_TBL2[][256] = {
+	{ "売却する" },
+	{ "やめる" },
+};
+
+//
+static const char SYSTEM_SELECT_TBL3[][256] = {
+	{ "購入する" },
+	{ "売却する" },
 	{ "やめる" },
 };
 
@@ -208,9 +257,74 @@ static void InitProc(TASK_SHOP_t* task) {
 		task->messageWindowPosY > MESSAGE_WINDOW_BASE_POSITION_Y;
 		task->messageWindowAlaph = 255;
 		task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_Aisatu]);
+#if true
+		task->state = eState_Trading;
+#else
 		task->messageWindowPopState = ePopupState_Down;
 		task->state = eState_WindowPopup;
+#endif
 		System_PlayCommonSE(ECommonSE_Enter);
+	}
+}
+
+/*
+	売買選択更新処理
+*/
+static void TradingSelecrProc(TASK_SHOP_t* task) {
+
+	if (Input(EInputType_Right)) {
+		task->tradingSelect++;
+		if (task->tradingSelect > 2) {
+			task->tradingSelect = 2;
+		}
+		System_PlayCommonSE(ECommonSE_Cursor);
+	}
+	else if (Input(EInputType_Left)) {
+		task->tradingSelect--;
+		if (task->tradingSelect < 0) {
+			task->tradingSelect = 0;
+		}
+		System_PlayCommonSE(ECommonSE_Cursor);
+	}
+
+	if (Input(EInputType_Attack)) {
+		if (task->tradingSelect == 0) {
+			task->messageWindowPopState = ePopupState_Down;
+			task->state = eState_WindowPopup;
+		}
+		else if (task->tradingSelect == 1) {
+			task->state = eState_SellSelect;
+		}
+		else if(task->tradingSelect == 2)
+		{
+			task->state = eState_Exit;
+			task->isExit = true;
+			 
+		}
+		System_PlayCommonSE(ECommonSE_Enter);
+	}
+
+	task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_Bukiwokau + task->tradingSelect]);
+
+}
+
+/*
+	売買選択描画処理
+*/
+static void TradingSelecrDraw(TASK_SHOP_t* task) {
+
+	int drawX = (GAME_SCREEN_WIDTH - task->messageWindowWidth) / 2;
+	int drawY = (GAME_SCREEN_HEIGHT - task->messageWindowHeight) / 2;
+
+	DrawGraph(drawX, drawY, task->imageHandle[eImage_MessageWindow], TRUE);
+
+	for (int i = 0; i < 3; i++) {
+		if (task->tradingSelect == i) {
+			DrawString(100 + drawX + i * 100, drawY + 200, SYSTEM_SELECT_TBL3[i], GetColor(255, 0, 0));
+		}
+		else {
+			DrawString(100 + drawX + i * 100, drawY + 200, SYSTEM_SELECT_TBL3[i], GetColor(255, 255, 255));
+		}
 	}
 }
 
@@ -236,11 +350,10 @@ static void BuySelectProc(TASK_SHOP_t* task) {
 		task->state = eState_BuyChacek;
 		System_PlayCommonSE(ECommonSE_Enter);
 	}
-	//店を出る
+	//選択に戻る
 	else if (Input(EInputType_Jump)) {
-		task->state = eState_Exit;
+		task->state = eState_Trading;
 		System_PlayCommonSE(ECommonSE_Cancel);
-		task->isExit = true;
 		
 	}
 
@@ -260,7 +373,6 @@ static void BuySelectProc(TASK_SHOP_t* task) {
 */
 static void BuySelectDraw(TASK_SHOP_t* task) {
 
-	
 }
 
 /*
@@ -308,22 +420,13 @@ static void BuyCheckProc(TASK_SHOP_t* task) {
 			price -= item.Price;
 			Chara_Player_SetMoney(price);
 			
-			//空いているアイテム欄を検索
-			int haveItem = -1;
-			for (int i = 0; i < 10; i++) {
-				haveItem = Chara_Player_GetItem(i);
-				if (haveItem == -1) {
-					break;
-				}
-			}
+		
+			int ret = Set_Player_Item_Durable(item.id);
 
-			if (haveItem != -1) {
-
-				Chara_Player_SetItem(haveItem, item.id);
-
+			if (ret != -1) {
 				task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_kau]);
 			}
-			else if (haveItem == -1) {
+			else if (ret == -1) {
 				task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_akinai]);
 			}
 		}
@@ -397,7 +500,7 @@ static void MessageWindowPopupProc(TASK_SHOP_t* task) {
 			
 			char str[1024] = "";
 
-			sprintf_s(str, "Atk:%d Def:%d Spd:%0.04f\n", item.Attack, item.Def, item.Spd);
+			sprintf_s(str, "Lv:%d Atk:%d Def:%d Spd:%0.04f\n", item.Level, item.Attack, item.Def, item.Spd);
 			strcat(str, item.Description);
 
 			task->stringBase->SetString(str);
@@ -415,6 +518,227 @@ static void MessageWindowPopupProc(TASK_SHOP_t* task) {
 */
 static void MessageWindowPopupDraw(TASK_SHOP_t* task) {
 
+}
+
+/*
+	　売るアイテム選択更新処理
+*/
+static void SellSelectProc(TASK_SHOP_t* task) {
+
+	eSellSelectState state =  task->sellSelectState;
+
+	switch (state) {
+	case eSellSelectState_Popup:
+	{
+		task->sellSelectWindowAlpah += 25;
+
+		if (task->sellSelectWindowAlpah > 255) {
+			task->sellSelectWindowAlpah = 255;
+			task->sellSelectState = eSellSelectState_Select;
+		}
+
+		ITEM_PARAM_DATA_t item;
+		ItemData_GetItemData(task->sellSelect, &item);
+
+		char str[1024] = "";
+
+		int price = (float)item.Price * 0.7f;
+		sprintf_s(str, "%s\nLv:%d Atk:%d Def:%d Spd:%0.04f\n%s\nPrice:%d", item.name, item.Level, item.Attack, item.Def, item.Spd, item.Description, price);
+
+		task->stringBase->SetString(str);
+	}
+		break;
+	case eSellSelectState_Select:
+	{
+		int oldSelect = task->sellSelect;
+		if (Input(EInputType_Right)) {
+			if (task->sellSelect < 10) {
+				task->sellSelect++;
+			}
+			System_PlayCommonSE(ECommonSE_Cursor);
+		}
+		else if (Input(EInputType_Left)) {
+			if (task->sellSelect > 0) {
+				task->sellSelect--;
+			}
+			System_PlayCommonSE(ECommonSE_Cursor);
+		}
+		if (Input(EInputType_Up)) {
+			task->sellSelect -= 5;
+			if (task->sellSelect < 0) {
+				task->sellSelect += 5;
+			}
+			System_PlayCommonSE(ECommonSE_Cursor);
+		}
+		else if (Input(EInputType_Down)) {
+			task->sellSelect += 5;
+			if (task->sellSelect >= 10) {
+				task->sellSelect -= 5;
+			}
+			System_PlayCommonSE(ECommonSE_Cursor);
+		}
+
+		if (Input(EInputType_Attack)) {
+			
+			task->sellSelectState = eSellSelectState_PopDown;
+			System_PlayCommonSE(ECommonSE_Enter);
+			
+		}//選択に戻る
+		else if (Input(EInputType_Jump)) {
+			task->sellSelectState = eSellSelectState_PopDown;
+			task->isBack = true;
+			System_PlayCommonSE(ECommonSE_Cancel);
+
+		}
+
+		if (oldSelect != task->sellSelect) {
+			ITEM_PARAM_DATA_t item;
+			ItemData_GetItemData(task->sellSelect, &item);
+
+			char str[1024] = "";
+			int price = (float)item.Price * 0.7f;
+			sprintf_s(str, "%s\nLv:%d Atk:%d Def:%d Spd:%0.04f\n%s\nPrice%d", item.name,item.Level, item.Attack, item.Def, item.Spd,item.Description,price);
+			
+
+			task->stringBase->SetString(str);
+		}
+	}
+		break;
+	case  eSellSelectState_PopDown:
+
+		task->sellSelectWindowAlpah -= 10;
+
+		if (task->sellSelectWindowAlpah < 0) {
+			task->sellSelectWindowAlpah = 0;
+			task->sellSelectState = eSellSelectState_Popup;
+			if (task->isBack == true) {
+				task->state = eState_Trading;
+				task->isBack = false;
+			}
+			else {
+				task->state = eState_SellCheck;
+			}
+			
+		}
+
+		break;
+	}
+
+}
+
+/*
+　	売るアイテム選択描画処理
+ */
+static void SellSelectDraw(TASK_SHOP_t* task) {
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, task->sellSelectWindowAlpah);
+	DrawGraph(SELL_WINDOW_POSITION_X, SELL_WINDOW_POSITION_Y, task->imageHandle[eImage_MessageWindow], TRUE);
+
+	for (int i = 0; i < 10; i++) {
+
+		int haveItem = i;//Chara_Player_GetItem(i);
+		
+		if (haveItem == -1)continue;
+
+		ITEM_PARAM_DATA_t item;
+		ItemData_GetItemData(haveItem, &item);
+
+		int x = i % 5;
+		int y = i / 5;
+		int drawX = SELL_WINDOW_POSITION_X + 10 + x * 96;
+		int drawY = SELL_WINDOW_POSITION_Y + 30 + y * 96;
+		
+		DrawGraph(drawX, drawY, task->itemImagehandle[haveItem], TRUE);		
+		
+	}
+
+	int x = task->sellSelect % 5;
+	int y = task->sellSelect / 5;
+	int drawX = SELL_WINDOW_POSITION_X + 10 + x * 96;
+	int drawY = SELL_WINDOW_POSITION_Y + 30 + y * 96;
+
+	//カーソル表示
+	DrawBox(drawX, drawY, drawX + 48, drawY + 48,GetColor(2550,0,0),FALSE);
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+
+}
+
+/*
+	売るアイテム確認処理処理
+*/
+static void SellCheckProc(TASK_SHOP_t* task) {
+	switch (task->buyCheckState) {
+	case eBuyCheckState_Select:
+		if (Input(EInputType_Right)) {
+			task->buyCheckSelect = 1;		//やめる
+			System_PlayCommonSE(ECommonSE_Cursor);
+		}
+		else if (Input(EInputType_Left)) {
+			task->buyCheckSelect = 0;		//売却する
+			System_PlayCommonSE(ECommonSE_Cursor);
+		}
+
+		if (Input(EInputType_Attack)) {
+			if (task->buyCheckSelect == 0) {
+				task->buyCheckState = eBuyCheckState_Buy;
+				System_PlayCommonSE(ECommonSE_Enter);
+			}
+			else {
+				task->buyCheckState = eBuyCheckState_Return;
+				System_PlayCommonSE(ECommonSE_Cancel);
+			}
+		}
+		break;
+	case eBuyCheckState_Buy:
+	{
+
+		int select = task->sellSelect;
+		ITEM_PARAM_DATA_t item;
+		int haveItem = Chara_Player_GetItem(select);
+		ItemData_GetItemData(haveItem, &item);
+
+		int price = Chara_Player_GetMoney();
+		price += (float)item.Price * 0.7f;
+		Chara_Player_SetMoney(price);
+
+
+		Chara_Player_SetItem(select, -1);
+
+		task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_uru]);
+
+		task->buyCheckState = eBuyCheckState_Select;
+		task->state = eState_Trading;
+	}
+	break;
+	case eBuyCheckState_Return:
+
+		task->stringBase->SetString(SYSTEM_TOKE_TBL[eSystemToke_yameru]);
+		task->buyCheckState = eBuyCheckState_Select;
+		task->state = eState_SellSelect;
+		break;
+	}
+
+}
+
+/*
+	売るアイテム確認描画処理
+*/
+static void SellCheckDraw(TASK_SHOP_t* task) {
+	int drawX = (GAME_SCREEN_WIDTH - task->messageWindowWidth) / 2;
+	int drawY = (GAME_SCREEN_HEIGHT - task->messageWindowHeight) / 2;
+
+	DrawGraph(drawX, drawY, task->imageHandle[eImage_MessageWindow], TRUE);
+
+	for (int i = 0; i < 2; i++) {
+		if (task->buyCheckSelect == i) {
+			DrawString(100 + drawX + i * 100, drawY + 200, SYSTEM_SELECT_TBL2[i], GetColor(255, 0, 0));
+		}
+		else {
+			DrawString(100 + drawX + i * 100, drawY + 200, SYSTEM_SELECT_TBL2[i], GetColor(255, 255, 255));
+		}
+	}
 }
 
 STaskInfo* Task_Shop_Start() {
@@ -472,6 +796,11 @@ STaskInfo* Task_Shop_Start() {
 
 	task->counter = 0.0f;
 
+	task->sellSelect = 0;
+	task->sellSelectWindowAlpah = 0;
+
+	task->tradingSelect = 0;
+	task->isBack = false;
 
 
 	ScrollWindow_Initialize(&task->scrollWindow, 0, 0, 640, 720, 600);
@@ -514,7 +843,7 @@ static bool Task_Shop_Step(STaskInfo* stask, float stepTime) {
 	}
 
 	task->stringBase->Update(true, 30, 5);
-	if (task->state == eState_Init || task->state == eState_BuyChacek) {
+	if (task->state != eState_BuySelect) {
 		task->counter = -1.0f;
 	}
 	else {

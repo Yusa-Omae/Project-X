@@ -180,7 +180,6 @@ void ScrollWindow_DrawGraph(SCROLL_WINDOW_DATA_t* window,int graphichandle,int s
 				DrawGraph(DrawPosX, DrawPosY, imaage[drawItem], TRUE);
 				DrawPosY = window->itemWindow[i].drawPosY + window->itemWindow[i].height / 2;
 				DrawString(DrawPosX + 53, DrawPosY, itemData.name, GetColor(0, 0, 0));
-				DrawFormatString(DrawPosX + 353, DrawPosY, GetColor(0, 0, 0),"Price:%5d", itemData.Price );
 			}
 		}
 
