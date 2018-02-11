@@ -114,6 +114,12 @@ bool Chara_Player_Create(
 
 	CInfo->Gold = 9999999999;
 
+	//アイテムの初期化処理
+	for (int i = 0; i < 10; i++) {
+		CInfo->Item_Db[i] = -1;
+		CInfo->ItemHav[i] = -1;
+	}
+
 	//キャラクター構造体を設定
 	s_PlayerInfo = CInfo;
 
@@ -793,7 +799,7 @@ int Set_Player_Item_Durable(int BuyItem) {
 			}
 
 		}
-		if (Item_Load_flg == false || ItemHave == -1){
+		if (Item_Load_flg == false && ItemHave == -1){
 			//新しく買った場合
 			s_PlayerInfo->Item_Db[i] = NewItemData.Durable;
 			s_PlayerInfo->ItemHav[i] = BuyItem;
